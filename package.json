@@ -1,0 +1,22 @@
+{
+	"name": "@elyos/docs",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"dev": "astro dev",
+		"start": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro",
+        "docker:build": "export $(cat .env | grep -v '#' | grep -v '^$' | xargs) && docker build -f docker/Dockerfile --build-arg UMAMI_WEBSITE_ID_DOCS=$UMAMI_WEBSITE_ID_DOCS --build-arg GITHUB_URL=$GITHUB_URL -t elyos-docs:latest .",
+		"docker:build:amd64": "export $(cat .env | grep -v '#' | grep -v '^$' | xargs) && docker build -f docker/Dockerfile --platform linux/amd64 --build-arg UMAMI_WEBSITE_ID_DOCS=$UMAMI_WEBSITE_ID_DOCS --build-arg GITHUB_URL=$GITHUB_URL -t elyos-docs:latest .",
+		"docker:build:arm64": "export $(cat .env | grep -v '#' | grep -v '^$' | xargs) && docker build -f docker/Dockerfile --platform linux/arm64 --build-arg UMAMI_WEBSITE_ID_DOCS=$UMAMI_WEBSITE_ID_DOCS --build-arg GITHUB_URL=$GITHUB_URL -t elyos-docs:latest .",
+		"docker:save": "docker save -o docker/elyos-docs.tar elyos-docs:latest"
+	},
+	"dependencies": {
+		"@astrojs/starlight": "^0.37.6",
+		"@fontsource/inter": "^5.2.8",
+		"astro": "^5.6.1",
+		"sharp": "^0.34.2"
+	}
+}
