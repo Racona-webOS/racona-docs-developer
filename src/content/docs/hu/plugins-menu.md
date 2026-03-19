@@ -1,13 +1,13 @@
 ---
 title: menu.json és AppLayout mód
-description: Többoldalas plugin készítése menu.json-nal, AppLayout mód és komponens build
+description: Többoldalas alkalmazás készítése menu.json-nal, AppLayout mód és komponens build
 ---
 
 ## Mi az AppLayout mód?
 
-Ha a plugin gyökerében van egy `menu.json` fájl, az ElyOS AppLayout módban tölti be a plugint. Ilyenkor a plugin egy oldalsávos navigációval rendelkező, többoldalas alkalmazásként jelenik meg — ugyanolyan elrendezésben, mint a beépített alkalmazások (pl. Beállítások, Felhasználók).
+Ha az alkalmazás gyökerében van egy `menu.json` fájl, az ElyOS AppLayout módban tölti be az alkalmazást. Ilyenkor az alkalmazás egy oldalsávos navigációval rendelkező, többoldalas alkalmazásként jelenik meg — ugyanolyan elrendezésben, mint a beépített alkalmazások (pl. Beállítások, Felhasználók).
 
-AppLayout mód nélkül (standalone) a plugin egyetlen Web Component-ként töltődik be, teljes ablakot kitöltve.
+AppLayout mód nélkül (standalone) az alkalmazás egyetlen Web Component-ként töltődik be, teljes ablakot kitöltve.
 
 ---
 
@@ -34,7 +34,7 @@ AppLayout mód nélkül (standalone) a plugin egyetlen Web Component-ként tölt
 
 | Mező | Típus | Leírás |
 |---|---|---|
-| `labelKey` | `string` | i18n kulcs a menüpont feliratához (a plugin `locales/` fájljaiból) |
+| `labelKey` | `string` | i18n kulcs a menüpont feliratához (az alkalmazás `locales/` fájljaiból) |
 | `href` | `string` | Hash-alapú útvonal (pl. `#overview`) |
 | `icon` | `string` | Lucide ikon neve (PascalCase, pl. `Home`, `Settings`, `Table`) |
 | `component` | `string` | A betöltendő Svelte komponens neve (fájlnév kiterjesztés nélkül) |
@@ -59,7 +59,7 @@ Az `icon` mező értéke bármely [Lucide](https://lucide.dev/icons/) ikon neve 
 AppLayout módban minden menüponthoz egy külön Svelte komponens tartozik. Ezeket a `src/components/` mappában kell elhelyezni:
 
 ```
-my-plugin/
+my-app/
 ├── manifest.json
 ├── menu.json
 ├── src/
@@ -92,13 +92,13 @@ bun run build:all
 ```
 
 A script:
-1. Lebuildi a fő plugint (`BUILD_MODE=main`)
+1. Lebuildi a fő alkalmazást (`BUILD_MODE=main`)
 2. Végigmegy a `src/components/` mappán
 3. Minden `.svelte` fájlt külön entry point-ként buildelel
 
 ```js
 // build-all.js
-// 1. Fő plugin build
+// 1. Fő alkalmazás build
 execSync('BUILD_MODE=main vite build', { stdio: 'inherit' });
 
 // 2. Komponensek buildelése
@@ -124,7 +124,7 @@ dist/
 
 ## Fordítások menüpontokhoz
 
-A `labelKey` értékei a plugin `locales/` fájljaiból töltődnek be. Például:
+A `labelKey` értékei az alkalmazás `locales/` fájljaiból töltődnek be. Például:
 
 ```json
 // locales/hu.json
@@ -146,7 +146,7 @@ A `labelKey` értékei a plugin `locales/` fájljaiból töltődnek be. Példáu
 
 ## Teljes példa
 
-A `hello-world` plugin egy jó referencia AppLayout módra. Négy menüpontja van:
+Az `sdk-demo` alkalmazás egy jó referencia AppLayout módra. Négy menüpontja van:
 
 ```json
 [
@@ -177,7 +177,7 @@ A `hello-world` plugin egy jó referencia AppLayout módra. Négy menüpontja va
 ]
 ```
 
-Forrás: `elyos-core/examples/plugins/hello-world/`
+Forrás: `elyos-core/examples/apps/sdk-demo/`
 
 ---
 
@@ -189,4 +189,4 @@ Forrás: `elyos-core/examples/plugins/hello-world/`
 | Dashboard elem | Beállítások, admin felület |
 | Kis segédeszköz | Komplex adatkezelő app |
 
-Ha a pluginod több logikailag elkülönülő részt tartalmaz, az AppLayout mód jobb felhasználói élményt nyújt, és konzisztens megjelenést biztosít a többi beépített alkalmazással.
+Ha az alkalmazásod több logikailag elkülönülő részt tartalmaz, az AppLayout mód jobb felhasználói élményt nyújt, és konzisztens megjelenést biztosít a többi beépített alkalmazással.

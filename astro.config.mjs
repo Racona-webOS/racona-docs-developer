@@ -285,8 +285,8 @@ export default defineConfig({
 					]
 				},
 				{
-					label: 'Plugin fejlesztés',
-					translations: { en: 'Plugin Development' },
+					label: 'Alkalmazás fejlesztés',
+					translations: { en: 'Application Development' },
 					collapsed: false,
 					items: [
 						{

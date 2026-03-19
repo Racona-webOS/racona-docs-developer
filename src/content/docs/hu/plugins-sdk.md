@@ -3,7 +3,7 @@ title: SDK API referencia
 description: A WebOS SDK összes service-ének részletes dokumentációja – ui, data, remote, i18n, notifications, context, assets
 ---
 
-A WebOS SDK a `window.webOS` globális objektumon keresztül érhető el. ElyOS-ben a runtime SDK automatikusan inicializálódik — standalone fejlesztéshez a Mock SDK-t kell használni (lásd [Fejlesztői workflow](/hu/plugins-development/)).
+A WebOS SDK a `window.webOS` globális objektumon keresztül érhető el. ElyOS-ben a runtime SDK automatikusan inicializálódik — standalone fejlesztéshez a Mock SDK-t kell használni (lásd [Fejlesztői workflow](/hu/apps-development/)).
 
 ```typescript
 const sdk = window.webOS!;

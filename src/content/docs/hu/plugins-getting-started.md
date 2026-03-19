@@ -1,48 +1,24 @@
 ---
-title: Első plugin létrehozása
-description: Plugin projekt létrehozása a create-elyos-app CLI tool segítségével – projekt struktúra, manifest, első build
+title: Első alkalmazás létrehozása
+description: Alkalmazás projekt létrehozása a create-elyos-app CLI tool segítségével – projekt struktúra, manifest, első build
 ---
 
 ## Előfeltételek
 
 - [Bun](https://bun.sh) telepítve (`bun --version` ≥ 1.0)
-- Futó ElyOS példány (Docker-rel vagy lokálisan) a feltöltéshez
+- Futó ElyOS példány (Docker-rel vagy lokálisan) — szükséges az alkalmazás feltöltéséhez és az ElyOS rendszeren belüli teszteléséhez (nem csak standalone módban). Lásd: [Docker-alapú futtatás](/hu/getting-started#docker-alapú-futtatás)
 
 ## Projekt létrehozása
 
-### Ha a `create-elyos-app` elérhető npm-en
-
-Ha a csomag már publikálva van az npm registry-be, a `bunx` automatikusan letölti és futtatja:
+Az ElyOS-hoz elérhető CLI segítségével hozd létre az új alkalmazás projektet:
 
 ```bash
 bunx @elyos-dev/create-app
 ```
 
-### Ha még nincs publikálva (lokális használat)
-
-Jelenleg a CLI a monorepo része, ezért lokálisan kell buildelni és futtatni:
-
-```bash
-# A monorepo packages/create-elyos-app mappájában:
-bun run build   # lefordítja a CLI-t a dist/ mappába
-bun link        # globálisan elérhetővé teszi a gépeden
-```
-
-Ezután bárhonnan futtatható:
-
-```bash
-create-elyos-app
-```
-
-:::note
-Ha nem férsz hozzá a monorepo-hoz, a [kézi létrehozás](#kézi-létrehozás-hello-world-másolása) (hello-world másolása) az ajánlott módszer.
-:::
-
 Az interaktív wizard végigvezet a beállításokon:
 
-Az interaktív wizard végigvezet a beállításokon:
-
-1. **Plugin ID** — kebab-case azonosító (pl. `my-plugin`)
+1. **Alkalmazás ID** — kebab-case azonosító (pl. `my-app`)
 2. **Megjelenítési név** — amit a felhasználók látnak
 3. **Leírás** — rövid leírás
 4. **Szerző** — `Név <email>` formátumban
@@ -52,28 +28,94 @@ Az interaktív wizard végigvezet a beállításokon:
 Vagy megadhatod a nevet és a template-et közvetlenül:
 
 ```bash
-bunx @elyos-dev/create-app my-plugin --template basic
-bunx @elyos-dev/create-app my-plugin --template advanced
-bunx @elyos-dev/create-app my-plugin --template datatable --no-install
+bunx @elyos-dev/create-app my-app --template basic
+bunx @elyos-dev/create-app my-app --template advanced
+bunx @elyos-dev/create-app my-app --template datatable --no-install
 ```
 
 ### Elérhető template-ek
 
 | Template | Mire jó |
 |---|---|
-| `basic` | Egyszerű UI plugin, nincs szerver oldali logika |
+| `basic` | Egyszerű UI alkalmazás, nincs szerver oldali logika |
 | `advanced` | Szerver függvényekkel, Settings komponenssel |
 | `datatable` | CRUD alkalmazás DataTable-lel és szerver CRUD műveletekkel |
-| `sidebar` | Oldalsávos navigációval rendelkező plugin (AppLayout mód, `menu.json`) |
+| `sidebar` | Oldalsávos navigációval rendelkező alkalmazás (AppLayout mód, `menu.json`) |
 
-#### `sidebar` template
+#### `basic` template
 
-A `sidebar` template egy oldalsávos navigációs elrendezést generál, ahol a plugin több oldalból áll. Az ElyOS az `AppLayout` komponensét használja a megjelenítéshez — a plugin ablakának bal oldalán egy navigációs sáv jelenik meg, a jobb oldalon a kiválasztott oldal tartalma.
+A `basic` template egy egyszerű, egyoldalas alkalmazást generál. Ideális kezdőknek és egyszerű alkalmazásokhoz.
 
 A generált struktúra:
 
 ```
-my-plugin/
+my-app/
+├── manifest.json
+├── src/
+│   ├── App.svelte       # Fő komponens
+│   └── main.ts          # Belépési pont
+├── locales/
+│   ├── hu.json
+│   └── en.json
+└── assets/
+    └── icon.svg
+```
+
+#### `advanced` template
+
+Az `advanced` template szerver oldali logikát és egy Settings komponenst tartalmaz. Ideális olyan alkalmazásokhoz, amelyeknek szerver függvényekre van szükségük.
+
+A generált struktúra:
+
+```
+my-app/
+├── manifest.json
+├── src/
+│   ├── App.svelte       # Fő komponens
+│   ├── main.ts          # Belépési pont
+│   └── components/
+│       └── Settings.svelte
+├── server/
+│   └── functions.ts     # Szerver oldali függvények
+├── locales/
+│   ├── hu.json
+│   └── en.json
+└── assets/
+    └── icon.svg
+```
+
+#### `datatable` template
+
+A `datatable` template egy teljes CRUD alkalmazást generál DataTable komponenssel és szerver oldali CRUD műveletekkel. Ideális adatkezelő alkalmazásokhoz.
+
+A generált struktúra:
+
+```
+my-app/
+├── manifest.json
+├── src/
+│   ├── App.svelte       # Fő komponens
+│   ├── main.ts          # Belépési pont
+│   └── components/
+│       ├── DataTable.svelte
+│       └── Settings.svelte
+├── server/
+│   └── functions.ts     # CRUD szerver függvények
+├── locales/
+│   ├── hu.json
+│   └── en.json
+└── assets/
+    └── icon.svg
+```
+
+#### `sidebar` template
+
+A `sidebar` template egy oldalsávos navigációs elrendezést generál, ahol az alkalmazás több oldalból áll. Az ElyOS az `AppLayout` komponensét használja a megjelenítéshez — az alkalmazás ablakának bal oldalán egy navigációs sáv jelenik meg, a jobb oldalon a kiválasztott oldal tartalma.
+
+A generált struktúra:
+
+```
+my-app/
 ├── manifest.json
 ├── menu.json            # Oldalsáv navigáció definíciója
 ├── src/
@@ -97,15 +139,15 @@ A `menu.json` határozza meg az oldalsáv menüpontjait:
 ]
 ```
 
-A `labelKey` értékei namespace nélküliek — a rendszer automatikusan hozzáfűzi a `plugin:{id}.` prefixet a fordítások keresésekor.
+A `labelKey` értékei namespace nélküliek — a rendszer automatikusan hozzáfűzi az `app:{id}.` prefixet a fordítások keresésekor.
 
 ## Projekt struktúra
 
 A generált projekt struktúrája:
 
 ```
-my-plugin/
-├── manifest.json        # Plugin metaadatok (kötelező)
+my-app/
+├── manifest.json        # Alkalmazás metaadatok (kötelező)
 ├── package.json         # Függőségek és scriptek
 ├── vite.config.ts       # Build konfiguráció
 ├── tsconfig.json        # TypeScript konfiguráció
@@ -119,20 +161,20 @@ my-plugin/
 │   ├── hu.json
 │   └── en.json
 └── assets/
-    └── icon.svg         # Plugin ikon
+    └── icon.svg         # Alkalmazás ikon
 ```
 
 :::note
-A `hello-world` példa plugin megtalálható a monorepo-ban: `examples/plugins/hello-world/`. Ez a legteljesebb referencia implementáció, érdemes átnézni fejlesztés előtt.
+Az `sdk-demo` példa alkalmazás megtalálható a monorepo-ban: `examples/apps/sdk-demo/`. Ez a legteljesebb referencia implementáció, érdemes átnézni fejlesztés előtt.
 :::
 
-## Kézi létrehozás (hello-world másolása)
+## Kézi létrehozás (sdk-demo másolása)
 
-Ha a monorepo-n belül dolgozol, másolhatod a hello-world példát:
+Ha a monorepo-n belül dolgozol, másolhatod az sdk-demo példát:
 
 ```bash
-cp -r examples/plugins/hello-world examples/plugins/my-plugin
-cd examples/plugins/my-plugin
+cp -r examples/apps/sdk-demo examples/apps/my-app
+cd examples/apps/my-app
 # Módosítsd a manifest.json-t (id, name, description)
 bun install
 ```
@@ -140,47 +182,11 @@ bun install
 ## Függőségek telepítése
 
 ```bash
-cd my-plugin
+cd my-app
 bun install
 ```
 
-A `@elyos/sdk` csomag tartalmazza a TypeScript típusdefiníciókat és a fejlesztői Mock SDK-t.
-
-:::caution[@elyos/sdk nincs npm-en — átmeneti megoldás]
-Jelenleg a `@elyos/sdk` csomag nincs publikálva az npm registry-be, ezért a `bun install` 404-es hibával meghiúsul. Ha az SDK már elérhető npm-en, ez a szekció kihagyható — a generált `package.json` `"^1.0.0"` verziója automatikusan működni fog.
-:::
-
-### @elyos/sdk lokális hivatkozás (amíg nincs npm-en)
-
-A generált `package.json`-ban cseréld le az `@elyos/sdk` verzióját `link:` prefixre, amely a monorepo SDK mappájára mutat:
-
-```json
-// package.json
-{
-  "dependencies": {
-    "@elyos/sdk": "file:../../elyos-core/packages/sdk"
-  }
-}
-```
-
-Az útvonal relatív a plugin projekt mappájához képest — igazítsd a saját könyvtárstruktúrádhoz. Például ha a plugin az `elyos-plugins/my-plugin/` mappában van, és az SDK az `elyos-core/packages/sdk/` alatt, akkor `../../elyos-core/packages/sdk` a helyes útvonal. A `file:` protokoll közvetlenül a megadott mappából veszi a csomagot, nem kell hozzá globális `bun link`.
-
-Ezután a `bun install` már nem az npm-ről próbálja letölteni:
-
-```bash
-bun install
-```
-
-:::note
-A `link:` protokoll bunnál a globális link registry-t keresi, nem relatív fájlrendszer-útvonalat — ezért `file:` kell helyette. A `bun link` + `bun link @elyos/sdk` kombináció sem elegendő, mert a `bun install` futásakor a `package.json`-ban lévő verzió alapján az npm registry-t kérdezi le.
-:::
-
-Ha az SDK forrása változott, újra kell buildelni:
-
-```bash
-# elyos-core/packages/sdk mappában:
-bun run build
-```
+A `@elyos/sdk` csomag elérhető az npm registry-ben és a JSR-en is — tartalmazza a TypeScript típusdefiníciókat és a fejlesztői Mock SDK-t.
 
 ## Első build
 

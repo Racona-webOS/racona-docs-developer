@@ -1,11 +1,11 @@
 ---
 title: Biztonság
-description: Plugin biztonsági szabályok, tiltott kódminták és engedélyezett függőségek
+description: Alkalmazás biztonsági szabályok, tiltott kódminták és engedélyezett függőségek
 ---
 
 ## Áttekintés
 
-Az ElyOS plugin rendszer sandbox-olt környezetben futtatja a pluginokat. A rendszer statikus kódelemzéssel ellenőrzi a feltöltött pluginokat, és visszautasítja azokat, amelyek tiltott mintákat tartalmaznak.
+Az ElyOS alkalmazás rendszer sandbox-olt környezetben futtatja az alkalmazásokat. A rendszer statikus kódelemzéssel ellenőrzi a feltöltött alkalmazásokat, és visszautasítja azokat, amelyek tiltott mintákat tartalmaznak.
 
 ---
 

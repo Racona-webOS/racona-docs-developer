@@ -1,24 +1,24 @@
 ---
 title: Fejlesztői workflow
-description: Plugin fejlesztés standalone módban Mock SDK-val – hot reload, lokális tesztelés, ElyOS-ben való tesztelés
+description: Alkalmazás fejlesztés standalone módban Mock SDK-val – hot reload, lokális tesztelés, ElyOS-ben való tesztelés
 ---
 
 ## Standalone fejlesztés (Mock SDK)
 
-A plugin fejleszthető futó ElyOS példány nélkül is. A `@elyos/sdk/dev` csomag egy Mock SDK-t biztosít, amely szimulálja az összes SDK szolgáltatást:
+Az alkalmazás fejleszthető futó ElyOS példány nélkül is. A `@elyos/sdk/dev` csomag egy Mock SDK-t biztosít, amely szimulálja az összes SDK szolgáltatást:
 
 | SDK szolgáltatás | Mock viselkedés |
 |---|---|
 | `ui.toast()` | `console.log`-ba ír |
 | `ui.dialog()` | `window.confirm` / `window.prompt` (standalone módban) |
-| `data.set/get/delete()` | `localStorage`-t használ (`devplugin:{pluginId}:` kulcs prefix alatt) |
+| `data.set/get/delete()` | `localStorage`-t használ (`devapp:{appId}:` kulcs prefix alatt) |
 | `data.query()` | Üres tömböt ad vissza |
 | `remote.call()` | Konfigurálható mock handler |
 | `i18n.t()` | A megadott fordítási mapből olvas |
 | `notifications.send()` | `console.log`-ba ír |
 
 :::note
-ElyOS-be betöltve (dev plugin módban) a `ui.toast()` a core Sonner toast rendszerét, a `ui.dialog()` a core saját dialog komponensét, a `notifications.send()` pedig toast-ot jelenít meg (az adatbázisban nem regisztrált dev plugin esetén). A `data.set/get/delete()` hívások dev módban szintén `localStorage`-ba írnak (`devplugin:{pluginId}:` prefix alatt), mivel a dev plugin nincs az adatbázisban regisztrálva — a valódi adatbázis séma csak telepített pluginnál érhető el. Standalone módban (Mock SDK) a fenti fallback viselkedés érvényes.
+ElyOS-be betöltve (dev alkalmazás módban) a `ui.toast()` a core Sonner toast rendszerét, a `ui.dialog()` a core saját dialog komponensét, a `notifications.send()` pedig toast-ot jelenít meg (az adatbázisban nem regisztrált dev alkalmazás esetén). A `data.set/get/delete()` hívások dev módban szintén `localStorage`-ba írnak (`devapp:{appId}:` prefix alatt), mivel a dev alkalmazás nincs az adatbázisban regisztrálva — a valódi adatbázis séma csak telepített alkalmazásnál érhető el. Standalone módban (Mock SDK) a fenti fallback viselkedés érvényes.
 :::
 
 ### Dev szerver indítása
@@ -29,23 +29,23 @@ A dev szerver indításához szükség van egy `index.html` fájlra a projekt gy
 bun dev
 ```
 
-A plugin elérhető lesz a `http://localhost:5174` címen. A Vite hot reload automatikusan frissíti a böngészőt minden mentéskor.
+Az alkalmazás elérhető lesz a `http://localhost:5174` címen. A Vite hot reload automatikusan frissíti a böngészőt minden mentéskor.
 
 ### Dev szerver port konfigurálhatóság
 
-Ha egyszerre több plugint fejlesztesz, a `dev` (Vite) és a `dev:server` (statikus szerver) parancsok alapértelmezetten az `5174`-es portot használják. Ez ütközést okoz, ha mindkét plugin egyszerre fut.
+Ha egyszerre több alkalmazást fejlesztesz, a `dev` (Vite) és a `dev:server` (statikus szerver) parancsok alapértelmezetten az `5174`-es portot használják. Ez ütközést okoz, ha mindkét alkalmazás egyszerre fut.
 
 A port a `PORT` környezeti változóval felülírható:
 
 ```bash
-# Első plugin — alapértelmezett port
+# Első alkalmazás — alapértelmezett port
 bun run dev:server
 
-# Második plugin — más porton
+# Második alkalmazás — más porton
 PORT=5175 bun run dev:server
 ```
 
-Az ElyOS Dev Plugins betöltőjében az URL-t ennek megfelelően add meg: `http://localhost:5175`.
+Az ElyOS Dev Alkalmazások betöltőjében az URL-t ennek megfelelően add meg: `http://localhost:5175`.
 
 :::note
 Ha a `http://localhost:5174` 404-et ad, ellenőrizd, hogy van-e `index.html` a projekt gyökerében. Ha nincs, hozd létre:
@@ -56,7 +56,7 @@ Ha a `http://localhost:5174` 404-et ad, ellenőrizd, hogy van-e `index.html` a p
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ElyOS Plugin Dev</title>
+    <title>ElyOS Alkalmazás Dev</title>
   </head>
   <body>
     <div id="app"></div>
@@ -68,7 +68,7 @@ Ha a `http://localhost:5174` 404-et ad, ellenőrizd, hogy van-e `index.html` a p
 
 ### Mock SDK inicializálás
 
-A Mock SDK (`@elyos/sdk/dev`) egy fejlesztői csomag, amely szimulálja a valódi `window.webOS` SDK-t — futó ElyOS példány nélkül. Amikor a plugin standalone módban fut (pl. `bun dev`), a `window.webOS` még nem létezik, ezért a `MockWebOSSDK.initialize()` hozza létre és teszi elérhetővé.
+A Mock SDK (`@elyos/sdk/dev`) egy fejlesztői csomag, amely szimulálja a valódi `window.webOS` SDK-t — futó ElyOS példány nélkül. Amikor az alkalmazás standalone módban fut (pl. `bun dev`), a `window.webOS` még nem létezik, ezért a `MockWebOSSDK.initialize()` hozza létre és teszi elérhetővé.
 
 A `src/main.ts` fájlban ez automatikusan megtörténik:
 
@@ -86,13 +86,13 @@ async function initDevSDK() {
       i18n: {
         locale: 'en',
         translations: {
-          en: { title: 'My Plugin', welcome: 'Welcome!' },
-          hu: { title: 'Plugin', welcome: 'Üdvözöljük!' }
+          en: { title: 'My App', welcome: 'Welcome!' },
+          hu: { title: 'Alkalmazás', welcome: 'Üdvözöljük!' }
         }
       },
       // Szimulált felhasználó és jogosultságok
       context: {
-        pluginId: 'my-plugin',
+        appId: 'my-app',
         user: {
           id: 'dev-user',
           name: 'Developer',
@@ -121,14 +121,14 @@ Az `initialize()` összes konfigurációs lehetősége:
 |---|---|---|
 | `i18n.locale` | `string` | Alapértelmezett nyelv (pl. `'hu'`) |
 | `i18n.translations` | `Record<string, Record<string, string>>` | Fordítási kulcsok nyelvenkénti mapje |
-| `context.pluginId` | `string` | Szimulált plugin ID |
+| `context.appId` | `string` | Szimulált alkalmazás ID |
 | `context.user` | `UserInfo` | Szimulált bejelentkezett felhasználó |
 | `context.permissions` | `string[]` | Szimulált jogosultságok |
 | `data.initialData` | `Record<string, unknown>` | Előre feltöltött localStorage adatok |
 | `remote.handlers` | `Record<string, Function>` | Mock szerver függvény handlerek |
 | `assets.baseUrl` | `string` | Asset URL prefix |
 
-Amikor az ElyOS betölti a plugint élesben, a `window.webOS` már létezik (a runtime SDK-val feltöltve), ezért az `if (!window.webOS)` feltétel miatt a Mock SDK nem fut le.
+Amikor az ElyOS betölti az alkalmazást élesben, a `window.webOS` már létezik (a runtime SDK-val feltöltve), ezért az `if (!window.webOS)` feltétel miatt a Mock SDK nem fut le.
 
 ### Remote call mock-olása
 
@@ -153,16 +153,16 @@ MockWebOSSDK.initialize({
 
 ## Tesztelés futó ElyOS-ben
 
-A standalone dev mód (Mock SDK) csak a UI-t teszteli. Ha valódi SDK hívásokat, adatbázist vagy szerver függvényeket is tesztelni szeretnél, a plugint be kell tölteni egy futó ElyOS példányba.
+A standalone dev mód (Mock SDK) csak a UI-t teszteli. Ha valódi SDK hívásokat, adatbázist vagy szerver függvényeket is tesztelni szeretnél, az alkalmazást be kell tölteni egy futó ElyOS példányba.
 
-A folyamat lényege: **buildeld le a plugint, indíts egy statikus HTTP szervert, majd töltsd be az ElyOS-be URL alapján.** Nincs automatikus hot reload — ha változtattál a kódon, újra kell buildelni és újra megnyitni a plugin ablakát.
+A folyamat lényege: **buildeld le az alkalmazást, indíts egy statikus HTTP szervert, majd töltsd be az ElyOS-be URL alapján.** Nincs automatikus hot reload — ha változtattál a kódon, újra kell buildelni és újra megnyitni az alkalmazás ablakát.
 
 ### 1. lépés — ElyOS core indítása
 
 Az `elyos-core` monorepo gyökerében:
 
 ```bash
-# .env.local fájlban engedélyezd a dev plugin betöltést:
+# .env.local fájlban engedélyezd a dev alkalmazás betöltést:
 # DEV_MODE=true
 
 bun app:dev
@@ -170,9 +170,9 @@ bun app:dev
 
 Az ElyOS alapértelmezetten a `http://localhost:5173` címen érhető el. Jelentkezz be admin fiókkal.
 
-### 2. lépés — Plugin buildelése
+### 2. lépés — Alkalmazás buildelése
 
-A plugin projekt mappájában:
+Az alkalmazás projekt mappájában:
 
 ```bash
 bun run build
@@ -189,27 +189,27 @@ bun run dev:server
 Ez elindítja a `dev-server.ts` Bun HTTP szervert a `http://localhost:5174` címen. A szerver a `dist/` mappából és a projekt gyökeréből szolgálja ki a fájlokat CORS fejlécekkel.
 
 :::note
-A `dev:server` csak statikus fájlokat szolgál ki — nincs hot reload, nincs Vite. Ha módosítottad a kódot, futtasd újra a `bun run build`-ot, majd zárd be és nyisd meg újra a plugin ablakát az ElyOS-ben.
+A `dev:server` csak statikus fájlokat szolgál ki — nincs hot reload, nincs Vite. Ha módosítottad a kódot, futtasd újra a `bun run build`-ot, majd zárd be és nyisd meg újra az alkalmazás ablakát az ElyOS-ben.
 :::
 
-### 4. lépés — Plugin betöltése az ElyOS-be
+### 4. lépés — Alkalmazás betöltése az ElyOS-be
 
 :::caution[Előfeltételek]
-A "Dev Plugins" menüpont csak akkor jelenik meg a Plugin Managerben, ha:
+A "Dev Alkalmazások" menüpont csak akkor jelenik meg az Alkalmazás Managerben, ha:
 - Az ElyOS `.env.local` fájlban `DEV_MODE=true` van beállítva
-- A bejelentkezett felhasználónak van `plugin.manual.install` jogosultsága (admin fióknak alapból van)
+- A bejelentkezett felhasználónak van `app.manual.install` jogosultsága (admin fióknak alapból van)
 :::
 
 1. Nyisd meg az ElyOS-t a böngészőben
-2. Start menü → Plugin Manager
-3. A bal oldalsávban kattints a **"Dev Plugins"** menüpontra
+2. Start menü → Alkalmazás Manager
+3. A bal oldalsávban kattints a **"Dev Alkalmazások"** menüpontra
 4. Megjelenik egy URL beviteli mező `http://localhost:5174` alapértelmezett értékkel
 5. Kattints a **"Load"** gombra
 
-Az ElyOS lekéri a `manifest.json`-t a dev szerverről, majd betölti az IIFE bundle-t és Web Component-ként regisztrálja a plugint.
+Az ElyOS lekéri a `manifest.json`-t a dev szerverről, majd betölti az IIFE bundle-t és Web Component-ként regisztrálja az alkalmazást.
 
 :::note
-Ha a "Dev Plugins" menüpont nem jelenik meg, ellenőrizd hogy az ElyOS-t `DEV_MODE=true`-val indítottad-e el.
+Ha a "Dev Alkalmazások" menüpont nem jelenik meg, ellenőrizd hogy az ElyOS-t `DEV_MODE=true`-val indítottad-e el.
 :::
 
 ### Módosítás utáni újratöltés
@@ -218,8 +218,8 @@ Ha a "Dev Plugins" menüpont nem jelenik meg, ellenőrizd hogy az ElyOS-t `DEV_M
 # 1. Újrabuildelés
 bun run build
 
-# 2. Az ElyOS-ben: zárd be a plugin ablakát, majd nyisd meg újra
-#    (a "Load" gombot nem kell újra megnyomni — a plugin már a listában van)
+# 2. Az ElyOS-ben: zárd be az alkalmazás ablakát, majd nyisd meg újra
+#    (a "Load" gombot nem kell újra megnyomni — az alkalmazás már a listában van)
 ```
 
 ### Teljes dev workflow összefoglalva
@@ -228,12 +228,12 @@ bun run build
 # Terminál 1 — ElyOS core
 cd elyos-core && bun app:dev
 
-# Terminál 2 — Plugin build + szerver
-cd my-plugin
+# Terminál 2 — Alkalmazás build + szerver
+cd my-app
 bun run build       # IIFE bundle elkészítése
 bun run dev:server  # statikus szerver indítása (http://localhost:5174)
 
-# ElyOS-ben: Plugin Manager → Dev Plugins → Load → http://localhost:5174
+# ElyOS-ben: Alkalmazás Manager → Dev Alkalmazások → Load → http://localhost:5174
 ```
 
 ## TypeScript és autocomplete

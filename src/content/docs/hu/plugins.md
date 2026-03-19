@@ -1,40 +1,40 @@
 ---
-title: Plugin rendszer
-description: Áttekintés az ElyOS plugin rendszeréről – hogyan működnek a pluginok, mik a különbségek a beépített alkalmazásokhoz képest
+title: Alkalmazás rendszer
+description: Áttekintés az ElyOS alkalmazás rendszeréről – hogyan működnek az alkalmazások, mik a különbségek a beépített alkalmazásokhoz képest
 ---
 
-## Mi az a plugin?
+## Mi az a alkalmazás?
 
 Az ElyOS kétféle alkalmazást ismer:
 
 | Típus | Hol él | Ki fejleszti | Hozzáférés |
 |---|---|---|---|
-| **Beépített app** | `apps/web/src/apps/[app-name]/` | ElyOS core csapat | Teljes belső API |
-| **Plugin** | Önálló projekt, `.elyospkg` csomag | Külső fejlesztők | Csak a WebOS SDK-n keresztül |
+| **Beépített alkalmazás** | `apps/web/src/apps/[app-name]/` | ElyOS core csapat | Teljes belső API |
+| **Külső alkalmazás** | Önálló projekt, `.elyospkg` csomag | Külső fejlesztők | Csak a WebOS SDK-n keresztül |
 
-A pluginok Web Component-ként töltődnek be az ElyOS-be. A rendszer dinamikusan importálja az IIFE bundle-t (IIFE = Immediately Invoked Function Expression — egy önmagát azonnal végrehajtó, izolált JavaScript csomag, amely nem szennyezi a globális névteret), inicializálja a WebOS SDK-t, majd megjeleníti a komponenst egy ablakban.
+A külső alkalmazások Web Component-ként töltődnek be az ElyOS-be. A rendszer dinamikusan importálja az IIFE bundle-t (IIFE = Immediately Invoked Function Expression — egy önmagát azonnal végrehajtó, izolált JavaScript csomag, amely nem szennyezi a globális névteret), inicializálja a WebOS SDK-t, majd megjeleníti a komponenst egy ablakban.
 
-## Hogyan töltődik be egy plugin?
+## Hogyan töltődik be egy alkalmazás?
 
-1. A felhasználó megnyitja a plugint a Start Menüből vagy a Taskbarból
-2. A `PluginLoader` ellenőrzi a plugin státuszát és a jogosultságokat
-3. A `WebOSSDK` inicializálódik a plugin ID-jával, a felhasználó adataival és a jogosultságokkal
-4. Az IIFE bundle dinamikusan importálódik (`dist/index.iife.js`) — ez egy önálló, izolált JavaScript fájl, amely nem ütközik más pluginok kódjával
+1. A felhasználó megnyitja az alkalmazást a Start Menüből vagy a Taskbarból
+2. Az `AppLoader` ellenőrzi az alkalmazás státuszát és a jogosultságokat
+3. A `WebOSSDK` inicializálódik az alkalmazás ID-jával, a felhasználó adataival és a jogosultságokkal
+4. Az IIFE bundle dinamikusan importálódik (`dist/index.iife.js`) — ez egy önálló, izolált JavaScript fájl, amely nem ütközik más alkalmazások kódjával
 5. Ha van `menu.json`, az AppLayout wrapper jelenik meg oldalsáv navigációval
-6. Ha nincs `menu.json`, a plugin Web Component-ként töltődik be közvetlenül
+6. Ha nincs `menu.json`, az alkalmazás Web Component-ként töltődik be közvetlenül
 
-## Plugin vs beépített app
+## Beépített alkalmazás vs külső alkalmazás
 
-Ha **saját alkalmazást** szeretnél az ElyOS-be integrálni és hozzáférsz a monorepo-hoz, a beépített app a megfelelő választás — teljes SvelteKit hozzáféréssel, Drizzle ORM-mel, server action-ökkel.
+Ha **saját alkalmazást** szeretnél az ElyOS-be integrálni és hozzáférsz a monorepo-hoz, a beépített alkalmazás a megfelelő választás — teljes SvelteKit hozzáféréssel, Drizzle ORM-mel, server action-ökkel.
 
-Ha **külső fejlesztőként** szeretnél alkalmazást készíteni, vagy a plugint más ElyOS példányokra is telepíteni szeretnéd, a plugin rendszert kell használni.
+Ha **külső fejlesztőként** szeretnél alkalmazást készíteni, vagy az alkalmazást más ElyOS példányokra is telepíteni szeretnéd, a külső alkalmazás rendszert kell használni.
 
 ## Következő lépések
 
-- [Első plugin létrehozása](/hu/plugins-getting-started/) — CLI tool, projekt struktúra, első build
-- [Fejlesztői workflow](/hu/plugins-development/) — standalone dev mód, Mock SDK, hot reload
-- [SDK API referencia](/hu/plugins-sdk/) — összes elérhető service részletesen
-- [manifest.json referencia](/hu/plugins-manifest/) — minden mező dokumentálva
-- [Szerver függvények](/hu/plugins-server-functions/) — backend logika pluginokhoz
-- [Build és csomagolás](/hu/plugins-build/) — `.elyospkg` formátum, feltöltés
-- [Biztonság és jogosultságok](/hu/plugins-security/) — tiltott minták, fehérlista, permissions
+- [Első alkalmazás létrehozása](/hu/apps-getting-started/) — CLI tool, projekt struktúra, első build
+- [Fejlesztői workflow](/hu/apps-development/) — standalone dev mód, Mock SDK, hot reload
+- [SDK API referencia](/hu/apps-sdk/) — összes elérhető service részletesen
+- [manifest.json referencia](/hu/apps-manifest/) — minden mező dokumentálva
+- [Szerver függvények](/hu/apps-server-functions/) — backend logika alkalmazásokhoz
+- [Build és csomagolás](/hu/apps-build/) — `.elyospkg` formátum, feltöltés
+- [Biztonság és jogosultságok](/hu/apps-security/) — tiltott minták, fehérlista, permissions

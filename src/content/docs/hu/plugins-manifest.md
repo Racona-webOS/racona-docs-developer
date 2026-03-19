@@ -1,22 +1,22 @@
 ---
 title: manifest.json referencia
-description: A plugin manifest.json fájl összes mezőjének részletes dokumentációja – kötelező és opcionális mezők, típusok, példák
+description: Az alkalmazás manifest.json fájl összes mezőjének részletes dokumentációja – kötelező és opcionális mezők, típusok, példák
 ---
 
-A `manifest.json` a plugin "útlevele" — az ElyOS ebből tudja meg, hogyan kell betölteni és megjeleníteni a plugint.
+A `manifest.json` az alkalmazás "útlevele" — az ElyOS ebből tudja meg, hogyan kell betölteni és megjeleníteni az alkalmazást.
 
 ## Teljes példa
 
 ```json
 {
-  "id": "my-plugin",
+  "id": "my-app",
   "name": {
-    "hu": "Saját Plugin",
-    "en": "My Plugin"
+    "hu": "Saját Alkalmazás",
+    "en": "My App"
   },
   "description": {
-    "hu": "Plugin leírása magyarul",
-    "en": "Plugin description in English"
+    "hu": "Alkalmazás leírása magyarul",
+    "en": "App description in English"
   },
   "version": "1.0.0",
   "author": "Fejlesztő Neve <email@example.com>",
@@ -47,14 +47,14 @@ A `manifest.json` a plugin "útlevele" — az ElyOS ebből tudja meg, hogyan kel
 
 **Típus:** `string`
 
-A plugin egyedi azonosítója. Csak kisbetűket, számokat és kötőjelet tartalmazhat (kebab-case).
+Az alkalmazás egyedi azonosítója. Csak kisbetűket, számokat és kötőjelet tartalmazhat (kebab-case).
 
 ```json
-"id": "my-awesome-plugin"
+"id": "my-awesome-app"
 ```
 
 :::caution
-Az ID-t telepítés után **nem lehet megváltoztatni** — ez azonosítja a plugint az adatbázisban és a fájlrendszerben. Válassz gondosan.
+Az ID-t telepítés után **nem lehet megváltoztatni** — ez azonosítja az alkalmazást az adatbázisban és a fájlrendszerben. Válassz gondosan.
 :::
 
 Érvényes formátum: `^[a-z][a-z0-9-]*$`, minimum 2, maximum 50 karakter.
@@ -63,17 +63,17 @@ Az ID-t telepítés után **nem lehet megváltoztatni** — ez azonosítja a plu
 
 **Típus:** `{ hu: string, en: string }` vagy `string`
 
-A plugin megjelenítendő neve a Start Menüben és a Plugin Managerben.
+Az alkalmazás megjelenítendő neve a Start Menüben és az Alkalmazás Managerben.
 
 ```json
-"name": { "hu": "Saját Plugin", "en": "My Plugin" }
+"name": { "hu": "Saját Alkalmazás", "en": "My App" }
 ```
 
 ### `description`
 
 **Típus:** `{ hu: string, en: string }` vagy `string`
 
-Rövid leírás, megjelenik a Plugin Managerben.
+Rövid leírás, megjelenik az Alkalmazás Managerben.
 
 ### `version`
 
@@ -111,13 +111,13 @@ Az ikon fájl neve az `assets/` mappán belül. SVG formátum ajánlott.
 
 **Típus:** `string[]`
 
-A plugin által igényelt jogosultságok listája. Csak a valóban szükséges jogosultságokat add meg.
+Az alkalmazás által igényelt jogosultságok listája. Csak a valóban szükséges jogosultságokat add meg.
 
 ```json
 "permissions": ["database", "remote_functions"]
 ```
 
-Elérhető jogosultságok: lásd [Biztonság és jogosultságok](/hu/plugins-security/).
+Elérhető jogosultságok: lásd [Biztonság és jogosultságok](/hu/apps-security/).
 
 ## Opcionális mezők
 
@@ -133,14 +133,14 @@ Az ikon megjelenítési módja a Start Menüben és a Taskbarban.
 **Típus:** `string`
 **Alapértelmezett:** `"utilities"`
 
-A plugin kategóriája a Start Menüben való csoportosításhoz. Pl.: `"utilities"`, `"productivity"`, `"communication"`.
+Az alkalmazás kategóriája a Start Menüben való csoportosításhoz. Pl.: `"utilities"`, `"productivity"`, `"communication"`.
 
 ### `multiInstance`
 
 **Típus:** `boolean`
 **Alapértelmezett:** `false`
 
-Ha `true`, a felhasználó egyszerre több ablakban is megnyithatja a plugint.
+Ha `true`, a felhasználó egyszerre több ablakban is megnyithatja az alkalmazást.
 
 ### `defaultSize`
 
@@ -159,14 +159,14 @@ Az ablak minimális és maximális mérete. Ha nincs megadva, nincs korlát.
 
 **Típus:** `string[]`
 
-Keresési kulcsszavak a Plugin Managerhez.
+Keresési kulcsszavak az Alkalmazás Managerhez.
 
 ### `isPublic`
 
 **Típus:** `boolean`
 **Alapértelmezett:** `true`
 
-Ha `false`, a plugin nem jelenik meg a Start Menüben — csak programatikusan nyitható meg.
+Ha `false`, az alkalmazás nem jelenik meg a Start Menüben — csak programatikusan nyitható meg.
 
 ### `sortOrder`
 
@@ -179,7 +179,7 @@ A Start Menüben való rendezési sorrend. Kisebb szám = előrébb jelenik meg.
 
 **Típus:** `Record<string, string>`
 
-A plugin által használt külső függőségek. Csak a [fehérlistán](/hu/plugins-security/#engedélyezett-függőségek) lévő csomagok engedélyezettek.
+Az alkalmazás által használt külső függőségek. Csak a [fehérlistán](/hu/apps-security/#engedélyezett-függőségek) lévő csomagok engedélyezettek.
 
 ```json
 "dependencies": {
@@ -192,13 +192,13 @@ A plugin által használt külső függőségek. Csak a [fehérlistán](/hu/plug
 
 **Típus:** `string`
 
-A minimálisan szükséges ElyOS verzió. Ha az ElyOS régebbi, a plugin nem telepíthető.
+A minimálisan szükséges ElyOS verzió. Ha az ElyOS régebbi, az alkalmazás nem telepíthető.
 
 ### `locales`
 
 **Típus:** `string[]`
 
-A plugin által támogatott nyelvek ISO kódjai.
+Az alkalmazás által támogatott nyelvek ISO kódjai.
 
 ```json
 "locales": ["hu", "en"]

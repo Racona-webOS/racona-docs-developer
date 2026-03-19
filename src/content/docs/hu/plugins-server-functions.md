@@ -1,11 +1,11 @@
 ---
 title: Szerver függvények
-description: Plugin szerver oldali logika írása – functions.js/ts struktúra, context API, adatbázis hozzáférés, hibakezelés
+description: Alkalmazás szerver oldali logika írása – functions.js/ts struktúra, context API, adatbázis hozzáférés, hibakezelés
 ---
 
 ## Áttekintés
 
-A plugin szerver oldali logikája a `server/functions.js` (vagy `.ts`) fájlban él. Ezek a függvények a szerveren futnak, és a kliensről a `sdk.remote.call()` segítségével hívhatók.
+Az alkalmazás szerver oldali logikája a `server/functions.js` (vagy `.ts`) fájlban él. Ezek a függvények a szerveren futnak, és a kliensről a `sdk.remote.call()` segítségével hívhatók.
 
 Szükséges jogosultság: `remote_functions` a `manifest.json`-ban.
 
