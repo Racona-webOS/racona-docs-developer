@@ -285,6 +285,58 @@ export default defineConfig({
 					]
 				},
 				{
+					label: 'Plugin fejlesztés',
+					translations: { en: 'Plugin Development' },
+					collapsed: false,
+					items: [
+						{
+							label: 'Áttekintés',
+							translations: { en: 'Overview' },
+							slug: 'plugins'
+						},
+						{
+							label: 'Első lépések',
+							translations: { en: 'Getting Started' },
+							slug: 'plugins-getting-started'
+						},
+						{
+							label: 'Fejlesztés',
+							translations: { en: 'Development' },
+							slug: 'plugins-development'
+						},
+						{
+							label: 'manifest.json',
+							translations: { en: 'manifest.json' },
+							slug: 'plugins-manifest'
+						},
+						{
+							label: 'SDK referencia',
+							translations: { en: 'SDK Reference' },
+							slug: 'plugins-sdk'
+						},
+						{
+							label: 'Szerver függvények',
+							translations: { en: 'Server Functions' },
+							slug: 'plugins-server-functions'
+						},
+						{
+							label: 'menu.json és AppLayout',
+							translations: { en: 'menu.json & AppLayout' },
+							slug: 'plugins-menu'
+						},
+						{
+							label: 'Build és csomagolás',
+							translations: { en: 'Build & Packaging' },
+							slug: 'plugins-build'
+						},
+						{
+							label: 'Biztonság',
+							translations: { en: 'Security' },
+							slug: 'plugins-security'
+						}
+					]
+				},
+				{
 					label: 'Beépített alkalmazások',
 					translations: { en: 'Built-in Applications' },
 					collapsed: false,

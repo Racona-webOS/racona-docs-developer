@@ -17,7 +17,7 @@ elyos-core/
 ├── packages/
 │   ├── database/             # Drizzle ORM sémák, migrációk, seed (@elyos/database)
 │   ├── sdk/                  # Plugin SDK (@elyos/sdk)
-│   └── create-elyos-plugin/  # CLI eszköz plugin generáláshoz
+│   └── create-elyos-app/  # CLI eszköz plugin generáláshoz
 ├── examples/
 │   └── plugins/              # Példa plugin implementációk
 ├── docker/                   # Dockerfile és docker-compose.yml

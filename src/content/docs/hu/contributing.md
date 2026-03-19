@@ -164,7 +164,7 @@ Használd a csomag vagy terület nevét hatókörként:
 
 - `core` — fő SvelteKit alkalmazás (`apps/web`)
 - `sdk` — SDK csomag (`packages/sdk`)
-- `cli` — CLI eszköz (`packages/create-elyos-plugin`)
+- `cli` — CLI eszköz (`packages/create-elyos-app`)
 - `db` — adatbázis csomag (`packages/database`)
 - `docker` — Docker konfiguráció
 - `docs` — dokumentáció
