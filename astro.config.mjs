@@ -443,6 +443,12 @@ export default defineConfig({
 					translations: { en: 'Troubleshooting' },
 					slug: 'troubleshooting'
 				},
+				{
+					label: 'Támogatás',
+					translations: { en: 'Support' },
+					slug: 'support',
+					badge: { text: 'Ko-fi', variant: 'tip' }
+				},
                 {
 					label: 'Felhasználói dokumentáció',
 					translations: {
