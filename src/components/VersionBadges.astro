@@ -1,0 +1,82 @@
+---
+/**
+ * VersionBadges — verzió panel a sidebar tetején.
+ * A verziók manuálisan frissítendők, ha új release kerül ki.
+ */
+
+const VERSIONS = {
+	core: '0.2.1',
+	sdk: '0.2.3',
+	cli: '0.2.4'
+};
+
+const LINKS = {
+	core: import.meta.env.GITHUB_URL ?? 'https://github.com/ElyOS-webOS/elyos-core',
+	sdk: import.meta.env.SDK_URL ?? 'https://www.npmjs.com/package/@elyos-dev/sdk',
+	cli: import.meta.env.CLI_URL ?? 'https://www.npmjs.com/package/@elyos-dev/create-app'
+};
+---
+
+<div class="version-section">
+	<p class="version-title" style="font-size: var(--sl-text-base); font-weight: 600; color: var(--sl-color-white); line-height: 1.4; margin: 0 0 0.4rem; padding: 0.2em 0;">Verziók</p>
+	<div class="version-badges">
+		<a class="version-label" href={LINKS.core} target="_blank" rel="noopener noreferrer">elyos-core<svg class="ext-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+		<span class="version-tag">v{VERSIONS.core}</span>
+		<a class="version-label" href={LINKS.sdk} target="_blank" rel="noopener noreferrer">@elyos-dev/sdk<svg class="ext-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+		<span class="version-tag">v{VERSIONS.sdk}</span>
+		<a class="version-label" href={LINKS.cli} target="_blank" rel="noopener noreferrer">@elyos-dev/create-app<svg class="ext-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+		<span class="version-tag">v{VERSIONS.cli}</span>
+	</div>
+</div>
+
+<style>
+	.version-section {
+		margin: 0.75rem 0 0.25rem;
+		padding-inline: 0.5rem;
+	}
+
+	.version-badges {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		gap: 0.25rem 0.5rem;
+		padding: 0.5rem 0.625rem;
+		border-radius: 0.5rem;
+		border: 1px solid var(--sl-color-hairline);
+		background: var(--sl-color-bg-nav);
+	}
+
+	.version-label {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.25rem;
+		font-size: 0.7rem;
+		color: var(--sl-color-gray-3);
+		font-family: var(--sl-font-system-mono);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		text-decoration: none;
+		transition: color 0.2s;
+	}
+
+	.version-label:hover {
+		color: var(--sl-color-gray-1);
+	}
+
+	.ext-icon {
+		width: 0.65rem;
+		height: 0.65rem;
+		flex-shrink: 0;
+		opacity: 0.6;
+	}
+
+	.version-tag {
+		font-size: 0.7rem;
+		font-family: var(--sl-font-system-mono);
+		color: var(--sl-color-text-accent);
+		font-weight: 600;
+		white-space: nowrap;
+		text-align: right;
+	}
+</style>

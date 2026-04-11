@@ -1,138 +1,223 @@
 ---
-title: Developer Workflow
-description: App development in standalone mode with Mock SDK – hot reload, local testing, testing in ElyOS
+title: Plugin development
+description: ElyOS plugin development – project creation, standalone development with Mock SDK, testing in a running ElyOS instance, deployment
 ---
 
-## Standalone Development (Mock SDK)
+## Creating a project
 
-The app can be developed without a running ElyOS instance. The `@elyos/sdk/dev` package provides a Mock SDK that simulates all SDK services:
+The fastest way to start a new plugin project is the `@elyos-dev/create-app` CLI:
+
+```bash
+bunx @elyos-dev/create-app
+```
+
+The wizard walks you through the setup:
+
+1. **App ID** — kebab-case identifier (e.g. `my-app`)
+2. **Display Name** — human-readable name shown in ElyOS
+3. **Description** — short description
+4. **Author** — your name and email
+5. **Features** — pick the features you need
+6. **Install dependencies?** — automatically runs `bun install`
+
+### Available features
+
+| Feature | What it adds |
+|---|---|
+| `sidebar` | Sidebar navigation (`menu.json`, `AppLayout` mode, multiple page components) |
+| `database` | SQL migrations, `sdk.data.query()` support, local dev database via Docker |
+| `remote_functions` | `server/functions.ts`, `sdk.remote.call()`, local dev server |
+| `notifications` | `sdk.notifications.send()` support |
+| `i18n` | `locales/hu.json` + `locales/en.json`, `sdk.i18n.t()` support |
+| `datatable` | DataTable component with insert form, row actions (duplicate/delete), full i18n |
+
+:::note
+Selecting `database` automatically enables `remote_functions` as well, since database access goes through server-side functions.
+:::
+
+### Generated project structure
+
+The structure depends on the selected features. Full example (all features enabled):
+
+```
+my-app/
+├── manifest.json          # App metadata and permissions
+├── package.json
+├── vite.config.ts
+├── tsconfig.json
+├── menu.json              # (if sidebar)
+├── build-all.js           # (if sidebar)
+├── dev-server.ts          # (if remote_functions)
+├── docker-compose.dev.yml # (if database)
+├── .env.example           # (if database)
+├── src/
+│   ├── App.svelte
+│   ├── main.ts
+│   ├── plugin.ts
+│   └── components/        # (if sidebar)
+│       ├── Overview.svelte
+│       ├── Settings.svelte
+│       ├── Datatable.svelte     # (if datatable)
+│       ├── Notifications.svelte # (if notifications)
+│       └── Remote.svelte        # (if remote_functions)
+├── server/                # (if remote_functions)
+│   └── functions.ts
+├── migrations/            # (if database)
+│   ├── 001_init.sql
+│   └── dev/
+│       └── 000_auth_seed.sql
+├── locales/               # (if i18n)
+│   ├── hu.json
+│   └── en.json
+└── assets/
+    └── icon.svg
+```
+
+---
+
+## Development workflow
+
+The available scripts depend on the selected features.
+
+### Base scripts (every project)
+
+```bash
+bun dev              # Vite dev server (standalone, Mock SDK) — http://localhost:5174
+bun run build        # Build IIFE bundle (dist/index.iife.js)
+bun run build:watch  # Build in watch mode
+bun run package      # Create .elyospkg package
+```
+
+### When `remote_functions` is enabled
+
+```bash
+bun run dev:server  # Start dev server — http://localhost:5175
+```
+
+`dev:server` starts a Bun HTTP server that:
+- Serves static files from `dist/` and the project root (with CORS headers)
+- Exposes a `POST /api/remote/:functionName` endpoint for calling functions from `server/functions.ts`
+
+### When `database` is also enabled
+
+```bash
+bun db:up           # Start Docker Postgres container
+bun db:down         # Stop Docker Postgres container
+bun run dev:full    # dev:server + dev in parallel (single terminal)
+```
+
+`dev:full` starts both the Vite dev server (`5174`) and the dev server (`5175`) at the same time, so you don't need two terminals.
+
+:::note
+In database mode, `dev:server` automatically runs migrations on startup — first the files in `migrations/dev/` (auth seed), then the `migrations/` files in order. If the database is unreachable, the server exits with an error.
+:::
+
+### First run with database
+
+```bash
+cp .env.example .env   # Set environment variables
+bun db:up              # Start Postgres container (Docker required)
+bun run dev:full       # Dev server + Vite together
+```
+
+`.env.example` contains the default connection URL for the database started by Docker Compose:
+
+```
+DATABASE_URL=postgresql://postgres:postgres@localhost:5433/{plugin_id}_dev
+PORT=5175
+DEV_USER_ID=dev-user
+```
+
+---
+
+## Standalone development (Mock SDK)
+
+Your app can be developed without a running ElyOS instance. The `@elyos-dev/sdk/dev` package provides a Mock SDK that simulates all SDK services:
 
 | SDK service | Mock behavior |
 |---|---|
 | `ui.toast()` | Writes to `console.log` |
-| `ui.dialog()` | `window.confirm` / `window.prompt` (in standalone mode) |
+| `ui.dialog()` | Uses `window.confirm` / `window.prompt` |
 | `data.set/get/delete()` | Uses `localStorage` (under `devapp:{appId}:` key prefix) |
-| `data.query()` | Returns empty array |
+| `data.query()` | Returns an empty array |
 | `remote.call()` | Configurable mock handler |
-| `i18n.t()` | Reads from the provided translation map |
+| `i18n.t()` | Reads from the provided translations map |
 | `notifications.send()` | Writes to `console.log` |
 
 :::note
-When loaded into ElyOS (in dev app mode), `ui.toast()` uses the core Sonner toast system, `ui.dialog()` uses the core's own dialog component, and `notifications.send()` shows a toast (for dev apps not registered in the database). `data.set/get/delete()` calls also write to `localStorage` in dev mode (`devapp:{appId}:` prefix), since the dev app is not registered in the database — the real database schema is only available for installed apps. In standalone mode (Mock SDK), the fallback behavior above applies.
+When loaded inside ElyOS, `ui.toast()` uses the core Sonner toast system, `ui.dialog()` uses the core dialog component, and `notifications.send()` shows a toast (for dev apps not registered in the database). `data.set/get/delete()` calls in dev mode also write to `localStorage` (under the `devapp:{appId}:` prefix), since the dev app is not registered in the database.
 :::
 
-### Starting the Dev Server
-
-To start the dev server, you need an `index.html` file in the project root — this is what Vite looks for as the entry point. Projects generated by the CLI include this automatically.
+### Starting the dev server
 
 ```bash
 bun dev
 ```
 
-The app will be available at `http://localhost:5174`. Vite hot reload automatically refreshes the browser on every save.
+The Vite dev server starts at `http://localhost:5174`. Hot reload automatically refreshes the browser on every save.
 
-### Dev Server Port Configuration
-
-If you're developing multiple apps simultaneously, the `dev` (Vite) and `dev:server` (static server) commands use port `5174` by default. This causes a conflict if both apps run at the same time.
-
-The port can be overridden with the `PORT` environment variable:
-
-```bash
-# First app — default port
-bun run dev:server
-
-# Second app — different port
-PORT=5175 bun run dev:server
-```
-
-In the ElyOS Dev Apps loader, provide the URL accordingly: `http://localhost:5175`.
+If `remote_functions` is also enabled, you need to run `bun run dev:server` in parallel alongside `bun dev` (or use `bun run dev:full` if `database` is also enabled).
 
 :::note
-If `http://localhost:5174` returns 404, check that there is an `index.html` in the project root. If not, create one:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ElyOS App Dev</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
-</html>
-```
+If `http://localhost:5174` returns a 404, check that there is an `index.html` in the project root. Projects generated by the CLI include this automatically.
 :::
 
-### Mock SDK Initialization
+### Mock SDK initialization
 
-The Mock SDK (`@elyos/sdk/dev`) is a development package that simulates the real `window.webOS` SDK — without a running ElyOS instance. When the app runs in standalone mode (e.g. `bun dev`), `window.webOS` doesn't exist yet, so `MockWebOSSDK.initialize()` creates and exposes it.
-
-In `src/main.ts` this happens automatically:
+The Mock SDK is initialized automatically in `src/main.ts`:
 
 ```typescript
 // src/main.ts
-import { mount } from 'svelte';
-import { MockWebOSSDK } from '@elyos/sdk/dev';
+import { MockWebOSSDK } from '@elyos-dev/sdk/dev';
 import App from './App.svelte';
+import { mount } from 'svelte';
 
-async function initDevSDK() {
-  if (typeof window !== 'undefined' && !window.webOS) {
-    // Only runs when NOT in ElyOS
-    MockWebOSSDK.initialize({
-      // Translations for development
-      i18n: {
-        locale: 'en',
-        translations: {
-          en: { title: 'My App', welcome: 'Welcome!' },
-          hu: { title: 'Alkalmazás', welcome: 'Üdvözöljük!' }
-        }
-      },
-      // Simulated user and permissions
-      context: {
-        appId: 'my-app',
-        user: {
-          id: 'dev-user',
-          name: 'Developer',
-          email: 'dev@localhost',
-          roles: ['admin'],
-          groups: []
-        },
-        permissions: ['database', 'notifications', 'remote_functions']
+// Only runs when NOT inside ElyOS
+if (typeof window !== 'undefined' && !window.webOS) {
+  MockWebOSSDK.initialize({
+    i18n: {
+      locale: 'en',
+      translations: {
+        en: { title: 'My App', welcome: 'Welcome!' },
+        hu: { title: 'Alkalmazás', welcome: 'Üdvözöljük!' }
       }
-    });
-  }
+    },
+    context: {
+      pluginId: 'my-app',
+      user: {
+        id: 'dev-user',
+        name: 'Developer',
+        email: 'dev@localhost',
+        roles: ['admin'],
+        groups: []
+      },
+      permissions: ['database', 'notifications', 'remote_functions']
+    }
+  });
 }
 
-async function init() {
-  await initDevSDK();
-  const target = document.getElementById('app');
-  if (target) mount(App, { target });  // Svelte 5: mount() — not new App()
-}
-
-init();
+const target = document.getElementById('app');
+if (target) mount(App, { target });
 ```
 
-All configuration options for `initialize()`:
+All `initialize()` configuration options:
 
 | Option | Type | Description |
 |---|---|---|
-| `i18n.locale` | `string` | Default language (e.g. `'en'`) |
-| `i18n.translations` | `Record<string, Record<string, string>>` | Translation keys map per language |
-| `context.appId` | `string` | Simulated app ID |
+| `i18n.locale` | `string` | Default locale (e.g. `'en'`) |
+| `i18n.translations` | `Record<string, Record<string, string>>` | Translation keys per locale |
+| `context.pluginId` | `string` | Simulated app ID |
 | `context.user` | `UserInfo` | Simulated logged-in user |
 | `context.permissions` | `string[]` | Simulated permissions |
 | `data.initialData` | `Record<string, unknown>` | Pre-populated localStorage data |
 | `remote.handlers` | `Record<string, Function>` | Mock server function handlers |
 | `assets.baseUrl` | `string` | Asset URL prefix |
 
-When ElyOS loads the app in production, `window.webOS` already exists (populated with the runtime SDK), so the `if (!window.webOS)` condition prevents the Mock SDK from running.
+When ElyOS loads the app in production, `window.webOS` already exists, so the `if (!window.webOS)` guard prevents the Mock SDK from running.
 
-### Mocking Remote Calls
+### Mocking remote calls
 
-If you're also testing server functions in standalone mode:
+To test server functions in standalone mode:
 
 ```typescript
 MockWebOSSDK.initialize({
@@ -151,18 +236,35 @@ MockWebOSSDK.initialize({
 });
 ```
 
-## Testing in a Running ElyOS Instance
+### Dev server port configuration
 
-Standalone dev mode (Mock SDK) only tests the UI. If you want to test real SDK calls, database access, or server functions, the app must be loaded into a running ElyOS instance.
+`dev:server` defaults to port `5175` (the Vite dev server uses `5174`). If you're developing multiple apps at the same time, the port can be overridden via the `PORT` environment variable in `.env` or directly:
 
-The process: **build the app, start a static HTTP server, then load it into ElyOS via URL.** There is no automatic hot reload — if you change the code, you need to rebuild and reopen the app window.
+```bash
+PORT=5176 bun run dev:server
+```
 
-### Step 1 — Start ElyOS Core
+Enter the corresponding URL in the ElyOS Dev Apps loader: `http://localhost:5176`.
+
+---
+
+## Testing inside a running ElyOS
+
+Standalone dev mode (Mock SDK) only tests the UI. To test real SDK calls, database access, or server functions, you need to load the app into a running ElyOS instance.
+
+The idea: **build the app, start a static HTTP server (`dev:server`), then load it into ElyOS by URL.** There is no automatic hot reload — if you change the code, you need to rebuild and reopen the app window.
+
+:::note[Ports]
+- `5174` — Vite dev server (`bun dev`) — standalone development with Mock SDK
+- `5175` — Plugin dev server (`bun run dev:server`) — loading into ElyOS with the real SDK
+:::
+
+### Step 1 — Start ElyOS core
 
 In the `elyos-core` monorepo root:
 
 ```bash
-# In .env.local, enable dev app loading:
+# Enable dev app loading in .env.local:
 # DEV_MODE=true
 
 bun app:dev
@@ -170,29 +272,31 @@ bun app:dev
 
 ElyOS is available at `http://localhost:5173` by default. Log in with an admin account.
 
-### Step 2 — Build the App
+### Step 2 — Build the app
 
-In the app project folder:
+In the app project directory:
 
 ```bash
 bun run build
 ```
 
-This creates `dist/index.iife.js` — the file loaded by ElyOS.
+This creates `dist/index.iife.js` — the file ElyOS loads.
 
-### Step 3 — Start the Static Dev Server
+### Step 3 — Start the plugin dev server
 
 ```bash
 bun run dev:server
 ```
 
-This starts the `dev-server.ts` Bun HTTP server at `http://localhost:5174`. The server serves files from the `dist/` folder and the project root with CORS headers.
+This starts the `dev-server.ts` Bun HTTP server at `http://localhost:5175`. It serves files from `dist/` and the project root with CORS headers.
+
+If `database` is also enabled, the server automatically runs migrations on startup, and `server/functions.ts` functions are accessible via `POST /api/remote/:functionName`.
 
 :::note
-`dev:server` only serves static files — no hot reload, no Vite. If you modified the code, run `bun run build` again, then close and reopen the app window in ElyOS.
+`dev:server` only serves static files — no hot reload, no Vite. If you changed the code, run `bun run build` again, then close and reopen the app window in ElyOS.
 :::
 
-### Step 4 — Load the App into ElyOS
+### Step 4 — Load the app into ElyOS
 
 :::caution[Prerequisites]
 The "Dev Apps" menu item only appears in the App Manager if:
@@ -203,36 +307,34 @@ The "Dev Apps" menu item only appears in the App Manager if:
 1. Open ElyOS in the browser
 2. Start menu → App Manager
 3. Click **"Dev Apps"** in the left sidebar
-4. A URL input field appears with `http://localhost:5174` as the default value
-5. Click the **"Load"** button
+4. A URL input field appears with `http://localhost:5175` as the default value
+5. Click **"Load"**
 
-ElyOS fetches the `manifest.json` from the dev server, then loads the IIFE bundle and registers the app as a Web Component.
+ElyOS fetches `manifest.json` from the dev server, then loads the IIFE bundle and registers the app as a Web Component.
 
 :::tip[Running ElyOS in Docker?]
-If ElyOS is running inside a Docker container (e.g. via `bun docker:up`), the container cannot reach `localhost` on the host machine. Use `host.docker.internal` instead:
+If ElyOS is running in a Docker container (e.g. started with `bun docker:up`), the container cannot reach the host machine's `localhost`. Use `host.docker.internal` instead:
 
 ```
-http://host.docker.internal:5174
+http://host.docker.internal:5175
 ```
 
-The server-side validation accepts this address, and the browser will automatically receive `localhost` in the URL — so the plugin loads correctly from both sides.
+The server-side validation accepts this address, and the browser automatically receives `localhost` back in the URL — so the plugin loads correctly from both sides.
 :::
 
-:::note
-If the "Dev Apps" menu item doesn't appear, check that ElyOS was started with `DEV_MODE=true`.
-:::
-
-### Reloading After Changes
+### Reloading after changes
 
 ```bash
 # 1. Rebuild
 bun run build
 
 # 2. In ElyOS: close the app window, then reopen it
-#    (no need to press "Load" again — the app is already in the list)
+#    (no need to click "Load" again — the app is already in the list)
 ```
 
-### Full Dev Workflow Summary
+### Full dev workflow summary
+
+**Basic (without remote_functions):**
 
 ```bash
 # Terminal 1 — ElyOS core
@@ -240,15 +342,232 @@ cd elyos-core && bun app:dev
 
 # Terminal 2 — App build + server
 cd my-app
-bun run build       # Create IIFE bundle
-bun run dev:server  # Start static server (http://localhost:5174)
+bun run build       # Build IIFE bundle
+bun run dev:server  # Start static server (http://localhost:5175)
 
-# In ElyOS: App Manager → Dev Apps → Load → http://localhost:5174
+# In ElyOS: App Manager → Dev Apps → Load → http://localhost:5175
 ```
 
-## TypeScript and Autocomplete
+**With database (database + remote_functions):**
 
-The `@elyos/sdk` includes full TypeScript type definitions. The `window.webOS` type is automatically available:
+```bash
+# Terminal 1 — ElyOS core
+cd elyos-core && bun app:dev
+
+# Terminal 2 — App (first time)
+cd my-app
+cp .env.example .env   # Set DATABASE_URL and PORT
+bun db:up              # Start Postgres container
+
+# Terminal 2 — App (every time)
+bun run build          # Build IIFE bundle
+bun run dev:server     # Dev server + migrations + remote endpoint (http://localhost:5175)
+
+# In ElyOS: App Manager → Dev Apps → Load → http://localhost:5175
+```
+
+---
+
+## Installing a plugin (`.elyospkg`)
+
+Once your app is ready, package it and install it into ElyOS.
+
+### Creating the package
+
+```bash
+bun run build    # Build IIFE bundle
+bun run package  # Create .elyospkg file
+```
+
+This creates a `{id}-{version}.elyospkg` file (e.g. `my-app-1.0.0.elyospkg`). The package is a ZIP archive containing:
+
+- `manifest.json`
+- `dist/` — build output (IIFE bundle)
+- `locales/` — translations (if present)
+- `assets/` — static files (if present)
+- `menu.json` — sidebar configuration (if present)
+- `server/` — server-side functions (if present)
+- `migrations/` — database migrations (if present, without dev seed files)
+
+### Uploading to ElyOS
+
+1. Start menu → App Manager → **Plugin Upload**
+2. Drag and drop the `.elyospkg` file, or click the browse button
+3. ElyOS validates the package and shows a preview
+4. Click **Install**
+
+During installation, ElyOS:
+- Extracts files to the plugin storage directory
+- Registers the app in the app registry
+- Imports translations (if `locales/` is present)
+- Creates the plugin database schema (if `database` permission is declared)
+- Registers email templates (if `notifications` permission is declared)
+
+:::caution
+Uploading a plugin requires the `plugin.manual.install` permission (admin accounts have this by default).
+:::
+
+---
+
+## Manifest file
+
+`manifest.json` contains the app metadata. Required and optional fields:
+
+```json
+{
+  "id": "my-app",
+  "name": { "hu": "Alkalmazásom", "en": "My App" },
+  "version": "1.0.0",
+  "description": { "hu": "Rövid leírás", "en": "Short description" },
+  "author": "Your Name <email@example.com>",
+  "entry": "dist/index.iife.js",
+  "icon": "assets/icon.svg",
+  "iconStyle": "cover",
+  "category": "utilities",
+  "permissions": ["database", "notifications", "remote_functions"],
+  "multiInstance": false,
+  "defaultSize": { "width": 800, "height": 600 },
+  "minSize": { "width": 400, "height": 300 },
+  "maxSize": { "width": 1920, "height": 1080 },
+  "keywords": ["example", "demo"],
+  "isPublic": false,
+  "sortOrder": 100,
+  "dependencies": {
+    "svelte": "^5.0.0",
+    "@lucide/svelte": "^1.0.0"
+  },
+  "minWebOSVersion": "2.0.0",
+  "locales": ["hu", "en"]
+}
+```
+
+### Permissions
+
+| Permission | Description | SDK functions |
+|---|---|---|
+| `database` | Database access | `data.set()`, `data.get()`, `data.query()` |
+| `notifications` | Send notifications | `notifications.send()` |
+| `remote_functions` | Server-side functions | `remote.call()` |
+| `file_access` | File access | (planned) |
+| `user_data` | User data | (planned) |
+
+### ID format rules
+
+- Lowercase letters, numbers and hyphens only (`kebab-case`)
+- Minimum 3, maximum 50 characters
+- Regex: `^[a-z0-9-]+$`
+
+```json
+"id": "my-app"    // ✅ Valid
+"id": "MyApp"     // ❌ Invalid
+"id": "my_app"    // ❌ Invalid
+```
+
+---
+
+## WebOS SDK API
+
+The SDK is available via the `window.webOS` global object:
+
+```typescript
+const sdk = window.webOS!;
+```
+
+### UI Service
+
+```typescript
+// Toast notification
+sdk.ui.toast('Message', 'success');
+// type: 'info' | 'success' | 'warning' | 'error'
+
+// Dialog
+const result = await sdk.ui.dialog({
+  title: 'Title',
+  message: 'Message',
+  type: 'confirm' // 'info' | 'confirm' | 'prompt'
+});
+```
+
+### Remote Service
+
+```typescript
+// Call a server function
+const result = await sdk.remote.call('functionName', { param: 'value' });
+
+// With a generic return type
+const result = await sdk.remote.call<MyResult>('functionName', params);
+```
+
+### Data Service
+
+```typescript
+// Key-value storage
+await sdk.data.set('key', { value: 123 });
+const value = await sdk.data.get('key');
+await sdk.data.delete('key');
+
+// SQL query (plugin's own schema only!)
+const rows = await sdk.data.query('SELECT * FROM my_table WHERE id = $1', [123]);
+
+// Transaction
+await sdk.data.transaction(async (tx) => {
+  await tx.query('INSERT INTO ...');
+  await tx.query('UPDATE ...');
+  await tx.commit();
+});
+```
+
+### I18n Service
+
+```typescript
+// Translation
+const text = sdk.i18n.t('key');
+
+// With parameters
+const text = sdk.i18n.t('welcome', { name: 'John' });
+
+// Current locale
+const locale = sdk.i18n.locale; // 'hu' | 'en'
+
+// Switch locale
+await sdk.i18n.setLocale('en');
+```
+
+### Notification Service
+
+```typescript
+await sdk.notifications.send({
+  userId: 'user-123',
+  title: 'Title',
+  message: 'Message',
+  type: 'info' // 'info' | 'success' | 'warning' | 'error'
+});
+```
+
+### Context Service
+
+```typescript
+const pluginId = sdk.context.pluginId;
+const user = sdk.context.user;
+const permissions = sdk.context.permissions;
+
+// Window controls
+sdk.context.window.close();
+sdk.context.window.setTitle('New title');
+```
+
+### Asset Service
+
+```typescript
+const iconUrl = sdk.assets.getUrl('icon.svg');
+const imageUrl = sdk.assets.getUrl('images/logo.png');
+```
+
+---
+
+## TypeScript and autocomplete
+
+`@elyos-dev/sdk` ships with full TypeScript type definitions. The `window.webOS` type is available automatically:
 
 ```typescript
 // Automatic type — no import needed
@@ -262,14 +581,16 @@ sdk.remote.call<MyResult>('fn', params); // ✅ generic return type
 Explicit type import when needed:
 
 ```typescript
-import type { WebOSSDKInterface, UserInfo } from '@elyos/sdk/types';
+import type { WebOSSDKInterface, UserInfo } from '@elyos-dev/sdk/types';
 
 const user: UserInfo = sdk.context.user;
 ```
 
-## Svelte 5 Runes in Plugins
+---
 
-The plugin uses Svelte 5 runes-based reactivity. The `runes: true` compiler option is enabled in `vite.config.ts`:
+## Svelte 5 runes in plugins
+
+Plugins use Svelte 5 runes-based reactivity. The `runes: true` compiler option is enabled in `vite.config.ts`:
 
 ```svelte
 <script lang="ts">
@@ -289,90 +610,90 @@ The plugin uses Svelte 5 runes-based reactivity. The `runes: true` compiler opti
 ```
 
 :::caution
-Plugins **cannot** use SvelteKit-specific imports (`$app/navigation`, `$app/stores`, etc.) — these are only available in the host application.
+Plugins **cannot** use SvelteKit-specific imports (`$app/navigation`, `$app/stores`, etc.) — those are only available in the host application.
 :::
 
-## Language Switching in Standalone Mode (sidebar template)
+---
 
-The `sidebar` template's `App.svelte` includes a built-in language switcher button at the bottom of the sidebar — this only appears if the plugin defines multiple locales. In standalone mode (Mock SDK), the `sdk.i18n.setLocale()` call updates the Mock SDK's internal state, and the `{#key currentLocale}` block remounts the active component.
+## Server-side functions
 
-When loaded into ElyOS, `setLocale()` calls the core i18n system, which switches the entire app's language — not just the plugin's language.
-
-## Style Handling
-
-The plugin's CSS is **not automatically bundled into the JS bundle** during IIFE build — Vite in lib mode extracts it into a separate `.css` file. If this file is not loaded, the plugin's styles won't appear at all in ElyOS.
-
-### The CSS Injection Problem
-
-When Vite builds an IIFE bundle, it puts the Svelte components' CSS into a separate file (`dist/sample-01-plugin.css`). ElyOS only loads the JS bundle — not the CSS file. Result: **the plugin's styles are completely missing**.
-
-The solution is a custom Vite plugin in `vite.config.ts` that injects the generated CSS as a `<style>` tag at the beginning of the JS bundle:
+When `remote_functions` is enabled, server-side functions are defined in `server/functions.ts`:
 
 ```typescript
-// vite.config.ts
-function injectCssPlugin(): Plugin {
-  let cssContent = '';
+// server/functions.ts
+import type { PluginFunctionContext } from '@elyos-dev/sdk/types';
 
-  return {
-    name: 'inject-css',
-    apply: 'build',
-    generateBundle(_, bundle) {
-      // Collect CSS file content and remove from bundle
-      for (const [fileName, chunk] of Object.entries(bundle)) {
-        if (fileName.endsWith('.css') && chunk.type === 'asset') {
-          cssContent += chunk.source as string;
-          delete bundle[fileName];
-        }
-      }
+export async function getItems(
+  params: { page: number; pageSize: number },
+  context: PluginFunctionContext
+) {
+  const { db, pluginId } = context;
+  const schema = `app__${pluginId.replace(/-/g, '_')}`;
 
-      // Inject CSS at the beginning of the JS bundle
-      if (cssContent) {
-        for (const chunk of Object.values(bundle)) {
-          if (chunk.type === 'chunk' && chunk.fileName.endsWith('.js')) {
-            const injection = `(function(){var s=document.createElement('style');s.textContent=${JSON.stringify(cssContent)};document.head.appendChild(s);})();`;
-            chunk.code = injection + chunk.code;
-            break;
-          }
-        }
-      }
-    }
-  };
+  const rows = await db.query(
+    `SELECT * FROM ${schema}.items LIMIT $1 OFFSET $2`,
+    [params.pageSize, (params.page - 1) * params.pageSize]
+  );
+
+  return { success: true, data: rows };
 }
 ```
 
-This plugin is already included in the `vite.config.ts` generated by `create-elyos-app` — no need to add it manually.
+Calling from the client:
 
-### Specificity Conflicts
+```typescript
+const result = await sdk.remote.call('getItems', { page: 1, pageSize: 20 });
+```
 
-Even if the CSS loads, the core app's Tailwind styles (base layer resets) may override the plugin's styles. This behavior is the same **in all loading modes** (dev URL and installed `.elyospkg`).
+---
 
-Svelte scoped CSS generates `button.svelte-xxxx` selectors, but Tailwind's `button { ... }` reset loads with higher specificity, overriding them.
+## Database migrations
 
-### The Solution: Container-Based Scoping
+When `database` is enabled, SQL files in the `migrations/` directory define the plugin's own database schema. Files run in alphabetical order (e.g. `001_init.sql`, `002_add_column.sql`).
 
-Always define styles within your own container class, and avoid bare HTML tag selectors:
+```sql
+-- migrations/001_init.sql
+CREATE TABLE items (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  value JSONB,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+```
+
+:::note
+Table names do not need a schema prefix in migration files — ElyOS automatically adds the `app__{plugin_id}` prefix during installation.
+:::
+
+Files in `migrations/dev/` are for development only (e.g. seed data) and are excluded from the `.elyospkg` package.
+
+---
+
+## Styling
+
+### CSS injection
+
+Plugin CSS is automatically bundled into the JS output during the IIFE build via `vite-plugin-css-injected-by-js`. This plugin is already included in the `vite.config.ts` generated by `create-elyos-app` — no manual setup needed.
+
+### Specificity conflicts
+
+The core app's Tailwind styles (base layer resets) can override plugin styles. Svelte scoped CSS generates `button.svelte-xxxx` selectors, but Tailwind's `button { ... }` reset loads with higher specificity.
+
+The fix: always scope your styles inside a container class:
 
 ```svelte
 <!-- ❌ Bad — core styles will override -->
 <style>
-  button {
-    border: 1px solid #ccc;
-    padding: 0.5rem 1rem;
-  }
+  button { border: 1px solid #ccc; }
 </style>
 
-<!-- ✅ Good — scoped within container class -->
+<!-- ✅ Good — scoped inside a container class -->
 <style>
-  .my-plugin button {
-    border: 1px solid #ccc;
-    padding: 0.5rem 1rem;
-  }
+  .my-plugin button { border: 1px solid #ccc; }
 </style>
 ```
 
-### `all: revert` — Resetting Core Styles
-
-If core styles are overriding an element, `all: revert` restores the browser's native style:
+If core styles override an element, `all: revert` restores the browser's native style:
 
 ```svelte
 <style>
@@ -382,11 +703,6 @@ If core styles are overriding an element, `all: revert` restores the browser's n
     border: 1px solid #ccc;
     border-radius: 0.25rem;
     padding: 0.5rem 1rem;
-    background: white;
-  }
-
-  .my-plugin button:hover {
-    background: #f0f0f0;
   }
 </style>
 ```
@@ -395,7 +711,41 @@ If core styles are overriding an element, `all: revert` restores the browser's n
 
 | Rule | Why |
 |---|---|
-| Include `injectCssPlugin()` in `vite.config.ts` | Without it, CSS won't load in ElyOS at all |
-| Scope within container class (`.my-plugin button`) | Core Tailwind styles override bare tag selectors |
-| Use `all: revert` when needed | Restores browser native style |
+| Scope inside a container class (`.my-plugin button`) | Core Tailwind styles override bare tag selectors |
+| Use `all: revert` when needed | Restores the browser's native style |
 | Give the root container a unique class name | Avoids conflicts with other plugins' styles |
+
+---
+
+## Security rules
+
+### Forbidden
+
+- `eval()` and `Function()` constructor
+- `innerHTML` and `document.write()`
+- fetch/XHR to external domains
+- Dynamic import from external URLs
+- Accessing other plugins' schemas
+- Accessing system schemas (`platform`, `auth`, `public`)
+
+### Allowed dependencies
+
+Only whitelisted packages may appear in the manifest `dependencies` field:
+
+- `svelte` (^5.x.x)
+- `@lucide/svelte` / `lucide-svelte`
+- `phosphor-svelte`
+- `@elyos/*` and `@elyos-dev/*` (any version)
+
+---
+
+## Common errors
+
+| Error | Solution |
+|---|---|
+| `"Invalid plugin ID format"` | Use kebab-case: `my-plugin` |
+| `"Permission denied"` | Add the required permission to `manifest.json` |
+| `"Module not found"` | Run `bun run build` first |
+| `"Plugin already exists"` | A plugin with that ID is already installed — uninstall it first |
+| `"Plugin is inactive"` | The plugin is in inactive state — activate it in the App Manager |
+| Dev app not showing up | Check that `DEV_MODE=true` is set in the ElyOS `.env.local` |

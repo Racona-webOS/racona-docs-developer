@@ -8,7 +8,8 @@ export default defineConfig({
 		starlight({
 			title: 'ElyOS Fejlesztői Dokumentáció',
 			components: {
-				SocialIcons: './src/components/CustomSocialIcons.astro'
+				SocialIcons: './src/components/CustomSocialIcons.astro',
+				Sidebar: './src/components/Sidebar.astro'
 			},
 			logo: {
 				src: './src/assets/logo.webp',
@@ -51,6 +52,11 @@ export default defineConfig({
 					label: 'Kezdőlap',
 					translations: { en: 'Home' },
 					link: '/'
+				},
+				{
+					label: 'Támogatás',
+					translations: { en: 'Support' },
+					slug: 'support'
 				},
 				{
 					label: 'Bevezetés',
@@ -344,8 +350,7 @@ export default defineConfig({
 						{
 							label: 'Email szolgáltatás',
 							translations: { en: 'Email Service' },
-							slug: 'plugins-email',
-							badge: { text: 'v0.1.7', variant: 'success' }
+							slug: 'plugins-email'
 						},
 						{
 							label: 'menu.json és AppLayout',
@@ -442,12 +447,6 @@ export default defineConfig({
 					label: 'Hibaelhárítás',
 					translations: { en: 'Troubleshooting' },
 					slug: 'troubleshooting'
-				},
-				{
-					label: 'Támogatás',
-					translations: { en: 'Support' },
-					slug: 'support',
-					badge: { text: 'Ko-fi', variant: 'tip' }
 				},
                 {
 					label: 'Felhasználói dokumentáció',

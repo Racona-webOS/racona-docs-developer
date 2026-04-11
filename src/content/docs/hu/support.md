@@ -7,6 +7,8 @@ Több éves tapasztalattal rendelkező szoftverfejlesztő vagyok Magyarországr�
 
 Ha hasznosnak találod, vagy csak tetszik, amit csinálok, egy kávé árával is sokat segíthetsz abban, hogy folytathassam.
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/H2H11XIQDF)
+<a href="https://ko-fi.com/H2H11XIQDF" target="_blank" rel="noopener noreferrer">
+  <img src="/ko-fi.webp" alt="ko-fi" width="200" />
+</a>
 
 *Az ElyOS mindig ingyenes marad.*
