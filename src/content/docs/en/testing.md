@@ -1,9 +1,9 @@
 ---
 title: Testing
-description: Testing strategy and tools in the ElyOS project
+description: Testing strategy and tools in the Racona project
 ---
 
-ElyOS uses three testing layers to ensure code quality.
+Racona uses three testing layers to ensure code quality.
 
 ## Testing Layers
 

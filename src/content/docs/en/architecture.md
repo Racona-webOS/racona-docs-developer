@@ -1,6 +1,6 @@
 ---
 title: Architecture Overview
-description: ElyOS monorepo structure, SvelteKit application architecture, and main layers
+description: Racona monorepo structure, SvelteKit application architecture, and main layers
 next:
   link: /en/environment/
   label: Environment Variables
@@ -8,7 +8,7 @@ next:
 
 ## Monorepo Structure
 
-ElyOS is a Bun workspaces-based monorepo:
+Racona is a Bun workspaces-based monorepo:
 
 ```
 elyos-core/
@@ -16,8 +16,8 @@ elyos-core/
 │   └── web/                  # Main SvelteKit application (@elyos/core)
 ├── packages/
 │   ├── database/             # Drizzle ORM schemas, migrations, seeds (@elyos/database)
-│   ├── sdk/                  # Plugin SDK (@elyos/sdk)
-│   └── create-elyos-app/  # CLI tool for plugin generation
+│   ├── sdk/                  # Plugin SDK (@racona/sdk)
+│   └── @racona/cli/  # CLI tool for plugin generation
 ├── examples/
 │   └── plugins/              # Example plugin implementations
 ├── docker/                   # Dockerfile and docker-compose.yml
@@ -100,7 +100,7 @@ Required files for each application:
 
 ## Server Architecture
 
-ElyOS uses two server layers:
+Racona uses two server layers:
 
 **SvelteKit server** — main application logic, server actions, API routes, authentication.
 

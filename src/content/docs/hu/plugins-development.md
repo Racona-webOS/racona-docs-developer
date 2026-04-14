@@ -1,20 +1,20 @@
 ---
 title: Plugin fejlesztés
-description: ElyOS plugin fejlesztés – projekt létrehozás, standalone fejlesztés Mock SDK-val, tesztelés futó ElyOS-ben, telepítés
+description: Racona plugin fejlesztés – projekt létrehozás, standalone fejlesztés Mock SDK-val, tesztelés futó Racona-ben, telepítés
 ---
 
 ## Projekt létrehozása
 
-A leggyorsabb módja egy új plugin projekt indításának a `@elyos-dev/create-app` CLI:
+A leggyorsabb módja egy új plugin projekt indításának a `@racona/cli` CLI:
 
 ```bash
-bunx @elyos-dev/create-app
+bunx @racona/cli
 ```
 
 A wizard végigvezet a beállításokon:
 
 1. **App ID** — kebab-case azonosító (pl. `my-app`)
-2. **Display Name** — megjelenítendő név az ElyOS-ben
+2. **Display Name** — megjelenítendő név a Rocona-ben
 3. **Description** — rövid leírás
 4. **Author** — neved és email-ed
 5. **Features** — válaszd ki a szükséges funkciókat
@@ -132,7 +132,7 @@ DEV_USER_ID=dev-user
 
 ## Standalone fejlesztés (Mock SDK)
 
-Az alkalmazás fejleszthető futó ElyOS példány nélkül is. A `@elyos-dev/sdk/dev` csomag egy Mock SDK-t biztosít, amely szimulálja az összes SDK szolgáltatást:
+Az alkalmazás fejleszthető futó Racona példány nélkül is. A `@racona/sdk/dev` csomag egy Mock SDK-t biztosít, amely szimulálja az összes SDK szolgáltatást:
 
 | SDK szolgáltatás | Mock viselkedés |
 |---|---|
@@ -145,7 +145,7 @@ Az alkalmazás fejleszthető futó ElyOS példány nélkül is. A `@elyos-dev/sd
 | `notifications.send()` | `console.log`-ba ír |
 
 :::note
-ElyOS-be betöltve a `ui.toast()` a core Sonner toast rendszerét, a `ui.dialog()` a core saját dialog komponensét, a `notifications.send()` pedig toast-ot jelenít meg (az adatbázisban nem regisztrált dev alkalmazás esetén). A `data.set/get/delete()` hívások dev módban szintén `localStorage`-ba írnak (`devapp:{appId}:` prefix alatt), mivel a dev alkalmazás nincs az adatbázisban regisztrálva.
+Racona-be betöltve a `ui.toast()` a core Sonner toast rendszerét, a `ui.dialog()` a core saját dialog komponensét, a `notifications.send()` pedig toast-ot jelenít meg (az adatbázisban nem regisztrált dev alkalmazás esetén). A `data.set/get/delete()` hívások dev módban szintén `localStorage`-ba írnak (`devapp:{appId}:` prefix alatt), mivel a dev alkalmazás nincs az adatbázisban regisztrálva.
 :::
 
 ### Dev szerver indítása
@@ -168,11 +168,11 @@ A `src/main.ts` fájlban a Mock SDK inicializálása automatikusan megtörténik
 
 ```typescript
 // src/main.ts
-import { MockWebOSSDK } from '@elyos-dev/sdk/dev';
+import { MockWebOSSDK } from '@racona/sdk/dev';
 import App from './App.svelte';
 import { mount } from 'svelte';
 
-// Csak akkor fut le, ha NEM ElyOS-ben vagyunk
+// Csak akkor fut le, ha NEM Racona-ben vagyunk
 if (typeof window !== 'undefined' && !window.webOS) {
   MockWebOSSDK.initialize({
     i18n: {
@@ -213,7 +213,7 @@ Az `initialize()` összes konfigurációs lehetősége:
 | `remote.handlers` | `Record<string, Function>` | Mock szerver függvény handlerek |
 | `assets.baseUrl` | `string` | Asset URL prefix |
 
-Amikor az ElyOS betölti az alkalmazást élesben, a `window.webOS` már létezik, ezért az `if (!window.webOS)` feltétel miatt a Mock SDK nem fut le.
+Amikor a Rocona betölti az alkalmazást élesben, a `window.webOS` már létezik, ezért az `if (!window.webOS)` feltétel miatt a Mock SDK nem fut le.
 
 ### Remote call mock-olása
 
@@ -244,22 +244,22 @@ A `dev:server` alapértelmezetten az `5175`-ös portot használja (a Vite dev sz
 PORT=5176 bun run dev:server
 ```
 
-Az ElyOS Dev Alkalmazások betöltőjében az URL-t ennek megfelelően add meg: `http://localhost:5176`.
+A Rocona Dev Alkalmazások betöltőjében az URL-t ennek megfelelően add meg: `http://localhost:5176`.
 
 ---
 
-## Tesztelés futó ElyOS-ben
+## Tesztelés futó Racona-ben
 
-A standalone dev mód (Mock SDK) csak a UI-t teszteli. Ha valódi SDK hívásokat, adatbázist vagy szerver függvényeket is tesztelni szeretnél, az alkalmazást be kell tölteni egy futó ElyOS példányba.
+A standalone dev mód (Mock SDK) csak a UI-t teszteli. Ha valódi SDK hívásokat, adatbázist vagy szerver függvényeket is tesztelni szeretnél, az alkalmazást be kell tölteni egy futó Racona példányba.
 
-A folyamat lényege: **buildeld le az alkalmazást, indíts egy statikus HTTP szervert (`dev:server`), majd töltsd be az ElyOS-be URL alapján.** Nincs automatikus hot reload — ha változtattál a kódon, újra kell buildelni és újra megnyitni az alkalmazás ablakát.
+A folyamat lényege: **buildeld le az alkalmazást, indíts egy statikus HTTP szervert (`dev:server`), majd töltsd be a Rocona-be URL alapján.** Nincs automatikus hot reload — ha változtattál a kódon, újra kell buildelni és újra megnyitni az alkalmazás ablakát.
 
 :::note[Portok]
 - `5174` — Vite dev szerver (`bun dev`) — standalone fejlesztéshez, Mock SDK-val
-- `5175` — Plugin dev szerver (`bun run dev:server`) — ElyOS-be való betöltéshez, valódi SDK-val
+- `5175` — Plugin dev szerver (`bun run dev:server`) — Racona-be való betöltéshez, valódi SDK-val
 :::
 
-### 1. lépés — ElyOS core indítása
+### 1. lépés — Racona core indítása
 
 Az `elyos-core` monorepo gyökerében:
 
@@ -270,7 +270,7 @@ Az `elyos-core` monorepo gyökerében:
 bun app:dev
 ```
 
-Az ElyOS alapértelmezetten a `http://localhost:5173` címen érhető el. Jelentkezz be admin fiókkal.
+A Rocona alapértelmezetten a `http://localhost:5173` címen érhető el. Jelentkezz be admin fiókkal.
 
 ### 2. lépés — Alkalmazás buildelése
 
@@ -280,7 +280,7 @@ Az alkalmazás projekt mappájában:
 bun run build
 ```
 
-Ez létrehozza a `dist/index.iife.js` fájlt — ezt tölti be az ElyOS.
+Ez létrehozza a `dist/index.iife.js` fájlt — ezt tölti be a Rocona.
 
 ### 3. lépés — Plugin dev szerver indítása
 
@@ -293,27 +293,27 @@ Ez elindítja a `dev-server.ts` Bun HTTP szervert a `http://localhost:5175` cím
 Ha `database` is engedélyezve van, a szerver induláskor automatikusan futtatja a migrációkat, és a `POST /api/remote/:functionName` endpointon keresztül elérhetők a `server/functions.ts` függvényei.
 
 :::note
-A `dev:server` csak statikus fájlokat szolgál ki — nincs hot reload, nincs Vite. Ha módosítottad a kódot, futtasd újra a `bun run build`-ot, majd zárd be és nyisd meg újra az alkalmazás ablakát az ElyOS-ben.
+A `dev:server` csak statikus fájlokat szolgál ki — nincs hot reload, nincs Vite. Ha módosítottad a kódot, futtasd újra a `bun run build`-ot, majd zárd be és nyisd meg újra az alkalmazás ablakát a Rocona-ben.
 :::
 
-### 4. lépés — Alkalmazás betöltése az ElyOS-be
+### 4. lépés — Alkalmazás betöltése a Rocona-be
 
 :::caution[Előfeltételek]
 A "Dev Alkalmazások" menüpont csak akkor jelenik meg az Alkalmazás Managerben, ha:
-- Az ElyOS `.env.local` fájlban `DEV_MODE=true` van beállítva
+- A Rocona `.env.local` fájlban `DEV_MODE=true` van beállítva
 - A bejelentkezett felhasználónak van `app.manual.install` jogosultsága (admin fióknak alapból van)
 :::
 
-1. Nyisd meg az ElyOS-t a böngészőben
+1. Nyisd meg a Rocona-t a böngészőben
 2. Start menü → Alkalmazás Manager
 3. A bal oldalsávban kattints a **"Dev Alkalmazások"** menüpontra
 4. Megjelenik egy URL beviteli mező `http://localhost:5175` alapértelmezett értékkel
 5. Kattints a **"Load"** gombra
 
-Az ElyOS lekéri a `manifest.json`-t a dev szerverről, majd betölti az IIFE bundle-t és Web Component-ként regisztrálja az alkalmazást.
+A Rocona lekéri a `manifest.json`-t a dev szerverről, majd betölti az IIFE bundle-t és Web Component-ként regisztrálja az alkalmazást.
 
-:::tip[Docker-ben fut az ElyOS?]
-Ha az ElyOS Docker konténerben fut (pl. `bun docker:up` paranccsal indítva), a konténer nem éri el a host gép `localhost`-ját. Helyette használd a `host.docker.internal` címet:
+:::tip[Docker-ben fut a Rocona?]
+Ha a Rocona Docker konténerben fut (pl. `bun docker:up` paranccsal indítva), a konténer nem éri el a host gép `localhost`-ját. Helyette használd a `host.docker.internal` címet:
 
 ```
 http://host.docker.internal:5174
@@ -328,7 +328,7 @@ A szerver oldali validáció elfogadja ezt a címet, a böngésző pedig automat
 # 1. Újrabuildelés
 bun run build
 
-# 2. Az ElyOS-ben: zárd be az alkalmazás ablakát, majd nyisd meg újra
+# 2. A Rocona-ben: zárd be az alkalmazás ablakát, majd nyisd meg újra
 #    (a "Load" gombot nem kell újra megnyomni — az alkalmazás már a listában van)
 ```
 
@@ -337,7 +337,7 @@ bun run build
 **Alap (remote_functions nélkül):**
 
 ```bash
-# Terminál 1 — ElyOS core
+# Terminál 1 — Racona core
 cd elyos-core && bun app:dev
 
 # Terminál 2 — Alkalmazás build + szerver
@@ -345,13 +345,13 @@ cd my-app
 bun run build       # IIFE bundle elkészítése
 bun run dev:server  # statikus szerver indítása (http://localhost:5175)
 
-# ElyOS-ben: Alkalmazás Manager → Dev Alkalmazások → Load → http://localhost:5175
+# Racona-ben: Alkalmazás Manager → Dev Alkalmazások → Load → http://localhost:5175
 ```
 
 **Adatbázissal (database + remote_functions):**
 
 ```bash
-# Terminál 1 — ElyOS core
+# Terminál 1 — Racona core
 cd elyos-core && bun app:dev
 
 # Terminál 2 — Alkalmazás (első alkalommal)
@@ -363,14 +363,14 @@ bun db:up              # Postgres konténer indítása
 bun run build          # IIFE bundle elkészítése
 bun run dev:server     # dev szerver + migrációk + remote endpoint (http://localhost:5175)
 
-# ElyOS-ben: Alkalmazás Manager → Dev Alkalmazások → Load → http://localhost:5175
+# Racona-ben: Alkalmazás Manager → Dev Alkalmazások → Load → http://localhost:5175
 ```
 
 ---
 
 ## Plugin telepítése (`.elyospkg`)
 
-Ha az alkalmazás fejlesztése kész, csomagold be és telepítsd az ElyOS-be.
+Ha az alkalmazás fejlesztése kész, csomagold be és telepítsd a Rocona-be.
 
 ### Csomag elkészítése
 
@@ -389,14 +389,14 @@ Ez létrehozza a `{id}-{version}.elyospkg` fájlt (pl. `my-app-1.0.0.elyospkg`).
 - `server/` — szerver oldali függvények (ha van)
 - `migrations/` — adatbázis migrációk (ha van, dev seed fájlok nélkül)
 
-### Feltöltés az ElyOS-be
+### Feltöltés a Rocona-be
 
 1. Start menü → Alkalmazás Manager → **Plugin Feltöltés**
 2. Húzd rá a `.elyospkg` fájlt, vagy kattints a böngészés gombra
-3. Az ElyOS validálja a csomagot, majd megmutatja az előnézetet
+3. A Rocona validálja a csomagot, majd megmutatja az előnézetet
 4. Kattints a **Telepítés** gombra
 
-A telepítés során az ElyOS:
+A telepítés során a Rocona:
 - Kicsomagolja a fájlokat a plugin tárolóba
 - Regisztrálja az alkalmazást az app registry-ben
 - Importálja a fordításokat (ha van `locales/`)
@@ -567,7 +567,7 @@ const imageUrl = sdk.assets.getUrl('images/logo.png');
 
 ## TypeScript és autocomplete
 
-Az `@elyos-dev/sdk` teljes TypeScript típusdefiníciókat tartalmaz. A `window.webOS` típusa automatikusan elérhető:
+Az `@racona/sdk` teljes TypeScript típusdefiníciókat tartalmaz. A `window.webOS` típusa automatikusan elérhető:
 
 ```typescript
 // Automatikus típus — nincs szükség importra
@@ -581,7 +581,7 @@ sdk.remote.call<MyResult>('fn', params); // ✅ generikus visszatérési típus
 Explicit típusimport szükség esetén:
 
 ```typescript
-import type { WebOSSDKInterface, UserInfo } from '@elyos-dev/sdk/types';
+import type { WebOSSDKInterface, UserInfo } from '@racona/sdk/types';
 
 const user: UserInfo = sdk.context.user;
 ```
@@ -621,7 +621,7 @@ Ha a `remote_functions` feature engedélyezve van, a `server/functions.ts` fájl
 
 ```typescript
 // server/functions.ts
-import type { PluginFunctionContext } from '@elyos-dev/sdk/types';
+import type { PluginFunctionContext } from '@racona/sdk/types';
 
 export async function getItems(
   params: { page: number; pageSize: number },
@@ -662,7 +662,7 @@ CREATE TABLE items (
 ```
 
 :::note
-A táblaneveket nem kell sémával prefixelni a migrációs fájlokban — az ElyOS telepítéskor automatikusan hozzáadja a `app__{plugin_id}` prefixet.
+A táblaneveket nem kell sémával prefixelni a migrációs fájlokban — a Rocona telepítéskor automatikusan hozzáadja a `app__{plugin_id}` prefixet.
 :::
 
 A `migrations/dev/` mappában lévő fájlok csak fejlesztési célra szolgálnak (pl. seed adatok) — a `.elyospkg` csomagba nem kerülnek bele.
@@ -673,7 +673,7 @@ A `migrations/dev/` mappában lévő fájlok csak fejlesztési célra szolgálna
 
 ### CSS injektálás
 
-A plugin CSS-e az IIFE build során a `vite-plugin-css-injected-by-js` plugin segítségével automatikusan a JS bundle-be kerül. Ez a plugin a `create-elyos-app` által generált `vite.config.ts`-ben már benne van — nem kell kézzel hozzáadni.
+A plugin CSS-e az IIFE build során a `vite-plugin-css-injected-by-js` plugin segítségével automatikusan a JS bundle-be kerül. Ez a plugin a `@racona/cli` által generált `vite.config.ts`-ben már benne van — nem kell kézzel hozzáadni.
 
 ### Specificitási ütközések
 
@@ -735,7 +735,8 @@ A manifest `dependencies` mezőjében csak fehérlistán lévő package-ek szere
 - `svelte` (^5.x.x)
 - `@lucide/svelte` / `lucide-svelte`
 - `phosphor-svelte`
-- `@elyos/*` és `@elyos-dev/*` (minden verzió)
+- `@elyos/*` és `@elyos-dev/*` (minden verzió) — deprecated, használd helyette `@racona/*`
+- `@racona/*` (minden verzió)
 
 ---
 
@@ -748,4 +749,4 @@ A manifest `dependencies` mezőjében csak fehérlistán lévő package-ek szere
 | `"Module not found"` | Futtasd le: `bun run build` |
 | `"Plugin already exists"` | Az adott ID-vel már telepítve van egy plugin — távolítsd el előbb |
 | `"Plugin is inactive"` | A plugin inaktív állapotban van — aktiváld az Alkalmazás Managerben |
-| Dev alkalmazás nem jelenik meg | Ellenőrizd, hogy `DEV_MODE=true` van-e az ElyOS `.env.local`-ban |
+| Dev alkalmazás nem jelenik meg | Ellenőrizd, hogy `DEV_MODE=true` van-e a Rocona `.env.local`-ban |

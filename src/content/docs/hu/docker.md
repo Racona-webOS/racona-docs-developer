@@ -1,9 +1,9 @@
 ---
 title: Docker
-description: Docker használata az ElyOS fejlesztésében és üzemeltetésében
+description: Docker használata a Rocona fejlesztésében és üzemeltetésében
 ---
 
-Az ElyOS teljes mértékben támogatja a Docker-alapú fejlesztést és üzemeltetést. Ez a dokumentum részletesen bemutatja, hogyan használható a Docker az ElyOS-szel.
+A Rocona teljes mértékben támogatja a Docker-alapú fejlesztést és üzemeltetést. Ez a dokumentum részletesen bemutatja, hogyan használható a Docker a Rocona-szel.
 
 ## Miért Docker?
 
@@ -52,7 +52,7 @@ Bun nélkül is használható a Docker, csak a nyers `docker compose` parancsoka
 ### 1. Repository klónozása
 
 ```bash
-git clone https://github.com/ElyOS-webOS/elyos-core
+git clone https://github.com/Racona-webOS/elyos-core
 cd elyos-core
 ```
 
@@ -86,7 +86,7 @@ A környezeti változók részletes leírásáért lásd a [Környezeti változ�
 
 ### 3. Rendszer indítása
 
-Az ElyOS három deployment módot támogat:
+A Rocona három deployment módot támogat:
 
 #### Teljes stack (ajánlott)
 
@@ -184,7 +184,7 @@ db-init:
 
 ### 3. elyos
 
-Az ElyOS webalkalmazás (SvelteKit + Express + Socket.IO).
+A Rocona webalkalmazás (SvelteKit + Express + Socket.IO).
 
 ```yaml
 elyos:
@@ -326,7 +326,7 @@ docker logs elyos-db-init
 ### Konténerbe belépés
 
 ```bash
-# ElyOS konténerbe belépés
+# Racona konténerbe belépés
 docker exec -it elyos-app sh
 
 # PostgreSQL konténerbe belépés
@@ -413,7 +413,7 @@ CMD ["varlock", "run", "--", "bun", "run", "apps/web/server.js"]
 ### Helyi build
 
 ```bash
-docker build -f docker/Dockerfile -t elyos/core:latest .
+docker build -f docker/Dockerfile -t racona/core:latest .
 ```
 
 ### Build argumentumok
@@ -421,7 +421,7 @@ docker build -f docker/Dockerfile -t elyos/core:latest .
 ```bash
 docker build \
   -f docker/Dockerfile \
-  -t elyos/core:latest \
+  -t racona/core:latest \
   --build-arg NODE_ENV=production \
   .
 ```
@@ -431,7 +431,7 @@ docker build \
 ```bash
 docker buildx build \
   -f docker/Dockerfile \
-  -t elyos/core:latest \
+  -t racona/core:latest \
   --platform linux/amd64,linux/arm64 \
   .
 ```
@@ -442,7 +442,7 @@ A Docker Compose automatikusan betölti a gyökér `.env` fájlt. Az alábbi vá
 
 | Változó                     | Alapértelmezett | Leírás                                    |
 | --------------------------- | --------------- | ----------------------------------------- |
-| `ELYOS_PORT`                | `3000`          | ElyOS alkalmazás portja                   |
+| `ELYOS_PORT`                | `3000`          | Racona alkalmazás portja                   |
 | `POSTGRES_PORT`             | `5432`          | PostgreSQL portja                         |
 | `POSTGRES_USER`             | `elyos`         | PostgreSQL felhasználónév                 |
 | `POSTGRES_PASSWORD`         | `elyos123`      | PostgreSQL jelszó                         |
@@ -546,7 +546,7 @@ Az összes elérhető környezeti változó listájáért lásd a [Változók re
 
 2. Build újra:
    ```bash
-   docker build -f docker/Dockerfile -t elyos/core:latest .
+   docker build -f docker/Dockerfile -t racona/core:latest .
    ```
 
 ### Varlock hiba

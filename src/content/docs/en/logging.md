@@ -8,7 +8,7 @@ next:
 
 ## Overview
 
-ElyOS uses its own logging system that can write to multiple targets simultaneously (console, file, database). Logs can be viewed in the built-in **Log** application.
+Racona uses its own logging system that can write to multiple targets simultaneously (console, file, database). Logs can be viewed in the built-in **Log** application.
 
 ## Importing Logger
 

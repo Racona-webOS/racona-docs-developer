@@ -5,7 +5,7 @@ description: Building multi-page applications with menu.json, AppLayout mode, an
 
 ## What is AppLayout Mode?
 
-If a `menu.json` file is present in the application root, ElyOS loads the application in AppLayout mode. In this mode, the application appears as a multi-page application with a sidebar navigation — the same layout as built-in applications (e.g. Settings, Users).
+If a `menu.json` file is present in the application root, Racona loads the application in AppLayout mode. In this mode, the application appears as a multi-page application with a sidebar navigation — the same layout as built-in applications (e.g. Settings, Users).
 
 Without AppLayout mode (standalone), the application loads as a single Web Component filling the entire window.
 

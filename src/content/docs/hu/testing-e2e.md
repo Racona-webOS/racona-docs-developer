@@ -1,6 +1,6 @@
 ---
 title: E2E Tesztek Playwright-tal
-description: End-to-end tesztelés Playwright-tal az ElyOS projektben
+description: End-to-end tesztelés Playwright-tal a Rocona projektben
 ---
 
 A Playwright egy modern böngésző automatizálási keretrendszer, amely lehetővé teszi a teljes felhasználói folyamatok tesztelését valós böngésző környezetben.
@@ -239,7 +239,7 @@ await expect(page).toHaveURL('/dashboard');
 await expect(page).toHaveURL(/\/dashboard/);
 
 // Cím
-await expect(page).toHaveTitle('ElyOS - Dashboard');
+await expect(page).toHaveTitle('Racona - Dashboard');
 await expect(page).toHaveTitle(/Dashboard/);
 ```
 
@@ -273,7 +273,7 @@ await expect(page.locator('button')).toBeEnabled();
 await expect(page.locator('.item')).toHaveCount(5);
 ```
 
-## ElyOS specifikus példák
+## Racona specifikus példák
 
 ### Alkalmazás megnyitása
 

@@ -3,7 +3,7 @@ title: Scripts referencia
 description: Összes elérhető npm/bun script a fejlesztéshez, build-hez, teszteléshez és Docker kezeléshez
 ---
 
-Az ElyOS egy **Bun workspaces** alapú monorepo. A root `package.json` tartalmazza a fő parancsokat, amelyek a workspace csomagok scriptjeit hívják meg.
+A Rocona egy **Bun workspaces** alapú monorepo. A root `package.json` tartalmazza a fő parancsokat, amelyek a workspace csomagok scriptjeit hívják meg.
 
 ## Monorepo struktúra
 
@@ -279,7 +279,7 @@ bun docker:db
 
 **Lokáció:** Root
 
-Teljes stack indítása (ElyOS + PostgreSQL).
+Teljes stack indítása (Racona + PostgreSQL).
 
 ```bash
 bun docker:up
@@ -354,7 +354,7 @@ Docker image build (multi-platform).
 bun docker:build
 ```
 
-**Tag:** `elyos/core:latest`
+**Tag:** `racona/core:latest`
 
 ---
 
@@ -368,7 +368,7 @@ AMD64 (x86_64) platform specifikus build.
 bun docker:build:amd64
 ```
 
-**Tag:** `elyos/core:latest-amd64`, `elyos/core:0.1.0-amd64`
+**Tag:** `racona/core:latest-amd64`, `racona/core:0.1.0-amd64`
 
 ---
 
@@ -382,7 +382,7 @@ ARM64 (Apple Silicon, ARM szerverek) platform specifikus build.
 bun docker:build:arm64
 ```
 
-**Tag:** `elyos/core:latest-arm64`, `elyos/core:0.1.0-arm64`
+**Tag:** `racona/core:latest-arm64`, `racona/core:0.1.0-arm64`
 
 ---
 

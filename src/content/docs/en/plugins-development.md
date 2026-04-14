@@ -1,20 +1,20 @@
 ---
 title: Plugin development
-description: ElyOS plugin development – project creation, standalone development with Mock SDK, testing in a running ElyOS instance, deployment
+description: Racona plugin development – project creation, standalone development with Mock SDK, testing in a running Racona instance, deployment
 ---
 
 ## Creating a project
 
-The fastest way to start a new plugin project is the `@elyos-dev/create-app` CLI:
+The fastest way to start a new plugin project is the `@racona/cli` CLI:
 
 ```bash
-bunx @elyos-dev/create-app
+bunx @racona/cli
 ```
 
 The wizard walks you through the setup:
 
 1. **App ID** — kebab-case identifier (e.g. `my-app`)
-2. **Display Name** — human-readable name shown in ElyOS
+2. **Display Name** — human-readable name shown in Racona
 3. **Description** — short description
 4. **Author** — your name and email
 5. **Features** — pick the features you need
@@ -132,7 +132,7 @@ DEV_USER_ID=dev-user
 
 ## Standalone development (Mock SDK)
 
-Your app can be developed without a running ElyOS instance. The `@elyos-dev/sdk/dev` package provides a Mock SDK that simulates all SDK services:
+Your app can be developed without a running Racona instance. The `@racona/sdk/dev` package provides a Mock SDK that simulates all SDK services:
 
 | SDK service | Mock behavior |
 |---|---|
@@ -145,7 +145,7 @@ Your app can be developed without a running ElyOS instance. The `@elyos-dev/sdk/
 | `notifications.send()` | Writes to `console.log` |
 
 :::note
-When loaded inside ElyOS, `ui.toast()` uses the core Sonner toast system, `ui.dialog()` uses the core dialog component, and `notifications.send()` shows a toast (for dev apps not registered in the database). `data.set/get/delete()` calls in dev mode also write to `localStorage` (under the `devapp:{appId}:` prefix), since the dev app is not registered in the database.
+When loaded inside Racona, `ui.toast()` uses the core Sonner toast system, `ui.dialog()` uses the core dialog component, and `notifications.send()` shows a toast (for dev apps not registered in the database). `data.set/get/delete()` calls in dev mode also write to `localStorage` (under the `devapp:{appId}:` prefix), since the dev app is not registered in the database.
 :::
 
 ### Starting the dev server
@@ -168,11 +168,11 @@ The Mock SDK is initialized automatically in `src/main.ts`:
 
 ```typescript
 // src/main.ts
-import { MockWebOSSDK } from '@elyos-dev/sdk/dev';
+import { MockWebOSSDK } from '@racona/sdk/dev';
 import App from './App.svelte';
 import { mount } from 'svelte';
 
-// Only runs when NOT inside ElyOS
+// Only runs when NOT inside Racona
 if (typeof window !== 'undefined' && !window.webOS) {
   MockWebOSSDK.initialize({
     i18n: {
@@ -213,7 +213,7 @@ All `initialize()` configuration options:
 | `remote.handlers` | `Record<string, Function>` | Mock server function handlers |
 | `assets.baseUrl` | `string` | Asset URL prefix |
 
-When ElyOS loads the app in production, `window.webOS` already exists, so the `if (!window.webOS)` guard prevents the Mock SDK from running.
+When Racona loads the app in production, `window.webOS` already exists, so the `if (!window.webOS)` guard prevents the Mock SDK from running.
 
 ### Mocking remote calls
 
@@ -244,22 +244,22 @@ MockWebOSSDK.initialize({
 PORT=5176 bun run dev:server
 ```
 
-Enter the corresponding URL in the ElyOS Dev Apps loader: `http://localhost:5176`.
+Enter the corresponding URL in the Racona Dev Apps loader: `http://localhost:5176`.
 
 ---
 
-## Testing inside a running ElyOS
+## Testing inside a running Racona
 
-Standalone dev mode (Mock SDK) only tests the UI. To test real SDK calls, database access, or server functions, you need to load the app into a running ElyOS instance.
+Standalone dev mode (Mock SDK) only tests the UI. To test real SDK calls, database access, or server functions, you need to load the app into a running Racona instance.
 
-The idea: **build the app, start a static HTTP server (`dev:server`), then load it into ElyOS by URL.** There is no automatic hot reload — if you change the code, you need to rebuild and reopen the app window.
+The idea: **build the app, start a static HTTP server (`dev:server`), then load it into Racona by URL.** There is no automatic hot reload — if you change the code, you need to rebuild and reopen the app window.
 
 :::note[Ports]
 - `5174` — Vite dev server (`bun dev`) — standalone development with Mock SDK
-- `5175` — Plugin dev server (`bun run dev:server`) — loading into ElyOS with the real SDK
+- `5175` — Plugin dev server (`bun run dev:server`) — loading into Racona with the real SDK
 :::
 
-### Step 1 — Start ElyOS core
+### Step 1 — Start Racona core
 
 In the `elyos-core` monorepo root:
 
@@ -270,7 +270,7 @@ In the `elyos-core` monorepo root:
 bun app:dev
 ```
 
-ElyOS is available at `http://localhost:5173` by default. Log in with an admin account.
+Racona is available at `http://localhost:5173` by default. Log in with an admin account.
 
 ### Step 2 — Build the app
 
@@ -280,7 +280,7 @@ In the app project directory:
 bun run build
 ```
 
-This creates `dist/index.iife.js` — the file ElyOS loads.
+This creates `dist/index.iife.js` — the file Racona loads.
 
 ### Step 3 — Start the plugin dev server
 
@@ -293,27 +293,27 @@ This starts the `dev-server.ts` Bun HTTP server at `http://localhost:5175`. It s
 If `database` is also enabled, the server automatically runs migrations on startup, and `server/functions.ts` functions are accessible via `POST /api/remote/:functionName`.
 
 :::note
-`dev:server` only serves static files — no hot reload, no Vite. If you changed the code, run `bun run build` again, then close and reopen the app window in ElyOS.
+`dev:server` only serves static files — no hot reload, no Vite. If you changed the code, run `bun run build` again, then close and reopen the app window in Racona.
 :::
 
-### Step 4 — Load the app into ElyOS
+### Step 4 — Load the app into Racona
 
 :::caution[Prerequisites]
 The "Dev Apps" menu item only appears in the App Manager if:
-- `DEV_MODE=true` is set in the ElyOS `.env.local` file
+- `DEV_MODE=true` is set in the Racona `.env.local` file
 - The logged-in user has the `app.manual.install` permission (admin accounts have this by default)
 :::
 
-1. Open ElyOS in the browser
+1. Open Racona in the browser
 2. Start menu → App Manager
 3. Click **"Dev Apps"** in the left sidebar
 4. A URL input field appears with `http://localhost:5175` as the default value
 5. Click **"Load"**
 
-ElyOS fetches `manifest.json` from the dev server, then loads the IIFE bundle and registers the app as a Web Component.
+Racona fetches `manifest.json` from the dev server, then loads the IIFE bundle and registers the app as a Web Component.
 
-:::tip[Running ElyOS in Docker?]
-If ElyOS is running in a Docker container (e.g. started with `bun docker:up`), the container cannot reach the host machine's `localhost`. Use `host.docker.internal` instead:
+:::tip[Running Racona in Docker?]
+If Racona is running in a Docker container (e.g. started with `bun docker:up`), the container cannot reach the host machine's `localhost`. Use `host.docker.internal` instead:
 
 ```
 http://host.docker.internal:5175
@@ -328,7 +328,7 @@ The server-side validation accepts this address, and the browser automatically r
 # 1. Rebuild
 bun run build
 
-# 2. In ElyOS: close the app window, then reopen it
+# 2. In Racona: close the app window, then reopen it
 #    (no need to click "Load" again — the app is already in the list)
 ```
 
@@ -337,7 +337,7 @@ bun run build
 **Basic (without remote_functions):**
 
 ```bash
-# Terminal 1 — ElyOS core
+# Terminal 1 — Racona core
 cd elyos-core && bun app:dev
 
 # Terminal 2 — App build + server
@@ -345,13 +345,13 @@ cd my-app
 bun run build       # Build IIFE bundle
 bun run dev:server  # Start static server (http://localhost:5175)
 
-# In ElyOS: App Manager → Dev Apps → Load → http://localhost:5175
+# In Racona: App Manager → Dev Apps → Load → http://localhost:5175
 ```
 
 **With database (database + remote_functions):**
 
 ```bash
-# Terminal 1 — ElyOS core
+# Terminal 1 — Racona core
 cd elyos-core && bun app:dev
 
 # Terminal 2 — App (first time)
@@ -363,14 +363,14 @@ bun db:up              # Start Postgres container
 bun run build          # Build IIFE bundle
 bun run dev:server     # Dev server + migrations + remote endpoint (http://localhost:5175)
 
-# In ElyOS: App Manager → Dev Apps → Load → http://localhost:5175
+# In Racona: App Manager → Dev Apps → Load → http://localhost:5175
 ```
 
 ---
 
 ## Installing a plugin (`.elyospkg`)
 
-Once your app is ready, package it and install it into ElyOS.
+Once your app is ready, package it and install it into Racona.
 
 ### Creating the package
 
@@ -389,14 +389,14 @@ This creates a `{id}-{version}.elyospkg` file (e.g. `my-app-1.0.0.elyospkg`). Th
 - `server/` — server-side functions (if present)
 - `migrations/` — database migrations (if present, without dev seed files)
 
-### Uploading to ElyOS
+### Uploading to Racona
 
 1. Start menu → App Manager → **Plugin Upload**
 2. Drag and drop the `.elyospkg` file, or click the browse button
-3. ElyOS validates the package and shows a preview
+3. Racona validates the package and shows a preview
 4. Click **Install**
 
-During installation, ElyOS:
+During installation, Racona:
 - Extracts files to the plugin storage directory
 - Registers the app in the app registry
 - Imports translations (if `locales/` is present)
@@ -567,7 +567,7 @@ const imageUrl = sdk.assets.getUrl('images/logo.png');
 
 ## TypeScript and autocomplete
 
-`@elyos-dev/sdk` ships with full TypeScript type definitions. The `window.webOS` type is available automatically:
+`@racona/sdk` ships with full TypeScript type definitions. The `window.webOS` type is available automatically:
 
 ```typescript
 // Automatic type — no import needed
@@ -581,7 +581,7 @@ sdk.remote.call<MyResult>('fn', params); // ✅ generic return type
 Explicit type import when needed:
 
 ```typescript
-import type { WebOSSDKInterface, UserInfo } from '@elyos-dev/sdk/types';
+import type { WebOSSDKInterface, UserInfo } from '@racona/sdk/types';
 
 const user: UserInfo = sdk.context.user;
 ```
@@ -621,7 +621,7 @@ When `remote_functions` is enabled, server-side functions are defined in `server
 
 ```typescript
 // server/functions.ts
-import type { PluginFunctionContext } from '@elyos-dev/sdk/types';
+import type { PluginFunctionContext } from '@racona/sdk/types';
 
 export async function getItems(
   params: { page: number; pageSize: number },
@@ -662,7 +662,7 @@ CREATE TABLE items (
 ```
 
 :::note
-Table names do not need a schema prefix in migration files — ElyOS automatically adds the `app__{plugin_id}` prefix during installation.
+Table names do not need a schema prefix in migration files — Racona automatically adds the `app__{plugin_id}` prefix during installation.
 :::
 
 Files in `migrations/dev/` are for development only (e.g. seed data) and are excluded from the `.elyospkg` package.
@@ -673,7 +673,7 @@ Files in `migrations/dev/` are for development only (e.g. seed data) and are exc
 
 ### CSS injection
 
-Plugin CSS is automatically bundled into the JS output during the IIFE build via `vite-plugin-css-injected-by-js`. This plugin is already included in the `vite.config.ts` generated by `create-elyos-app` — no manual setup needed.
+Plugin CSS is automatically bundled into the JS output during the IIFE build via `vite-plugin-css-injected-by-js`. This plugin is already included in the `vite.config.ts` generated by `@racona/cli` — no manual setup needed.
 
 ### Specificity conflicts
 
@@ -735,7 +735,8 @@ Only whitelisted packages may appear in the manifest `dependencies` field:
 - `svelte` (^5.x.x)
 - `@lucide/svelte` / `lucide-svelte`
 - `phosphor-svelte`
-- `@elyos/*` and `@elyos-dev/*` (any version)
+- `@elyos/*` and `@elyos-dev/*` (any version) — deprecated, use `@racona/*` instead
+- `@racona/*` (any version)
 
 ---
 
@@ -748,4 +749,4 @@ Only whitelisted packages may appear in the manifest `dependencies` field:
 | `"Module not found"` | Run `bun run build` first |
 | `"Plugin already exists"` | A plugin with that ID is already installed — uninstall it first |
 | `"Plugin is inactive"` | The plugin is in inactive state — activate it in the App Manager |
-| Dev app not showing up | Check that `DEV_MODE=true` is set in the ElyOS `.env.local` |
+| Dev app not showing up | Check that `DEV_MODE=true` is set in the Racona `.env.local` |

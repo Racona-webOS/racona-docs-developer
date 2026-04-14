@@ -1,6 +1,6 @@
 ---
 title: Activity Log
-description: Logging user and system-level actions in ElyOS
+description: Logging user and system-level actions in Racona
 ---
 
 The Activity Log feature records user and system-level actions. Entries are stored in the `platform.activity_logs` database table and can be viewed in the Log application.

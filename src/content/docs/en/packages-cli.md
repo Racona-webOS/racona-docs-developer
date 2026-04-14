@@ -1,15 +1,15 @@
 ---
-title: "@elyos-dev/create-app"
-description: The ElyOS CLI tool for scaffolding new application projects with a single command
+title: "@racona/cli"
+description: The Racona CLI tool for scaffolding new application projects with a single command
 next:
   link: /en/plugins/
   label: Application development
 ---
 
-`@elyos-dev/create-app` is an interactive CLI tool that lets you create a fully configured ElyOS application project in seconds. No need to manually set up Vite, TypeScript, the Mock SDK, or build scripts — the CLI handles everything.
+`@racona/cli` is an interactive CLI tool that lets you create a fully configured Racona application project in seconds. No need to manually set up Vite, TypeScript, the Mock SDK, or build scripts — the CLI handles everything.
 
 ```bash
-bunx @elyos-dev/create-app
+bunx @racona/cli
 ```
 
 The wizard walks you through the basic settings (app ID, name, author) and then lets you pick the **features** you want. The project is generated based on your selection — no fixed templates.

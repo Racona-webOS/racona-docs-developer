@@ -1,6 +1,6 @@
 ---
 title: Architektúra áttekintés
-description: Az ElyOS monorepo felépítése, a SvelteKit alkalmazás struktúrája és a főbb rétegek
+description: A Rocona monorepo felépítése, a SvelteKit alkalmazás struktúrája és a főbb rétegek
 next:
   link: /hu/environment/
   label: Környezeti változók
@@ -8,7 +8,7 @@ next:
 
 ## Monorepo struktúra
 
-Az ElyOS Bun workspaces alapú monorepo:
+A Rocona Bun workspaces alapú monorepo:
 
 ```
 elyos-core/
@@ -16,8 +16,8 @@ elyos-core/
 │   └── web/                  # Fő SvelteKit alkalmazás (@elyos/core)
 ├── packages/
 │   ├── database/             # Drizzle ORM sémák, migrációk, seed (@elyos/database)
-│   ├── sdk/                  # Plugin SDK (@elyos/sdk)
-│   └── create-elyos-app/  # CLI eszköz plugin generáláshoz
+│   ├── sdk/                  # Plugin SDK (@racona/sdk)
+│   └── @racona/cli/  # CLI eszköz plugin generáláshoz
 ├── examples/
 │   └── plugins/              # Példa plugin implementációk
 ├── docker/                   # Dockerfile és docker-compose.yml
@@ -100,7 +100,7 @@ Minden alkalmazás kötelező fájljai:
 
 ## Szerver architektúra
 
-Az ElyOS két szerver réteget használ:
+A Rocona két szerver réteget használ:
 
 **SvelteKit szerver** — a fő alkalmazáslogika, server actions, API route-ok, autentikáció.
 

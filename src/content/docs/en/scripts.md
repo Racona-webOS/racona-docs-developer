@@ -3,7 +3,7 @@ title: Scripts Reference
 description: All available npm/bun scripts for development, building, testing, and Docker management
 ---
 
-ElyOS is a **Bun workspaces** based monorepo. The root `package.json` contains main commands that invoke workspace package scripts.
+Racona is a **Bun workspaces** based monorepo. The root `package.json` contains main commands that invoke workspace package scripts.
 
 ## Monorepo Structure
 
@@ -266,7 +266,7 @@ bun docker:db
 
 **Location:** Root
 
-Start full stack (ElyOS + PostgreSQL).
+Start full stack (Racona + PostgreSQL).
 
 ```bash
 bun docker:up

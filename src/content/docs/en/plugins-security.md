@@ -8,7 +8,7 @@ next:
 
 ## Overview
 
-The ElyOS application system runs applications in a sandboxed environment. The system performs static code analysis on uploaded applications and rejects those containing forbidden patterns.
+The Racona application system runs applications in a sandboxed environment. The system performs static code analysis on uploaded applications and rejects those containing forbidden patterns.
 
 ---
 

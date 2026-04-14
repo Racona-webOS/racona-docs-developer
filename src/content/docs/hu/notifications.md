@@ -1,9 +1,9 @@
 ---
 title: Értesítési Rendszer
-description: Valós idejű értesítések Socket.IO-val az ElyOS-ben
+description: Valós idejű értesítések Socket.IO-val a Rocona-ben
 ---
 
-Az ElyOS értesítési rendszere lehetővé teszi alkalmazások számára, hogy valós időben küldjenek értesítéseket felhasználóknak. A rendszer Socket.IO-t használ a valós idejű kommunikációhoz, és támogatja a többnyelvű tartalmakat.
+A Rocona értesítési rendszere lehetővé teszi alkalmazások számára, hogy valós időben küldjenek értesítéseket felhasználóknak. A rendszer Socket.IO-t használ a valós idejű kommunikációhoz, és támogatja a többnyelvű tartalmakat.
 
 ## Áttekintés
 

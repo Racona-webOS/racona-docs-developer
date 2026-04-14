@@ -3,7 +3,7 @@ title: SDK API Reference
 description: Detailed documentation of all WebOS SDK services – ui, data, remote, i18n, notifications, context, assets
 ---
 
-The WebOS SDK is accessible via the `window.webOS` global object. In ElyOS, the runtime SDK initializes automatically — for standalone development, use the Mock SDK (see [Developer Workflow](/en/plugins-development/)).
+The WebOS SDK is accessible via the `window.webOS` global object. In Racona, the runtime SDK initializes automatically — for standalone development, use the Mock SDK (see [Developer Workflow](/en/plugins-development/)).
 
 ```typescript
 const sdk = window.webOS!;
@@ -30,7 +30,7 @@ sdk.ui.toast('Information', 'info');
 
 ### `dialog(options)`
 
-Display a modal dialog. In ElyOS, the core uses its own dialog component — not `window.alert/confirm/prompt`.
+Display a modal dialog. In Racona, the core uses its own dialog component — not `window.alert/confirm/prompt`.
 
 ```typescript
 // Request confirmation
@@ -84,7 +84,7 @@ console.log(colors.background); // e.g. '#ffffff'
 
 ### `components`
 
-ElyOS UI components (Button, Input, Card, etc.) — these are the host application's components, also available to the plugin.
+Racona UI components (Button, Input, Card, etc.) — these are the host application's components, also available to the plugin.
 
 ```typescript
 const { Button, Input, Card } = sdk.ui.components;

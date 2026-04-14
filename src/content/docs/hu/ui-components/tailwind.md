@@ -1,9 +1,9 @@
 ---
 title: Tailwind CSS
-description: Tailwind CSS 4 használata az ElyOS-ben
+description: Tailwind CSS 4 használata a Rocona-ben
 ---
 
-Az ElyOS **Tailwind CSS 4**-et használ a Vite pluginon keresztül. Nincs `tailwind.config` fájl, a konfiguráció a CSS-ben történik.
+A Rocona **Tailwind CSS 4**-et használ a Vite pluginon keresztül. Nincs `tailwind.config` fájl, a konfiguráció a CSS-ben történik.
 
 ## Gyakori utility osztályok
 
@@ -75,7 +75,7 @@ Az ElyOS **Tailwind CSS 4**-et használ a Vite pluginon keresztül. Nincs `tailw
 
 ### Colors
 
-Az ElyOS szemantikus színeket használ:
+A Rocona szemantikus színeket használ:
 
 ```svelte
 <!-- Background -->

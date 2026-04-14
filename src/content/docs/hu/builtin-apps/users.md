@@ -3,7 +3,7 @@ title: Felhasználók alkalmazás
 description: Felhasználók alkalmazás fejlesztői dokumentáció - felhasználók, csoportok, szerepkörök és jogosultságok kezelése
 ---
 
-A Felhasználók alkalmazás az ElyOS központi felhasználó- és jogosultságkezelő rendszere. Admin jogosultsággal rendelkező felhasználók itt kezelhetik a felhasználókat, csoportokat, szerepköröket, jogosultságokat és erőforrásokat.
+A Felhasználók alkalmazás a Rocona központi felhasználó- és jogosultságkezelő rendszere. Admin jogosultsággal rendelkező felhasználók itt kezelhetik a felhasználókat, csoportokat, szerepköröket, jogosultságokat és erőforrásokat.
 
 ## Áttekintés
 
@@ -86,7 +86,7 @@ A `menu.json` jogosultság-alapú menüt definiál:
 
 ## RBAC rendszer
 
-Az ElyOS egy teljes RBAC (Role-Based Access Control) rendszert implementál:
+A Rocona egy teljes RBAC (Role-Based Access Control) rendszert implementál:
 
 ```
 Felhasználó (User)

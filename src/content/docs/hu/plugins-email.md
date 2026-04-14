@@ -4,7 +4,7 @@ description: Email küldés alkalmazásokból – email template-ek, context.ema
 ---
 
 :::note[v0.1.7 óta]
-Az Email szolgáltatás az ElyOS core `0.1.7` verziójától érhető el.
+Az Email szolgáltatás a Rocona core `0.1.7` verziójától érhető el.
 :::
 
 ## Áttekintés

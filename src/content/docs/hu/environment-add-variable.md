@@ -3,7 +3,7 @@ title: Új változó hozzáadása
 description: Lépésről lépésre útmutató új környezeti változó hozzáadásához
 ---
 
-Ha új környezeti változót adsz hozzá az ElyOS projekthez, **3 helyen kell frissítened** a kódot.
+Ha új környezeti változót adsz hozzá a Rocona projekthez, **3 helyen kell frissítened** a kódot.
 
 ## Checklist
 
@@ -101,7 +101,7 @@ REDIS_URL=redis://localhost:6379
 ```dotenv
 # .env.schema
 # @type=string
-APP_NAME=ElyOS
+APP_NAME=Racona
 ```
 
 ```typescript

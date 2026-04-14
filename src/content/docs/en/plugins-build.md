@@ -17,28 +17,28 @@ Starts a Vite dev server (`http://localhost:5174`) that mounts `App.svelte` dire
 
 This mode does **not** run the IIFE bundle — the app runs here as a normal Svelte app, not as a Web Component.
 
-### Production Build (for loading into ElyOS)
+### Production Build (for loading into Racona)
 
 ```bash
 bun run build
 ```
 
-Compiles the app to IIFE format in the `dist/` folder. Vite uses the `src/app.ts` entry point, which exports the app as a Web Component. This bundle is loaded by ElyOS.
+Compiles the app to IIFE format in the `dist/` folder. Vite uses the `src/app.ts` entry point, which exports the app as a Web Component. This bundle is loaded by Racona.
 
 Build output:
 
 ```
 dist/
-└── index.iife.js    # IIFE bundle — loaded by ElyOS
+└── index.iife.js    # IIFE bundle — loaded by Racona
 ```
 
-### Static Dev Server (for testing in ElyOS)
+### Static Dev Server (for testing in Racona)
 
 ```bash
 bun run dev:server
 ```
 
-Starts the `dev-server.ts` Bun HTTP server at `http://localhost:5174`. The server serves files from the `dist/` folder and the project root with CORS headers — ElyOS fetches the `manifest.json` and IIFE bundle from here.
+Starts the `dev-server.ts` Bun HTTP server at `http://localhost:5174`. The server serves files from the `dist/` folder and the project root with CORS headers — Racona fetches the `manifest.json` and IIFE bundle from here.
 
 :::note
 Always run `bun run build` before `dev:server` to ensure `dist/index.iife.js` is up to date.
@@ -97,7 +97,7 @@ For example: `hello-world-1.0.0.elyospkg`
 :::note
 Always run `bun run build` before `bun run package`. The script uses the `zip` system command (available by default on macOS and Linux).
 
-The generated file extension comes from the `APP_PACKAGE_EXTENSION` environment variable (default: `elyospkg`). If your ElyOS server is configured with a different extension, set the variable before packaging:
+The generated file extension comes from the `APP_PACKAGE_EXTENSION` environment variable (default: `elyospkg`). If your Racona server is configured with a different extension, set the variable before packaging:
 
 ```bash
 APP_PACKAGE_EXTENSION=wospkg bun run package
@@ -130,7 +130,7 @@ The `build-package.js` automatically only packages folders/files that actually e
 
 ### Via App Manager UI (recommended)
 
-1. Open ElyOS in the browser
+1. Open Racona in the browser
 2. Click Start menu → App Manager
 3. Click the "Upload App" button
 4. Select the `.elyospkg` file
@@ -160,7 +160,7 @@ The session token is short-lived and user-bound. There is currently no dedicated
 
 ### Updates
 
-When updating an existing app, increment the version number in `manifest.json` and upload the new package. ElyOS automatically recognizes it as an update.
+When updating an existing app, increment the version number in `manifest.json` and upload the new package. Racona automatically recognizes it as an update.
 
 ---
 
@@ -170,10 +170,10 @@ When updating an existing app, increment the version number in `manifest.json` a
 # 1. Standalone development (Vite dev server, Mock SDK, hot reload)
 bun run dev
 
-# 2. Testing in ElyOS
+# 2. Testing in Racona
 bun run build       # Create IIFE bundle
 bun run dev:server  # Start static server (http://localhost:5174)
-# ElyOS: App Manager → Dev Apps → Load → http://localhost:5174
+# Racona: App Manager → Dev Apps → Load → http://localhost:5174
 
 # 3. Production packaging
 bun run build

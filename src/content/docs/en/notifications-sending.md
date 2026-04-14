@@ -1,9 +1,9 @@
 ---
 title: Sending Notifications
-description: How to send notifications in ElyOS
+description: How to send notifications in Racona
 ---
 
-This page explains in detail how to send notifications in ElyOS from both client and server side.
+This page explains in detail how to send notifications in Racona from both client and server side.
 
 ## Client Side (Recommended)
 

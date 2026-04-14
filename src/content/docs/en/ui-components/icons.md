@@ -1,9 +1,9 @@
 ---
 title: Icons
-description: Using the Lucide icon set in ElyOS
+description: Using the Lucide icon set in Racona
 ---
 
-ElyOS uses the **Lucide Svelte** icon set, which contains ~1400 beautiful, consistent icons.
+Racona uses the **Lucide Svelte** icon set, which contains ~1400 beautiful, consistent icons.
 
 ## Basic Usage
 

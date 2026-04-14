@@ -63,12 +63,12 @@ At the top of the file, before the `# ---` line:
 
 | Annotation | Description | Example |
 |-----------|--------|-------|
-| `@type=string` | String value (default) | `APP_NAME=ElyOS` |
+| `@type=string` | String value (default) | `APP_NAME=Racona` |
 | `@type=number` | Numeric value | `BODY_SIZE_LIMIT=10485760` |
 | `@type=number(min=1,max=100)` | Numeric value with range | `DEMO_RESET_HOUR=3` |
 | `@type=port` | Port number (1–65535) | `ELYOS_PORT=3000` |
 | `@type=url` | URL format | `ORIGIN=http://localhost:3000` |
-| `@type=email(normalize=true)` | Email address with normalization | `SMTP_FROM_EMAIL=noreply@elyos.hu` |
+| `@type=email(normalize=true)` | Email address with normalization | `SMTP_FROM_EMAIL=noreply@racona.hu` |
 | `@type=enum(a,b,c)` | Enumeration type | `NODE_ENV=development` |
 | `@type=boolean` | Boolean value | `DEV_MODE=true` |
 
@@ -131,8 +131,8 @@ Use the first non-empty value:
 # If ORIGIN is empty, use empty string
 APP_URL=fallback(ref('ORIGIN'),'')
 
-# If SMTP_USERNAME is empty, use 'noreply@elyos.hu'
-SMTP_FROM_EMAIL=fallback(ref('SMTP_USERNAME'),'noreply@elyos.hu')
+# If SMTP_USERNAME is empty, use 'noreply@racona.hu'
+SMTP_FROM_EMAIL=fallback(ref('SMTP_USERNAME'),'noreply@racona.hu')
 ```
 
 ### Interpolation

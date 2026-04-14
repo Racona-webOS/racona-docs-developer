@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-description: Setting up the development environment, installing dependencies, and running ElyOS locally
+description: Setting up the development environment, installing dependencies, and running Racona locally
 ---
 
 ## Prerequisites
@@ -21,7 +21,7 @@ On macOS, consider using [OrbStack](https://orbstack.dev) instead of Docker Desk
 ### 1. Clone
 
 ```bash
-git clone https://github.com/ElyOS-webOS/elyos-core.git
+git clone https://github.com/Racona-webOS/elyos-core.git
 cd elyos-core
 ```
 
@@ -37,7 +37,7 @@ bun install
 cp .env.example .env
 ```
 
-ElyOS uses **Varlock** for typesafe environment management. In the `.env` file, only **bootstrap credentials** are required — all other secrets come from Infisical at startup.
+Racona uses **Varlock** for typesafe environment management. In the `.env` file, only **bootstrap credentials** are required — all other secrets come from Infisical at startup.
 
 **Detailed documentation:** [Environment Variables →](/en/environment)
 
@@ -122,7 +122,7 @@ In production deployments, always set the `ADMIN_USER_EMAIL` variable so the see
 
 ## Docker-based Execution
 
-The entire stack (ElyOS + PostgreSQL) can also be started with Docker Compose:
+The entire stack (Racona + PostgreSQL) can also be started with Docker Compose:
 
 ```bash
 bun docker:up
@@ -153,7 +153,7 @@ bun db:studio         # Open Drizzle Studio
 
 # Docker
 bun docker:db         # Start PostgreSQL only
-bun docker:up         # Full stack (ElyOS + DB)
+bun docker:up         # Full stack (Racona + DB)
 bun docker:down       # Stop
 bun docker:logs       # Follow logs
 

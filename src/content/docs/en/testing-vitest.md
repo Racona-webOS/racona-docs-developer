@@ -1,6 +1,6 @@
 ---
 title: Vitest Unit Tests
-description: Unit testing with Vitest in the ElyOS project
+description: Unit testing with Vitest in the Racona project
 prev:
   link: /en/testing/
   label: Testing

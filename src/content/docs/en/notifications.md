@@ -1,9 +1,9 @@
 ---
 title: Notification System
-description: Real-time notifications with Socket.IO in ElyOS
+description: Real-time notifications with Socket.IO in Racona
 ---
 
-The ElyOS notification system allows applications to send real-time notifications to users. The system uses Socket.IO for real-time communication and supports multilingual content.
+The Racona notification system allows applications to send real-time notifications to users. The system uses Socket.IO for real-time communication and supports multilingual content.
 
 ## Overview
 

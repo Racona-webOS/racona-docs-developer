@@ -1,6 +1,6 @@
 ---
 title: Vitest Unit Tesztek
-description: Unit tesztelés Vitest-tel az ElyOS projektben
+description: Unit tesztelés Vitest-tel a Rocona projektben
 prev:
   link: /hu/testing/
   label: Tesztelés

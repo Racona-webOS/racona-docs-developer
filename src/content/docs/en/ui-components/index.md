@@ -1,9 +1,9 @@
 ---
 title: UI Components
-description: Overview of ElyOS UI components
+description: Overview of Racona UI components
 ---
 
-ElyOS provides a rich UI component library based on **shadcn-svelte** components, **Lucide** icons, **Tailwind CSS 4** styles, and custom components. These components ensure a consistent look and behavior throughout the system.
+Racona provides a rich UI component library based on **shadcn-svelte** components, **Lucide** icons, **Tailwind CSS 4** styles, and custom components. These components ensure a consistent look and behavior throughout the system.
 
 ## Technology Stack
 

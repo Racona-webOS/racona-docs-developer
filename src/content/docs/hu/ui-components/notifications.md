@@ -3,7 +3,7 @@ title: Toast értesítések
 description: Toast üzenetek megjelenítése svelte-sonner-rel
 ---
 
-A toast üzenetek rövid, átmeneti értesítések, amelyek a képernyő jobb felső sarkában jelennek meg. Az ElyOS a **svelte-sonner** könyvtárat használja.
+A toast üzenetek rövid, átmeneti értesítések, amelyek a képernyő jobb felső sarkában jelennek meg. A Rocona a **svelte-sonner** könyvtárat használja.
 
 ## Alapvető használat
 

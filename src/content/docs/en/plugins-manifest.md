@@ -3,7 +3,7 @@ title: manifest.json Reference
 description: Detailed documentation of all fields in the application manifest.json file – required and optional fields, types, and examples
 ---
 
-The `manifest.json` is the application's "passport" — ElyOS uses it to know how to load and display the application.
+The `manifest.json` is the application's "passport" — Racona uses it to know how to load and display the application.
 
 ## Full Example
 
@@ -192,7 +192,7 @@ External dependencies used by the application. Only packages on the [whitelist](
 
 **Type:** `string`
 
-The minimum required ElyOS version. If ElyOS is older, the application cannot be installed.
+The minimum required Racona version. If Racona is older, the application cannot be installed.
 
 ### `locales`
 

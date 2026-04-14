@@ -3,7 +3,7 @@ title: Toast Notifications
 description: Displaying toast messages with svelte-sonner
 ---
 
-Toast messages are short, transient notifications that appear in the top right corner of the screen. ElyOS uses the **svelte-sonner** library.
+Toast messages are short, transient notifications that appear in the top right corner of the screen. Racona uses the **svelte-sonner** library.
 
 ## Basic Usage
 

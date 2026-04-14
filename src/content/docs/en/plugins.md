@@ -1,18 +1,18 @@
 ---
 title: Application System
-description: Overview of the ElyOS application system – how applications work, differences from built-in apps
+description: Overview of the Racona application system – how applications work, differences from built-in apps
 ---
 
 ## What is an Application?
 
-ElyOS recognizes two types of applications:
+Racona recognizes two types of applications:
 
 | Type | Location | Developed By | Access |
 |---|---|---|---|
-| **Built-in Application** | `apps/web/src/apps/[app-name]/` | ElyOS core team | Full internal API |
+| **Built-in Application** | `apps/web/src/apps/[app-name]/` | Racona core team | Full internal API |
 | **External Application** | Standalone project, `.elyospkg` package | External developers | Only via WebOS SDK |
 
-External applications are loaded as Web Components into ElyOS. The system dynamically imports the IIFE bundle (IIFE = Immediately Invoked Function Expression — a self-executing, isolated JavaScript package that doesn't pollute the global namespace), initializes the WebOS SDK, then displays the component in a window.
+External applications are loaded as Web Components into Racona. The system dynamically imports the IIFE bundle (IIFE = Immediately Invoked Function Expression — a self-executing, isolated JavaScript package that doesn't pollute the global namespace), initializes the WebOS SDK, then displays the component in a window.
 
 ## How is an Application Loaded?
 
@@ -25,9 +25,9 @@ External applications are loaded as Web Components into ElyOS. The system dynami
 
 ## Built-in Application vs External Application
 
-If you want to integrate **your own application** into ElyOS and have access to the monorepo, a built-in application is the right choice — full SvelteKit access, Drizzle ORM, server actions.
+If you want to integrate **your own application** into Racona and have access to the monorepo, a built-in application is the right choice — full SvelteKit access, Drizzle ORM, server actions.
 
-If you're an **external developer** or want to distribute the application to other ElyOS instances, use the external application system.
+If you're an **external developer** or want to distribute the application to other Racona instances, use the external application system.
 
 ## Next Steps
 

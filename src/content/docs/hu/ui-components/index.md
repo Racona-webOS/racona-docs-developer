@@ -1,9 +1,9 @@
 ---
 title: UI Komponensek
-description: ElyOS UI komponensek áttekintése
+description: Racona UI komponensek áttekintése
 ---
 
-Az ElyOS egy gazdag UI komponens könyvtárat biztosít, amely **shadcn-svelte** alapú komponenseket, **Lucide** ikonokat, **Tailwind CSS 4** stílusokat és egyedi komponenseket tartalmaz. Ezek a komponensek biztosítják az egységes megjelenést és működést az egész rendszerben.
+A Rocona egy gazdag UI komponens könyvtárat biztosít, amely **shadcn-svelte** alapú komponenseket, **Lucide** ikonokat, **Tailwind CSS 4** stílusokat és egyedi komponenseket tartalmaz. Ezek a komponensek biztosítják az egységes megjelenést és működést az egész rendszerben.
 
 ## Technológiai stack
 

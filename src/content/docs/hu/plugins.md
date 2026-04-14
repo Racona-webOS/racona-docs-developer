@@ -1,18 +1,18 @@
 ---
 title: Alkalmazás rendszer
-description: Áttekintés az ElyOS alkalmazás rendszeréről – hogyan működnek az alkalmazások, mik a különbségek a beépített alkalmazásokhoz képest
+description: Áttekintés a Rocona alkalmazás rendszeréről – hogyan működnek az alkalmazások, mik a különbségek a beépített alkalmazásokhoz képest
 ---
 
 ## Mi az a alkalmazás?
 
-Az ElyOS kétféle alkalmazást ismer:
+A Rocona kétféle alkalmazást ismer:
 
 | Típus | Hol él | Ki fejleszti | Hozzáférés |
 |---|---|---|---|
-| **Beépített alkalmazás** | `apps/web/src/apps/[app-name]/` | ElyOS core csapat | Teljes belső API |
+| **Beépített alkalmazás** | `apps/web/src/apps/[app-name]/` | Racona core csapat | Teljes belső API |
 | **Külső alkalmazás** | Önálló projekt, `.elyospkg` csomag | Külső fejlesztők | Csak a WebOS SDK-n keresztül |
 
-A külső alkalmazások Web Component-ként töltődnek be az ElyOS-be. A rendszer dinamikusan importálja az IIFE bundle-t (IIFE = Immediately Invoked Function Expression — egy önmagát azonnal végrehajtó, izolált JavaScript csomag, amely nem szennyezi a globális névteret), inicializálja a WebOS SDK-t, majd megjeleníti a komponenst egy ablakban.
+A külső alkalmazások Web Component-ként töltődnek be a Rocona-be. A rendszer dinamikusan importálja az IIFE bundle-t (IIFE = Immediately Invoked Function Expression — egy önmagát azonnal végrehajtó, izolált JavaScript csomag, amely nem szennyezi a globális névteret), inicializálja a WebOS SDK-t, majd megjeleníti a komponenst egy ablakban.
 
 ## Hogyan töltődik be egy alkalmazás?
 
@@ -25,9 +25,9 @@ A külső alkalmazások Web Component-ként töltődnek be az ElyOS-be. A rendsz
 
 ## Beépített alkalmazás vs külső alkalmazás
 
-Ha **saját alkalmazást** szeretnél az ElyOS-be integrálni és hozzáférsz a monorepo-hoz, a beépített alkalmazás a megfelelő választás — teljes SvelteKit hozzáféréssel, Drizzle ORM-mel, server action-ökkel.
+Ha **saját alkalmazást** szeretnél a Rocona-be integrálni és hozzáférsz a monorepo-hoz, a beépített alkalmazás a megfelelő választás — teljes SvelteKit hozzáféréssel, Drizzle ORM-mel, server action-ökkel.
 
-Ha **külső fejlesztőként** szeretnél alkalmazást készíteni, vagy az alkalmazást más ElyOS példányokra is telepíteni szeretnéd, a külső alkalmazás rendszert kell használni.
+Ha **külső fejlesztőként** szeretnél alkalmazást készíteni, vagy az alkalmazást más Racona példányokra is telepíteni szeretnéd, a külső alkalmazás rendszert kell használni.
 
 ## Következő lépések
 

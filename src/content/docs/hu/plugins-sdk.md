@@ -3,7 +3,7 @@ title: SDK API referencia
 description: A WebOS SDK összes service-ének részletes dokumentációja – ui, data, remote, i18n, notifications, context, assets
 ---
 
-A WebOS SDK a `window.webOS` globális objektumon keresztül érhető el. ElyOS-ben a runtime SDK automatikusan inicializálódik — standalone fejlesztéshez a Mock SDK-t kell használni (lásd [Fejlesztői workflow](/hu/apps-development/)).
+A WebOS SDK a `window.webOS` globális objektumon keresztül érhető el. Racona-ben a runtime SDK automatikusan inicializálódik — standalone fejlesztéshez a Mock SDK-t kell használni (lásd [Fejlesztői workflow](/hu/apps-development/)).
 
 ```typescript
 const sdk = window.webOS!;
@@ -30,7 +30,7 @@ sdk.ui.toast('Információ', 'info');
 
 ### `dialog(options)`
 
-Modális dialógus megjelenítése. ElyOS-ben a core saját dialog komponensét használja — nem `window.alert/confirm/prompt`.
+Modális dialógus megjelenítése. Racona-ben a core saját dialog komponensét használja — nem `window.alert/confirm/prompt`.
 
 ```typescript
 // Megerősítés kérése
@@ -84,7 +84,7 @@ console.log(colors.background); // pl. '#ffffff'
 
 ### `components`
 
-ElyOS UI komponensek (Button, Input, Card, stb.) — ezek a host alkalmazás komponensei, amelyek a plugin számára is elérhetők.
+Racona UI komponensek (Button, Input, Card, stb.) — ezek a host alkalmazás komponensei, amelyek a plugin számára is elérhetők.
 
 ```typescript
 const { Button, Input, Card } = sdk.ui.components;

@@ -3,7 +3,7 @@ title: manifest.json referencia
 description: Az alkalmazás manifest.json fájl összes mezőjének részletes dokumentációja – kötelező és opcionális mezők, típusok, példák
 ---
 
-A `manifest.json` az alkalmazás "útlevele" — az ElyOS ebből tudja meg, hogyan kell betölteni és megjeleníteni az alkalmazást.
+A `manifest.json` az alkalmazás "útlevele" — a Rocona ebből tudja meg, hogyan kell betölteni és megjeleníteni az alkalmazást.
 
 ## Teljes példa
 
@@ -192,7 +192,7 @@ Az alkalmazás által használt külső függőségek. Csak a [fehérlistán](/h
 
 **Típus:** `string`
 
-A minimálisan szükséges ElyOS verzió. Ha az ElyOS régebbi, az alkalmazás nem telepíthető.
+A minimálisan szükséges Racona verzió. Ha a Rocona régebbi, az alkalmazás nem telepíthető.
 
 ### `locales`
 

@@ -1,19 +1,19 @@
 ---
 title: Creating Your First App
-description: Creating an app project with the create-elyos-app CLI tool – project structure, manifest, first build
+description: Creating an app project with the @racona/cli CLI tool – project structure, manifest, first build
 ---
 
 ## Prerequisites
 
 - [Bun](https://bun.sh) installed (`bun --version` ≥ 1.0)
-- A running ElyOS instance (via Docker or locally) — required for uploading the app and testing within the ElyOS system (not just standalone mode). See: [Docker-based setup](/en/getting-started#docker-based-setup)
+- A running Racona instance (via Docker or locally) — required for uploading the app and testing within the Racona system (not just standalone mode). See: [Docker-based setup](/en/getting-started#docker-based-setup)
 
 ## Creating a Project
 
-Use the ElyOS CLI to create a new app project:
+Use the Racona CLI to create a new app project:
 
 ```bash
-bunx @elyos-dev/create-app
+bunx @racona/cli
 ```
 
 The interactive wizard walks you through the setup:
@@ -102,7 +102,7 @@ All functions are scoped to the plugin's own `app__<id>` database schema via `co
 
 ## Sidebar Feature
 
-When `sidebar` is enabled, the app uses `AppLayout` mode — ElyOS renders a navigation bar on the left side of the app window. The `menu.json` defines the navigation items:
+When `sidebar` is enabled, the app uses `AppLayout` mode — Racona renders a navigation bar on the left side of the app window. The `menu.json` defines the navigation items:
 
 ```json
 [
@@ -117,7 +117,7 @@ Each `component` value maps to a file in `src/components/`.
 
 When `database` is enabled, the project includes:
 
-- `migrations/001_init.sql` — initial schema (table names are automatically prefixed with `app__<id>` by the ElyOS installer)
+- `migrations/001_init.sql` — initial schema (table names are automatically prefixed with `app__<id>` by the Racona installer)
 - `migrations/dev/000_auth_seed.sql` — minimal `auth` schema for local development
 - `docker-compose.dev.yml` — local Postgres container
 - `.env.example` — `DATABASE_URL` and `PORT` configuration
@@ -150,7 +150,7 @@ bun install
 bun run build
 ```
 
-This creates `dist/index.iife.js` (and component bundles if sidebar is enabled) — the files loaded by ElyOS.
+This creates `dist/index.iife.js` (and component bundles if sidebar is enabled) — the files loaded by Racona.
 
 ## Next Steps
 

@@ -3,7 +3,7 @@ title: Settings App
 description: Settings app developer documentation - architecture, components, server actions and integration
 ---
 
-The Settings app is ElyOS's central configuration interface where users can personalize the system. It is one of the most complex built-in apps, featuring a hierarchical menu, numerous settings sections, and tight integration with the theme and desktop systems.
+The Settings app is Racona's central configuration interface where users can personalize the system. It is one of the most complex built-in apps, featuring a hierarchical menu, numerous settings sections, and tight integration with the theme and desktop systems.
 
 ## Overview
 

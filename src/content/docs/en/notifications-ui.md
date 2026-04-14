@@ -1,6 +1,6 @@
 ---
 title: UI Components
-description: Notification UI components in ElyOS
+description: Notification UI components in Racona
 ---
 
 The notification system includes three main UI components to provide a complete user experience.

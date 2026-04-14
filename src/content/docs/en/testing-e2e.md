@@ -1,6 +1,6 @@
 ---
 title: E2E Tests with Playwright
-description: End-to-end testing with Playwright in the ElyOS project
+description: End-to-end testing with Playwright in the Racona project
 ---
 
 Playwright is a modern browser automation framework that enables testing complete user flows in a real browser environment.
@@ -239,7 +239,7 @@ await expect(page).toHaveURL('/dashboard');
 await expect(page).toHaveURL(/\/dashboard/);
 
 // Title
-await expect(page).toHaveTitle('ElyOS - Dashboard');
+await expect(page).toHaveTitle('Racona - Dashboard');
 await expect(page).toHaveTitle(/Dashboard/);
 ```
 
@@ -273,7 +273,7 @@ await expect(page.locator('button')).toBeEnabled();
 await expect(page.locator('.item')).toHaveCount(5);
 ```
 
-## ElyOS-specific examples
+## Racona-specific examples
 
 ### Opening an application
 

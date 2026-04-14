@@ -3,7 +3,7 @@ title: Adding a New Variable
 description: Step-by-step guide for adding a new environment variable
 ---
 
-When adding a new environment variable to the ElyOS project, you need to update the code in **3 places**.
+When adding a new environment variable to the Racona project, you need to update the code in **3 places**.
 
 ## Checklist
 
@@ -101,7 +101,7 @@ REDIS_URL=redis://localhost:6379
 ```dotenv
 # .env.schema
 # @type=string
-APP_NAME=ElyOS
+APP_NAME=Racona
 ```
 
 ```typescript

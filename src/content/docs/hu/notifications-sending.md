@@ -1,9 +1,9 @@
 ---
 title: Értesítés Küldése
-description: Hogyan küldj értesítéseket az ElyOS-ben
+description: Hogyan küldj értesítéseket a Rocona-ben
 ---
 
-Ez az oldal részletesen bemutatja, hogyan küldhetsz értesítéseket az ElyOS-ben kliens és szerver oldalról.
+Ez az oldal részletesen bemutatja, hogyan küldhetsz értesítéseket a Rocona-ben kliens és szerver oldalról.
 
 ## Kliens Oldal (Ajánlott)
 

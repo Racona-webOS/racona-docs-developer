@@ -3,11 +3,11 @@ title: Env séma validáció
 description: Környezeti változók typesafe validációja Varlock-kal – séma formátum, típusok és hibaüzenetek
 ---
 
-Az ElyOS **Varlock**-ot használ az összes környezeti változó typesafe validációjához. A Varlock az alkalmazás indításakor fut — a `node server.js` előtt — így a hibás konfiguráció azonnal kiderül.
+A Rocona **Varlock**-ot használ az összes környezeti változó typesafe validációjához. A Varlock az alkalmazás indításakor fut — a `node server.js` előtt — így a hibás konfiguráció azonnal kiderül.
 
 **Részletes dokumentáció:**
 - [Varlock hivatalos oldal](https://varlock.dev/) — teljes Varlock dokumentáció
-- [Környezeti változók →](/hu/environment) — ElyOS specifikus használat
+- [Környezeti változók →](/hu/environment) — Racona specifikus használat
 
 ## Az Env_Schema fájl
 
@@ -129,5 +129,5 @@ Sikeres indítás esetén:
 ## További információk
 
 **Részletes dokumentáció:**
-- [Környezeti változók →](/hu/environment) — teljes ElyOS környezeti változó kezelés
+- [Környezeti változók →](/hu/environment) — teljes Racona környezeti változó kezelés
 - [Varlock hivatalos oldal](https://varlock.dev/) — Varlock dokumentáció és API referencia

@@ -3,13 +3,13 @@ title: Data Validation
 description: Server action input and client-side data validation with Valibot – schemas, type inference, and usage
 ---
 
-ElyOS uses **Valibot** for validating all server action inputs and client-side data. Valibot is a lightweight, TypeScript-first validation library that's tree-shaking-friendly and provides excellent type inference.
+Racona uses **Valibot** for validating all server action inputs and client-side data. Valibot is a lightweight, TypeScript-first validation library that's tree-shaking-friendly and provides excellent type inference.
 
 **Official documentation:** [valibot.dev](https://valibot.dev/)
 
 ## Installation
 
-Valibot is already part of ElyOS dependencies:
+Valibot is already part of Racona dependencies:
 
 ```typescript
 import * as v from 'valibot';

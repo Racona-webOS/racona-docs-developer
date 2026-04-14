@@ -1,6 +1,6 @@
 ---
 title: Property-based Tests
-description: Property-based testing with fast-check in the ElyOS project
+description: Property-based testing with fast-check in the Racona project
 ---
 
 Property-based testing (PBT) is a testing method where instead of writing concrete examples, you define general properties (invariants) that must always hold true.

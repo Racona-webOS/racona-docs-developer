@@ -1,9 +1,9 @@
 ---
 title: Ikonok
-description: Lucide ikonkészlet használata az ElyOS-ben
+description: Lucide ikonkészlet használata a Rocona-ben
 ---
 
-Az ElyOS a **Lucide Svelte** ikonkészletet használja, amely ~1400 gyönyörű, konzisztens ikont tartalmaz.
+A Rocona a **Lucide Svelte** ikonkészletet használja, amely ~1400 gyönyörű, konzisztens ikont tartalmaz.
 
 ## Alapvető használat
 

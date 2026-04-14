@@ -8,7 +8,7 @@ next:
 
 ## Áttekintés
 
-Az ElyOS saját naplózási rendszert használ, amely több célra (konzol, fájl, adatbázis) tud egyszerre írni. A naplók a beépített **Log** alkalmazásban tekinthetők meg.
+A Rocona saját naplózási rendszert használ, amely több célra (konzol, fájl, adatbázis) tud egyszerre írni. A naplók a beépített **Log** alkalmazásban tekinthetők meg.
 
 ## Logger importálása
 

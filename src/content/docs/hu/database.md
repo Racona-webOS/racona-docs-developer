@@ -5,7 +5,7 @@ description: Drizzle ORM használata, séma struktúra, migrációk, repository 
 
 ## Áttekintés
 
-Az ElyOS PostgreSQL adatbázist használ [Drizzle ORM](https://orm.drizzle.team)-mel. A séma a `packages/database` csomagban él, a repository-k az `apps/web/src/lib/server/database/repositories/` mappában.
+A Rocona PostgreSQL adatbázist használ [Drizzle ORM](https://orm.drizzle.team)-mel. A séma a `packages/database` csomagban él, a repository-k az `apps/web/src/lib/server/database/repositories/` mappában.
 
 ## Séma struktúra
 
@@ -259,7 +259,7 @@ Soha ne módosítsd kézzel a generált migrációs fájlokat. Ha hibás migrác
 
 ## Seed adatok
 
-A seed adatok kezdeti adatokat töltenek be az adatbázisba — alapértelmezett felhasználók, szerepkörök, alkalmazások, fordítások stb. Az ElyOS seed rendszere **idempotens** (biztonságosan futtatható többször is) és **függőség-alapú** (automatikus sorrendezés).
+A seed adatok kezdeti adatokat töltenek be az adatbázisba — alapértelmezett felhasználók, szerepkörök, alkalmazások, fordítások stb. A Rocona seed rendszere **idempotens** (biztonságosan futtatható többször is) és **függőség-alapú** (automatikus sorrendezés).
 
 ### Seed struktúra
 
@@ -415,7 +415,7 @@ A `users.sql` seed létrehoz egy rendszergazda felhasználót:
 
 ```sql
 INSERT INTO auth.users (id, full_name, email, email_verified, username, image, user_settings, oauth_image) VALUES
-  (1, 'ElyOS admin', 'youradminemail@eyoursomain.com', true, null, null, '{}', null)
+  (1, 'Racona admin', 'youradminemail@eyoursomain.com', true, null, null, '{}', null)
 ON CONFLICT (id) DO UPDATE SET
   full_name = EXCLUDED.full_name,
   email_verified = EXCLUDED.email_verified;

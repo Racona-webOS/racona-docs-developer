@@ -63,12 +63,12 @@ A fájl elején, a `# ---` sor előtt:
 
 | Annotáció | Leírás | Példa |
 |-----------|--------|-------|
-| `@type=string` | Szöveges érték (alapértelmezett) | `APP_NAME=ElyOS` |
+| `@type=string` | Szöveges érték (alapértelmezett) | `APP_NAME=Racona` |
 | `@type=number` | Numerikus érték | `BODY_SIZE_LIMIT=10485760` |
 | `@type=number(min=1,max=100)` | Numerikus érték tartománnyal | `DEMO_RESET_HOUR=3` |
 | `@type=port` | Port szám (1–65535) | `ELYOS_PORT=3000` |
 | `@type=url` | URL formátum | `ORIGIN=http://localhost:3000` |
-| `@type=email(normalize=true)` | Email cím normalizálással | `SMTP_FROM_EMAIL=noreply@elyos.hu` |
+| `@type=email(normalize=true)` | Email cím normalizálással | `SMTP_FROM_EMAIL=noreply@racona.hu` |
 | `@type=enum(a,b,c)` | Felsorolás típus | `NODE_ENV=development` |
 | `@type=boolean` | Logikai érték | `DEV_MODE=true` |
 
@@ -131,8 +131,8 @@ Első nem üres érték használata:
 # Ha ORIGIN üres, akkor üres string
 APP_URL=fallback(ref('ORIGIN'),'')
 
-# Ha SMTP_USERNAME üres, akkor 'noreply@elyos.hu'
-SMTP_FROM_EMAIL=fallback(ref('SMTP_USERNAME'),'noreply@elyos.hu')
+# Ha SMTP_USERNAME üres, akkor 'noreply@racona.hu'
+SMTP_FROM_EMAIL=fallback(ref('SMTP_USERNAME'),'noreply@racona.hu')
 ```
 
 ### Interpoláció

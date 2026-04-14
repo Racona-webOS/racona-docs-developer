@@ -3,7 +3,7 @@ title: Infisical integráció
 description: Secrets management Infisical-lal — bootstrap credentials, működés és fallback mód
 ---
 
-Az ElyOS **Infisical**-t használ központi secrets management-hez. Ez lehetővé teszi, hogy a secretek ne kerüljenek a verziókezelésbe, és központilag kezelhető legyen a hozzáférés.
+A Rocona **Infisical**-t használ központi secrets management-hez. Ez lehetővé teszi, hogy a secretek ne kerüljenek a verziókezelésbe, és központilag kezelhető legyen a hozzáférés.
 
 ## Mi az az Infisical?
 

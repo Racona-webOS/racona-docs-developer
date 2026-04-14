@@ -1,9 +1,9 @@
 ---
 title: Environment Variables
-description: Managing environment variables in ElyOS — Varlock, Infisical, and typesafe configuration
+description: Managing environment variables in Racona — Varlock, Infisical, and typesafe configuration
 ---
 
-The ElyOS project uses **Varlock** for typesafe environment variable management. This ensures all configuration is validated and type-safe before the application starts.
+The Racona project uses **Varlock** for typesafe environment variable management. This ensures all configuration is validated and type-safe before the application starts.
 
 ## Why It Matters
 
@@ -16,7 +16,7 @@ Environment variable management is critical for application functionality:
 
 ## Three-Layer Architecture
 
-ElyOS environment variable management consists of three layers:
+Racona environment variable management consists of three layers:
 
 ### 1. Varlock Schema (`.env.schema`)
 

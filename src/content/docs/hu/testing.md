@@ -1,9 +1,9 @@
 ---
 title: Tesztelés
-description: Tesztelési stratégia és eszközök az ElyOS projektben
+description: Tesztelési stratégia és eszközök a Rocona projektben
 ---
 
-Az ElyOS három tesztelési réteget használ a kód minőségének biztosítására.
+A Rocona három tesztelési réteget használ a kód minőségének biztosítására.
 
 ## Tesztelési rétegek
 

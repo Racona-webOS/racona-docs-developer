@@ -5,7 +5,7 @@ description: Uploading, downloading, deleting files and the file repository patt
 
 ## Overview
 
-ElyOS file handling is implemented in the `src/lib/server/storage/` module. Files are stored on the server, with metadata in the database.
+Racona file handling is implemented in the `src/lib/server/storage/` module. Files are stored on the server, with metadata in the database.
 
 ## Remote Functions
 

@@ -1,19 +1,19 @@
 ---
 title: Első alkalmazás létrehozása
-description: Alkalmazás projekt létrehozása a create-elyos-app CLI tool segítségével – projekt struktúra, manifest, első build
+description: Alkalmazás projekt létrehozása a @racona/cli CLI tool segítségével – projekt struktúra, manifest, első build
 ---
 
 ## Előfeltételek
 
 - [Bun](https://bun.sh) telepítve (`bun --version` ≥ 1.0)
-- Futó ElyOS példány (Docker-rel vagy lokálisan) — szükséges az alkalmazás feltöltéséhez és az ElyOS rendszeren belüli teszteléséhez (nem csak standalone módban). Lásd: [Docker-alapú futtatás](/hu/getting-started#docker-alapú-futtatás)
+- Futó Racona példány (Docker-rel vagy lokálisan) — szükséges az alkalmazás feltöltéséhez és a Rocona rendszeren belüli teszteléséhez (nem csak standalone módban). Lásd: [Docker-alapú futtatás](/hu/getting-started#docker-alapú-futtatás)
 
 ## Projekt létrehozása
 
-Az ElyOS-hoz elérhető CLI segítségével hozd létre az új alkalmazás projektet:
+A Rocona-hoz elérhető CLI segítségével hozd létre az új alkalmazás projektet:
 
 ```bash
-bunx @elyos-dev/create-app
+bunx @racona/cli
 ```
 
 Az interaktív wizard végigvezet a beállításokon:
@@ -102,7 +102,7 @@ Minden függvény az alkalmazás saját `app__<id>` adatbázis sémájára van k
 
 ## Sidebar funkció
 
-Ha a `sidebar` be van kapcsolva, az alkalmazás `AppLayout` módban fut — az ElyOS navigációs sávot jelenít meg az alkalmazás ablakának bal oldalán. A `menu.json` határozza meg a navigációs elemeket:
+Ha a `sidebar` be van kapcsolva, az alkalmazás `AppLayout` módban fut — a Rocona navigációs sávot jelenít meg az alkalmazás ablakának bal oldalán. A `menu.json` határozza meg a navigációs elemeket:
 
 ```json
 [
@@ -117,7 +117,7 @@ Minden `component` érték a `src/components/` mappában lévő fájlra mutat.
 
 Ha a `database` be van kapcsolva, a projekt tartalmazza:
 
-- `migrations/001_init.sql` — kezdeti séma (a táblaneveket az ElyOS installer automatikusan prefixeli `app__<id>`-vel)
+- `migrations/001_init.sql` — kezdeti séma (a táblaneveket a Rocona installer automatikusan prefixeli `app__<id>`-vel)
 - `migrations/dev/000_auth_seed.sql` — minimális `auth` séma lokális fejlesztéshez
 - `docker-compose.dev.yml` — lokális Postgres konténer
 - `.env.example` — `DATABASE_URL` és `PORT` konfiguráció
@@ -150,7 +150,7 @@ bun install
 bun run build
 ```
 
-Ez létrehozza a `dist/index.iife.js` fájlt (és a komponens bundle-öket, ha sidebar engedélyezve van) — ezeket tölti be az ElyOS.
+Ez létrehozza a `dist/index.iife.js` fájlt (és a komponens bundle-öket, ha sidebar engedélyezve van) — ezeket tölti be a Rocona.
 
 ## Következő lépések
 

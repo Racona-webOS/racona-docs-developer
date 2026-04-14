@@ -5,7 +5,7 @@ description: Using the command/query pattern for server-side logic – validatio
 
 ## Overview
 
-ElyOS uses SvelteKit's `command` and `query` functions for server-side logic. These live in `*.remote.ts` files and can be called directly from the client — no need for separate API routes.
+Racona uses SvelteKit's `command` and `query` functions for server-side logic. These live in `*.remote.ts` files and can be called directly from the client — no need for separate API routes.
 
 ```
 src/apps/[app-name]/

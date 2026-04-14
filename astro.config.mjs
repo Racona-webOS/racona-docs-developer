@@ -4,16 +4,17 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://docs-dev.racona.hu',
 	integrations: [
 		starlight({
-			title: 'ElyOS Fejlesztői Dokumentáció',
+			title: 'Racona Developer Docs',
 			components: {
 				SocialIcons: './src/components/CustomSocialIcons.astro',
 				Sidebar: './src/components/Sidebar.astro'
 			},
 			logo: {
 				src: './src/assets/logo.webp',
-				alt: 'ElyOS Logo',
+				alt: 'Racona Logo',
 				replacesTitle: true
 			},
 			head: [
@@ -21,7 +22,7 @@ export default defineConfig({
 					tag: 'script',
 					attrs: {
 						defer: true,
-						src: 'https://elyos.hu/umami/script.js',
+						src: 'https://racona.hu/umami/script.js',
 						'data-website-id': process.env.UMAMI_WEBSITE_ID_DOCS ?? ''
 					}
 				}
@@ -306,13 +307,13 @@ export default defineConfig({
 							slug: 'packages'
 						},
 						{
-							label: '@elyos/sdk',
-							translations: { en: '@elyos/sdk' },
+							label: '@racona/sdk',
+							translations: { en: '@racona/sdk' },
 							slug: 'plugins-sdk'
 						},
 						{
-							label: '@elyos-dev/create-app',
-							translations: { en: '@elyos-dev/create-app' },
+							label: '@racona/cli',
+							translations: { en: '@racona/cli' },
 							slug: 'packages-cli'
 						}
 					]
@@ -453,7 +454,7 @@ export default defineConfig({
 					translations: {
 						en: 'User Documentation'
 					},
-					link: 'https://docs.elyos.hu/'
+					link: 'https://docs-user.racona.hu/'
 				}
 			]
 		})

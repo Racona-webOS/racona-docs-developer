@@ -1,13 +1,13 @@
 ---
 title: Built-in Applications
-description: Overview of ElyOS built-in applications and the application framework
+description: Overview of Racona built-in applications and the application framework
 ---
 
-ElyOS ships with 6 built-in applications that provide the system's core functionality. Every application uses a unified framework that ensures a consistent user experience and easy extensibility.
+Racona ships with 6 built-in applications that provide the system's core functionality. Every application uses a unified framework that ensures a consistent user experience and easy extensibility.
 
 ## Application Framework
 
-ElyOS applications use a unified framework that provides a consistent user experience, easy extensibility, and efficient state management. The central elements of the framework are **AppShell** (state management logic) and **AppLayout** (visual structure), which work together to handle menu navigation, dynamic component loading, and the application lifecycle.
+Racona applications use a unified framework that provides a consistent user experience, easy extensibility, and efficient state management. The central elements of the framework are **AppShell** (state management logic) and **AppLayout** (visual structure), which work together to handle menu navigation, dynamic component loading, and the application lifecycle.
 
 ### Architecture Overview
 

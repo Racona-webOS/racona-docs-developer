@@ -1,9 +1,9 @@
 ---
 title: Hibaelhárítás
-description: Gyakori problémák és megoldásaik az ElyOS telepítése és üzemeltetése során
+description: Gyakori problémák és megoldásaik a Rocona telepítése és üzemeltetése során
 ---
 
-Ez az útmutató az ElyOS telepítése és üzemeltetése során leggyakrabban előforduló problémákat foglalja össze.
+Ez az útmutató a Rocona telepítése és üzemeltetése során leggyakrabban előforduló problémákat foglalja össze.
 
 ## Az alkalmazás nem indul el
 

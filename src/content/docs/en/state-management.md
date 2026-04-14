@@ -5,7 +5,7 @@ description: Svelte 5 rune-based stores, singleton pattern, Context API integrat
 
 ## Overview
 
-ElyOS uses Svelte 5 runes for state management. Stores are class-based with `$state` properties and follow the singleton pattern.
+Racona uses Svelte 5 runes for state management. Stores are class-based with `$state` properties and follow the singleton pattern.
 
 ## Global Stores
 

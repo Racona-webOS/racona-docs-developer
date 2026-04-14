@@ -1,9 +1,9 @@
 ---
 title: Docker
-description: Using Docker in ElyOS development and deployment
+description: Using Docker in Racona development and deployment
 ---
 
-ElyOS fully supports Docker-based development and deployment. This document details how to use Docker with ElyOS.
+Racona fully supports Docker-based development and deployment. This document details how to use Docker with Racona.
 
 ## Why Docker?
 
@@ -52,7 +52,7 @@ Docker can be used without Bun, just run raw `docker compose` commands.
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/ElyOS-webOS/elyos-core
+git clone https://github.com/Racona-webOS/elyos-core
 cd elyos-core
 ```
 
@@ -86,7 +86,7 @@ For detailed environment variable descriptions, see [Environment Variables](/en/
 
 ### 3. Start System
 
-ElyOS supports three deployment modes:
+Racona supports three deployment modes:
 
 #### Full stack (recommended)
 
@@ -184,7 +184,7 @@ db-init:
 
 ### 3. elyos
 
-ElyOS web application (SvelteKit + Express + Socket.IO).
+Racona web application (SvelteKit + Express + Socket.IO).
 
 ```yaml
 elyos:
@@ -326,7 +326,7 @@ docker logs elyos-db-init
 ### Entering Containers
 
 ```bash
-# Enter ElyOS container
+# Enter Racona container
 docker exec -it elyos-app sh
 
 # Enter PostgreSQL container
@@ -411,7 +411,7 @@ CMD ["varlock", "run", "--", "bun", "run", "apps/web/server.js"]
 ### Local Build
 
 ```bash
-docker build -f docker/Dockerfile -t elyos/core:latest .
+docker build -f docker/Dockerfile -t racona/core:latest .
 ```
 
 ### Build Arguments
@@ -419,7 +419,7 @@ docker build -f docker/Dockerfile -t elyos/core:latest .
 ```bash
 docker build \
   -f docker/Dockerfile \
-  -t elyos/core:latest \
+  -t racona/core:latest \
   --build-arg NODE_ENV=production \
   .
 ```
@@ -429,7 +429,7 @@ docker build \
 ```bash
 docker buildx build \
   -f docker/Dockerfile \
-  -t elyos/core:latest \
+  -t racona/core:latest \
   --platform linux/amd64,linux/arm64 \
   .
 ```
@@ -440,7 +440,7 @@ Docker Compose automatically loads the root `.env` file. The following variables
 
 | Variable                    | Default | Description                                   |
 | --------------------------- | ------- | --------------------------------------------- |
-| `ELYOS_PORT`                | `3000`  | ElyOS application port                        |
+| `ELYOS_PORT`                | `3000`  | Racona application port                        |
 | `POSTGRES_PORT`             | `5432`  | PostgreSQL port                               |
 | `POSTGRES_USER`             | `elyos` | PostgreSQL username                           |
 | `POSTGRES_PASSWORD`         | `elyos123` | PostgreSQL password                        |

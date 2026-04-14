@@ -6,7 +6,7 @@ description: Drizzle ORM usage, schema structure, migrations, repository pattern
 
 ## Overview
 
-ElyOS uses PostgreSQL with [Drizzle ORM](https://orm.drizzle.team). The schema lives in the `packages/database` package, and repositories are located in `apps/web/src/lib/server/database/repositories/`.
+Racona uses PostgreSQL with [Drizzle ORM](https://orm.drizzle.team). The schema lives in the `packages/database` package, and repositories are located in `apps/web/src/lib/server/database/repositories/`.
 
 ## Schema Structure
 
@@ -260,7 +260,7 @@ Never manually edit generated migration files. If a migration is incorrect, dele
 
 ## Seed Data
 
-Seed data populates the database with initial data — default users, roles, applications, translations, etc. The ElyOS seed system is **idempotent** (safe to run multiple times) and **dependency-based** (automatic ordering).
+Seed data populates the database with initial data — default users, roles, applications, translations, etc. The Racona seed system is **idempotent** (safe to run multiple times) and **dependency-based** (automatic ordering).
 
 ### Seed Structure
 
@@ -416,7 +416,7 @@ The `users.sql` seed creates a system administrator user:
 
 ```sql
 INSERT INTO auth.users (id, full_name, email, email_verified, username, image, user_settings, oauth_image) VALUES
-  (1, 'ElyOS admin', 'youradminemail@yourdomain.com', true, null, null, '{}', null)
+  (1, 'Racona admin', 'youradminemail@yourdomain.com', true, null, null, '{}', null)
 ON CONFLICT (id) DO UPDATE SET
   full_name = EXCLUDED.full_name,
   email_verified = EXCLUDED.email_verified;

@@ -1,15 +1,15 @@
 ---
-title: "@elyos-dev/create-app"
-description: Az ElyOS CLI eszköz, amellyel új alkalmazás projektet hozhatsz létre egyetlen paranccsal
+title: "@racona/cli"
+description: A Rocona CLI eszköz, amellyel új alkalmazás projektet hozhatsz létre egyetlen paranccsal
 next:
   link: /hu/plugins/
   label: Alkalmazás fejlesztés
 ---
 
-A `@elyos-dev/create-app` egy interaktív parancssori eszköz, amellyel másodpercek alatt létrehozhatsz egy teljesen felkonfigurált ElyOS alkalmazás projektet. Nem kell kézzel beállítani a Vite konfigurációt, a TypeScript-et, a Mock SDK-t vagy a build scripteket — a CLI mindent előkészít.
+A `@racona/cli` egy interaktív parancssori eszköz, amellyel másodpercek alatt létrehozhatsz egy teljesen felkonfigurált Racona alkalmazás projektet. Nem kell kézzel beállítani a Vite konfigurációt, a TypeScript-et, a Mock SDK-t vagy a build scripteket — a CLI mindent előkészít.
 
 ```bash
-bunx @elyos-dev/create-app
+bunx @racona/cli
 ```
 
 A wizard végigvezet az alapbeállításokon (alkalmazás ID, név, szerző), majd kiválaszthatod a kívánt **funkciókat**. A projekt a kiválasztott funkciók kombinációjából generálódik — nincsenek fix template-ek.

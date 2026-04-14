@@ -1,9 +1,9 @@
 ---
 title: Contributing
-description: Guide to contributing to the ElyOS project
+description: Guide to contributing to the Racona project
 ---
 
-Thank you for your interest in developing ElyOS! This guide will help you get started, shows our conventions, and walks you through submitting your first contribution.
+Thank you for your interest in developing Racona! This guide will help you get started, shows our conventions, and walks you through submitting your first contribution.
 
 ## Code of Conduct
 
@@ -55,7 +55,7 @@ The codebase uses **English** for code comments, variable names, and documentati
 
 ### Svelte 5
 
-ElyOS uses **Svelte 5 with runes**. Key patterns:
+Racona uses **Svelte 5 with runes**. Key patterns:
 
 - Use `$state`, `$derived`, and `$effect` runes for reactivity (not the old `$:` syntax)
 - Class-based stores with `$state` properties, exported via `createX()` / `setX()` / `getX()` functions
@@ -133,7 +133,7 @@ Use the package or area name as scope:
 
 - `core` — main SvelteKit app (`apps/web`)
 - `sdk` — SDK package (`packages/sdk`)
-- `cli` — CLI tool (`packages/create-elyos-app`)
+- `cli` — CLI tool (`packages/@racona/cli`)
 - `db` — database package (`packages/database`)
 - `docker` — Docker configuration
 - `docs` — documentation
@@ -205,7 +205,7 @@ When reporting a bug, provide:
 - **Reproduction steps** — minimal steps to reproduce
 - **Environment** — OS, browser, Bun version, Node.js version
 - **Screenshots or logs** — if relevant
-- **ElyOS version** — commit hash or release tag
+- **Racona version** — commit hash or release tag
 
 ### Feature Requests
 
@@ -246,11 +246,11 @@ If you have questions or get stuck:
 - **Documentation** — check this documentation site for guides
 - **Troubleshooting** — common problems and solutions: [Troubleshooting →](/en/troubleshooting)
 
-Thank you for contributing to ElyOS! Every contribution matters, no matter how small. 🎉
+Thank you for contributing to Racona! Every contribution matters, no matter how small. 🎉
 
 ## Support
 
-I'm a software developer from Hungary with several years of experience, building ElyOS in my spare time (solo, for now) – together with an AI who also needs to be fed. 🤑
+I'm a software developer from Hungary with several years of experience, building Racona in my spare time (solo, for now) – together with an AI who also needs to be fed. 🤑
 
 If you find it useful or simply like what I'm doing, even a small contribution helps me keep going.
 

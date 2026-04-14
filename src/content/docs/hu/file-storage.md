@@ -5,7 +5,7 @@ description: Fájlok feltöltése, letöltése, törlése és a fájl repository
 
 ## Áttekintés
 
-Az ElyOS fájlkezelése a `src/lib/server/storage/` modulban van implementálva. A fájlok a szerveren tárolódnak, metaadataik az adatbázisban.
+A Rocona fájlkezelése a `src/lib/server/storage/` modulban van implementálva. A fájlok a szerveren tárolódnak, metaadataik az adatbázisban.
 
 ## Remote functions
 

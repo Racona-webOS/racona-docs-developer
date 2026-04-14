@@ -3,7 +3,7 @@ title: Validation
 description: Environment schema validation with Varlock and data validation with Valibot – server-side and client-side usage
 ---
 
-ElyOS uses two different validation layers:
+Racona uses two different validation layers:
 
 - **Varlock** — typesafe validation of environment variables at application startup
 - **Valibot** — data validation for server action inputs and client-side forms
@@ -12,7 +12,7 @@ ElyOS uses two different validation layers:
 
 ## Environment Schema Validation (Varlock)
 
-ElyOS uses **Varlock** for typesafe validation of all environment variables. Varlock runs at application startup — before `node server.js` — so configuration errors are caught immediately.
+Racona uses **Varlock** for typesafe validation of all environment variables. Varlock runs at application startup — before `node server.js` — so configuration errors are caught immediately.
 
 ### The Env_Schema File
 
@@ -91,11 +91,11 @@ If validation fails, Varlock logs the specific error and stops the application:
 
 ## Data Validation (Valibot)
 
-ElyOS uses **Valibot** for validating all server action inputs and client-side data. Valibot is a lightweight, TypeScript-first validation library that's tree-shaking-friendly and provides excellent type inference.
+Racona uses **Valibot** for validating all server action inputs and client-side data. Valibot is a lightweight, TypeScript-first validation library that's tree-shaking-friendly and provides excellent type inference.
 
 ### Installation
 
-Valibot is already part of ElyOS dependencies:
+Valibot is already part of Racona dependencies:
 
 ```typescript
 import * as v from 'valibot';

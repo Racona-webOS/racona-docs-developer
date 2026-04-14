@@ -5,7 +5,7 @@ description: Svelte 5 runes alapú store-ok, singleton minta, context API integr
 
 ## Áttekintés
 
-Az ElyOS Svelte 5 rune-okat használ az állapotkezeléshez. A store-ok osztályalapúak, `$state` tulajdonságokkal, és singleton mintát követnek.
+A Rocona Svelte 5 rune-okat használ az állapotkezeléshez. A store-ok osztályalapúak, `$state` tulajdonságokkal, és singleton mintát követnek.
 
 ## Globális store-ok
 

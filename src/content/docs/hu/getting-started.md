@@ -1,6 +1,6 @@
 ---
 title: Első lépések
-description: Fejlesztői környezet beállítása, függőségek telepítése és az ElyOS lokális futtatása
+description: Fejlesztői környezet beállítása, függőségek telepítése és a Rocona lokális futtatása
 ---
 
 ## Előfeltételek
@@ -21,7 +21,7 @@ macOS-en a Docker Desktop helyett érdemes [OrbStack](https://orbstack.dev)-et h
 ### 1. Klónozás
 
 ```bash
-git clone https://github.com/ElyOS-webOS/elyos-core.git
+git clone https://github.com/Racona-webOS/elyos-core.git
 cd elyos-core
 ```
 
@@ -37,7 +37,7 @@ bun install
 cp .env.example .env
 ```
 
-Az ElyOS **Varlock**-ot használ a typesafe env kezeléshez. A `.env` fájlban csak a **bootstrap credentials** szükséges — minden más secret az Infisical-ból érkezik indításkor.
+A Rocona **Varlock**-ot használ a typesafe env kezeléshez. A `.env` fájlban csak a **bootstrap credentials** szükséges — minden más secret az Infisical-ból érkezik indításkor.
 
 **Részletes dokumentáció:** [Környezeti változók →](/hu/environment)
 
@@ -122,7 +122,7 @@ ADMIN_USER_EMAIL=admin@example.com
 
 ## Docker-alapú futtatás
 
-A teljes stack (ElyOS + PostgreSQL) Docker Compose-zal is indítható:
+A teljes stack (Racona + PostgreSQL) Docker Compose-zal is indítható:
 
 ```bash
 bun docker:up
@@ -153,7 +153,7 @@ bun db:studio         # Drizzle Studio megnyitása
 
 # Docker
 bun docker:db         # Csak PostgreSQL indítása
-bun docker:up         # Teljes stack (ElyOS + DB)
+bun docker:up         # Teljes stack (Racona + DB)
 bun docker:down       # Leállítás
 bun docker:logs       # Naplók követése
 

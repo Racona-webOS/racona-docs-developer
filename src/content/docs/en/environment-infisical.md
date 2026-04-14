@@ -3,7 +3,7 @@ title: Infisical Integration
 description: Secrets management with Infisical — bootstrap credentials, operation and fallback mode
 ---
 
-ElyOS uses **Infisical** for centralized secrets management. This ensures that secrets are not stored in version control and access can be managed centrally.
+Racona uses **Infisical** for centralized secrets management. This ensures that secrets are not stored in version control and access can be managed centrally.
 
 ## What is Infisical?
 

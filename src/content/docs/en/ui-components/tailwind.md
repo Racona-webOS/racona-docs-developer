@@ -1,9 +1,9 @@
 ---
 title: Tailwind CSS
-description: Using Tailwind CSS 4 in ElyOS
+description: Using Tailwind CSS 4 in Racona
 ---
 
-ElyOS uses **Tailwind CSS 4** via the Vite plugin. There is no `tailwind.config` file — configuration is done in CSS.
+Racona uses **Tailwind CSS 4** via the Vite plugin. There is no `tailwind.config` file — configuration is done in CSS.
 
 ## Common Utility Classes
 
@@ -75,7 +75,7 @@ ElyOS uses **Tailwind CSS 4** via the Vite plugin. There is no `tailwind.config`
 
 ### Colors
 
-ElyOS uses semantic colors:
+Racona uses semantic colors:
 
 ```svelte
 <!-- Background -->

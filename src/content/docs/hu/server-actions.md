@@ -5,7 +5,7 @@ description: A command/query minta használata szerver oldali logikához – val
 
 ## Áttekintés
 
-Az ElyOS a SvelteKit `command` és `query` függvényeit használja szerver oldali logikához. Ezek a `*.remote.ts` fájlokban élnek, és közvetlenül hívhatók a kliens oldalról — nincs szükség külön API route-ra.
+A Rocona a SvelteKit `command` és `query` függvényeit használja szerver oldali logikához. Ezek a `*.remote.ts` fájlokban élnek, és közvetlenül hívhatók a kliens oldalról — nincs szükség külön API route-ra.
 
 ```
 src/apps/[app-name]/

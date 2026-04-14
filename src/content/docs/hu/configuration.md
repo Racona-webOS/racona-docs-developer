@@ -14,7 +14,7 @@ Ez az oldal az **összes elérhető környezeti változó** teljes referenciája
 
 ## Env kezelés
 
-Az ElyOS **Varlock**-ot használ a typesafe környezeti változók kezeléséhez. A Varlock az alkalmazás indításakor validálja az összes konfigurációs értéket, így a hibás konfiguráció azonnal kiderül.
+A Rocona **Varlock**-ot használ a typesafe környezeti változók kezeléséhez. A Varlock az alkalmazás indításakor validálja az összes konfigurációs értéket, így a hibás konfiguráció azonnal kiderül.
 
 ### Bootstrap credentials
 
@@ -98,7 +98,7 @@ ORIGIN=http://localhost:5173
 
 | Változó          | Kötelező | Alapértelmezett | Leírás                                         |
 | ---------------- | -------- | --------------- | ---------------------------------------------- |
-| `APP_NAME`       | Nem      | `ElyOS`         | Megjelenített alkalmazásnév                    |
+| `APP_NAME`       | Nem      | `Racona`         | Megjelenített alkalmazásnév                    |
 | `APP_LOGO_URL`   | Nem      | —               | Logó URL — abszolút vagy relatív               |
 | `EMAIL_USE_LOGO` | Nem      | `false`         | Logó kép használata e-mailekben szöveg helyett |
 

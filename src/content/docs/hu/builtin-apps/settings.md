@@ -3,7 +3,7 @@ title: Beállítások alkalmazás
 description: Beállítások alkalmazás fejlesztői dokumentáció - architektúra, komponensek, server action-ök és integráció
 ---
 
-A Beállítások alkalmazás az ElyOS központi beállítási felülete, ahol a felhasználók személyre szabhatják a rendszert. Ez az egyik legkomplexebb beépített alkalmazás, hierarchikus menüvel, számos beállítási szekcióval és szoros integrációval a téma- és desktop rendszerekkel.
+A Beállítások alkalmazás a Rocona központi beállítási felülete, ahol a felhasználók személyre szabhatják a rendszert. Ez az egyik legkomplexebb beépített alkalmazás, hierarchikus menüvel, számos beállítási szekcióval és szoros integrációval a téma- és desktop rendszerekkel.
 
 ## Áttekintés
 

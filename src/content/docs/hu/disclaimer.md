@@ -1,12 +1,12 @@
 ---
 title: Felelősség kizárása
-description: Jogi felelősségkizárás az ElyOS szoftver használatával kapcsolatban
+description: Jogi felelősségkizárás a Rocona szoftver használatával kapcsolatban
 next:
   link: /hu/environment/
   label: Környezeti változók
 ---
 
-Az ElyOS szoftvert **"ahogy van" (as-is)** alapon bocsátjuk rendelkezésre, mindenféle kifejezett vagy hallgatólagos garancia nélkül — beleértve, de nem kizárólagosan az eladhatóságra, adott célra való alkalmasságra vagy jogsértésmentességre vonatkozó garanciákat.
+A Rocona szoftvert **"ahogy van" (as-is)** alapon bocsátjuk rendelkezésre, mindenféle kifejezett vagy hallgatólagos garancia nélkül — beleértve, de nem kizárólagosan az eladhatóságra, adott célra való alkalmasságra vagy jogsértésmentességre vonatkozó garanciákat.
 
 ## Általános felelősségkizárás
 

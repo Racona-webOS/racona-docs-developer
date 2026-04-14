@@ -3,11 +3,11 @@ title: Environment Schema Validation
 description: Typesafe validation of environment variables with Varlock – schema format, types, and error messages
 ---
 
-ElyOS uses **Varlock** for typesafe validation of all environment variables. Varlock runs at application startup — before `node server.js` — so configuration errors are caught immediately.
+Racona uses **Varlock** for typesafe validation of all environment variables. Varlock runs at application startup — before `node server.js` — so configuration errors are caught immediately.
 
 **Detailed documentation:**
 - [Varlock Official Site](https://varlock.dev/) — complete Varlock documentation
-- [Environment Variables →](/en/environment) — ElyOS-specific usage
+- [Environment Variables →](/en/environment) — Racona-specific usage
 
 ## The Env_Schema File
 
@@ -129,5 +129,5 @@ On successful startup:
 ## Further Information
 
 **Detailed documentation:**
-- [Environment Variables →](/en/environment) — complete ElyOS environment variable management
+- [Environment Variables →](/en/environment) — complete Racona environment variable management
 - [Varlock Official Site](https://varlock.dev/) — Varlock documentation and API reference

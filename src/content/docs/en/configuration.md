@@ -14,7 +14,7 @@ This page is the **complete reference of all available environment variables** i
 
 ## Environment Management
 
-ElyOS uses **Varlock** for typesafe environment variable management. Varlock validates all configuration values at application startup, so configuration errors are caught immediately.
+Racona uses **Varlock** for typesafe environment variable management. Varlock validates all configuration values at application startup, so configuration errors are caught immediately.
 
 ### Bootstrap Credentials
 
@@ -98,7 +98,7 @@ ORIGIN=http://localhost:5173
 
 | Variable          | Required | Default | Description                                    |
 | ----------------- | -------- | ------- | ---------------------------------------------- |
-| `APP_NAME`        | No       | `ElyOS` | Displayed application name                     |
+| `APP_NAME`        | No       | `Racona` | Displayed application name                     |
 | `APP_LOGO_URL`    | No       | —       | Logo URL — absolute or relative                |
 | `EMAIL_USE_LOGO`  | No       | `false` | Use logo image in emails instead of text       |
 

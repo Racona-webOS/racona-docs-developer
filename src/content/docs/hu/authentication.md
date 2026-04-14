@@ -5,7 +5,7 @@ description: better-auth integráció, session kezelés, védett route-ok, 2FA �
 
 ## Áttekintés
 
-Az ElyOS a [better-auth](https://www.better-auth.com/) könyvtárat használja autentikációhoz. Támogatott módszerek:
+A Rocona a [better-auth](https://www.better-auth.com/) könyvtárat használja autentikációhoz. Támogatott módszerek:
 
 - Email + jelszó
 - Email OTP (egyszeri kód)
@@ -170,4 +170,4 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 ## Egyszeri munkamenet
 
-Az ElyOS felhasználónként csak egy aktív munkamenetet engedélyez. Új bejelentkezéskor a korábbi munkamenet automatikusan érvénytelenítődik.
+A Rocona felhasználónként csak egy aktív munkamenetet engedélyez. Új bejelentkezéskor a korábbi munkamenet automatikusan érvénytelenítődik.

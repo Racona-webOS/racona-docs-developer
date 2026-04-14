@@ -1,6 +1,6 @@
 ---
 title: UI Komponensek
-description: Értesítési UI komponensek az ElyOS-ben
+description: Értesítési UI komponensek a Rocona-ben
 ---
 
 Az értesítési rendszer három fő UI komponenst tartalmaz a felhasználói élmény biztosításához.

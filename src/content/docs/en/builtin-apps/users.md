@@ -3,7 +3,7 @@ title: Users App
 description: Users app developer documentation - managing users, groups, roles and permissions
 ---
 
-The Users app is ElyOS's central user and permission management system. Users with admin privileges can manage users, groups, roles, permissions and resources here.
+The Users app is Racona's central user and permission management system. Users with admin privileges can manage users, groups, roles, permissions and resources here.
 
 ## Overview
 
@@ -86,7 +86,7 @@ The `menu.json` defines a permission-based menu:
 
 ## RBAC System
 
-ElyOS implements a full RBAC (Role-Based Access Control) system:
+Racona implements a full RBAC (Role-Based Access Control) system:
 
 ```
 User

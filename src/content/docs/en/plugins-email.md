@@ -4,7 +4,7 @@ description: Sending emails from applications – email templates, context.email
 ---
 
 :::note[Since v0.1.7]
-The Email Service is available from ElyOS core version `0.1.7`.
+The Email Service is available from Racona core version `0.1.7`.
 :::
 
 ## Overview

@@ -1,9 +1,9 @@
 ---
 title: Troubleshooting
-description: Common problems and solutions for ElyOS installation and operation
+description: Common problems and solutions for Racona installation and operation
 ---
 
-This guide covers the most common problems encountered when installing and operating ElyOS.
+This guide covers the most common problems encountered when installing and operating Racona.
 
 ## Application Won't Start
 

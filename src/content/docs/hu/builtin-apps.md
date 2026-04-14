@@ -1,13 +1,13 @@
 ---
 title: Beépített alkalmazások
-description: ElyOS beépített alkalmazásainak áttekintése és alkalmazás keretrendszer
+description: Racona beépített alkalmazásainak áttekintése és alkalmazás keretrendszer
 ---
 
-Az ElyOS rendszer 6 beépített alkalmazással érkezik, amelyek a rendszer alapvető funkcióit biztosítják. Minden alkalmazás egy egységes keretrendszert használ, amely biztosítja a konzisztens felhasználói élményt és a könnyű bővíthetőséget.
+A Rocona rendszer 6 beépített alkalmazással érkezik, amelyek a rendszer alapvető funkcióit biztosítják. Minden alkalmazás egy egységes keretrendszert használ, amely biztosítja a konzisztens felhasználói élményt és a könnyű bővíthetőséget.
 
 ## Alkalmazás keretrendszer
 
-Az ElyOS alkalmazások egy egységes keretrendszert használnak, amely biztosítja a konzisztens felhasználói élményt, a könnyű bővíthetőséget és a hatékony állapotkezelést. A keretrendszer központi eleme az **AppShell** (állapotkezelő logika) és az **AppLayout** (vizuális struktúra), amelyek együttműködve kezelik a menünavigációt, a dinamikus komponens betöltést és az alkalmazás életciklusát.
+A Rocona alkalmazások egy egységes keretrendszert használnak, amely biztosítja a konzisztens felhasználói élményt, a könnyű bővíthetőséget és a hatékony állapotkezelést. A keretrendszer központi eleme az **AppShell** (állapotkezelő logika) és az **AppLayout** (vizuális struktúra), amelyek együttműködve kezelik a menünavigációt, a dinamikus komponens betöltést és az alkalmazás életciklusát.
 
 ### Architektúra áttekintés
 

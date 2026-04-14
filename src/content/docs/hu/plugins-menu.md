@@ -5,7 +5,7 @@ description: Többoldalas alkalmazás készítése menu.json-nal, AppLayout mód
 
 ## Mi az AppLayout mód?
 
-Ha az alkalmazás gyökerében van egy `menu.json` fájl, az ElyOS AppLayout módban tölti be az alkalmazást. Ilyenkor az alkalmazás egy oldalsávos navigációval rendelkező, többoldalas alkalmazásként jelenik meg — ugyanolyan elrendezésben, mint a beépített alkalmazások (pl. Beállítások, Felhasználók).
+Ha az alkalmazás gyökerében van egy `menu.json` fájl, a Rocona AppLayout módban tölti be az alkalmazást. Ilyenkor az alkalmazás egy oldalsávos navigációval rendelkező, többoldalas alkalmazásként jelenik meg — ugyanolyan elrendezésben, mint a beépített alkalmazások (pl. Beállítások, Felhasználók).
 
 AppLayout mód nélkül (standalone) az alkalmazás egyetlen Web Component-ként töltődik be, teljes ablakot kitöltve.
 

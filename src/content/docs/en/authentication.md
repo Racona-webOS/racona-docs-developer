@@ -5,7 +5,7 @@ description: better-auth integration, session management, protected routes, 2FA,
 
 ## Overview
 
-ElyOS uses the [better-auth](https://www.better-auth.com/) library for authentication. Supported methods:
+Racona uses the [better-auth](https://www.better-auth.com/) library for authentication. Supported methods:
 
 - Email + password
 - Email OTP (one-time code)
@@ -170,4 +170,4 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 ## Single Session Per User
 
-ElyOS allows only one active session per user. When a new login occurs, the previous session is automatically invalidated.
+Racona allows only one active session per user. When a new login occurs, the previous session is automatically invalidated.
