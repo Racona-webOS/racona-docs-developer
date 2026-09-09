@@ -10,7 +10,7 @@ A Plugin Manager alkalmazás lehetővé teszi harmadik féltől származó plugi
 A Plugin Manager négy fő részből áll:
 - **Plugin Store** - Plugin áruház (fejlesztés alatt)
 - **Telepített pluginek** - Telepített pluginek listája és kezelése
-- **Manuális telepítés** - `.elyospkg` fájlok feltöltése
+- **Manuális telepítés** - `.raconapkg` fájlok feltöltése
 - **Dev pluginek** - Fejlesztői pluginek betöltése (csak dev mode-ban)
 
 ### Főbb funkciók
@@ -273,7 +273,7 @@ Plugin feltöltés drag & drop-pal vagy fájl böngészővel.
 **Konfiguráció:**
 
 ```typescript
-const PLUGIN_EXTENSION = '.elyospkg';
+const PLUGIN_EXTENSION = '.raconapkg';
 const MAX_SIZE_MB = 10;
 ```
 
@@ -291,7 +291,7 @@ let errorDetails = $state<string[]>([]);
 
 **Validációk:**
 
-1. **Fájl kiterjesztés** - Csak `.elyospkg` fájlok
+1. **Fájl kiterjesztés** - Csak `.raconapkg` fájlok
 2. **Fájl méret** - Maximum 10 MB
 
 **Feltöltési folyamat:**
@@ -452,10 +452,10 @@ Plugin áruház (fejlesztés alatt).
 
 ### Plugin struktúra
 
-Egy plugin egy `.elyospkg` fájl, amely egy ZIP archívum a következő struktúrával:
+Egy plugin egy `.raconapkg` fájl, amely egy ZIP archívum a következő struktúrával:
 
 ```
-my-plugin.elyospkg
+my-plugin.raconapkg
 ├── manifest.json         # Plugin metaadatok
 ├── index.html           # Plugin belépési pont (Web Component)
 ├── icon.svg             # Plugin ikon
@@ -528,7 +528,7 @@ A `/api/plugins/validate` végpont validálja a feltöltött plugint:
 ```typescript
 {
   success: true,
-  tempFile: '/tmp/plugin-xyz.elyospkg',
+  tempFile: '/tmp/plugin-xyz.raconapkg',
   manifest: { /* ... */ },
   warnings: [
     'Plugin requests storage.write permission',
@@ -671,7 +671,7 @@ if (result.success) {
 ### Plugin feltöltés programozottan
 
 ```typescript
-const file = new File([blob], 'my-plugin.elyospkg', {
+const file = new File([blob], 'my-plugin.raconapkg', {
   type: 'application/zip'
 });
 
@@ -744,7 +744,7 @@ INSERT INTO translations (namespace, key, locale, value) VALUES
 **Probléma**: Plugin feltöltés hibával tér vissza.
 
 **Megoldás**:
-1. Ellenőrizd a fájl kiterjesztést (`.elyospkg`)
+1. Ellenőrizd a fájl kiterjesztést (`.raconapkg`)
 2. Ellenőrizd a fájl méretet (max 10 MB)
 3. Nézd meg a `manifest.json` fájlt - érvényes JSON?
 4. Ellenőrizd a kötelező mezőket (id, name, version, stb.)

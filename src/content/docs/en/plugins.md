@@ -10,7 +10,7 @@ Racona recognizes two types of applications:
 | Type | Location | Developed By | Access |
 |---|---|---|---|
 | **Built-in Application** | `apps/web/src/apps/[app-name]/` | Racona core team | Full internal API |
-| **External Application** | Standalone project, `.elyospkg` package | External developers | Only via WebOS SDK |
+| **External Application** | Standalone project, `.raconapkg` package | External developers | Only via WebOS SDK |
 
 External applications are loaded as Web Components into Racona. The system dynamically imports the IIFE bundle (IIFE = Immediately Invoked Function Expression — a self-executing, isolated JavaScript package that doesn't pollute the global namespace), initializes the WebOS SDK, then displays the component in a window.
 
@@ -36,5 +36,5 @@ If you're an **external developer** or want to distribute the application to oth
 - [SDK API Reference](/en/plugins-sdk/) — all available services in detail
 - [manifest.json Reference](/en/plugins-manifest/) — every field documented
 - [Server Functions](/en/plugins-server-functions/) — backend logic for applications
-- [Build and Packaging](/en/plugins-build/) — `.elyospkg` format, upload
+- [Build and Packaging](/en/plugins-build/) — `.raconapkg` format, upload
 - [Security and Permissions](/en/plugins-security/) — forbidden patterns, whitelist, permissions

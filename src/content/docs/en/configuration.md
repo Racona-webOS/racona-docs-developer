@@ -200,7 +200,7 @@ Never enable `DEV_MODE=true` in production. It allows arbitrary code execution f
 
 | Variable                    | Default              | Description                                    |
 | --------------------------- | -------------------- | ---------------------------------------------- |
-| `PLUGIN_PACKAGE_EXTENSION`  | `elyospkg`           | Plugin package file extension                  |
+| `PLUGIN_PACKAGE_EXTENSION`  | `raconapkg`           | Plugin package file extension                  |
 | `PLUGIN_MAX_SIZE`           | `10485760`           | Maximum plugin size in bytes (max: 100 MB)     |
 | `PLUGIN_STORAGE_DIR`        | `/var/webos/plugins` | Installed plugin files directory               |
 

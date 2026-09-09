@@ -90,7 +90,7 @@ If you add a new environment variable, you need to update **3 places**:
 ## File Structure
 
 ```
-elyos-core/
+racona-core/
 ├── .env.example                          # Example configuration
 ├── .env.local                            # Local development variables (gitignore)
 ├── apps/web/

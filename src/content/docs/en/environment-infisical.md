@@ -163,10 +163,10 @@ In this mode, Varlock reads all variables directly from the `.env` file, without
 ## Successful Startup
 
 ```
-[Varlock] 42 secrets successfully loaded (production/elyos-core)
+[Varlock] 42 secrets successfully loaded (production/racona-core)
 ```
 
-This means 42 environment variables were fetched from the Infisical `production` environment of the `elyos-core` project.
+This means 42 environment variables were fetched from the Infisical `production` environment of the `racona-core` project.
 
 ## Benefits
 

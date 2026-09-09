@@ -52,8 +52,8 @@ Bun nélkül is használható a Docker, csak a nyers `docker compose` parancsoka
 ### 1. Repository klónozása
 
 ```bash
-git clone https://github.com/Racona-webOS/elyos-core
-cd elyos-core
+git clone https://github.com/Racona-webOS/racona-core
+cd racona-core
 ```
 
 ### 2. Környezeti változók konfigurálása
@@ -168,7 +168,7 @@ Egyszeri inicializálás: Drizzle migrációk futtatása és seed adatok betölt
 ```yaml
 db-init:
   command: >
-    sh -c 'bun --filter @elyos/database db:init ${RESET:+-- --reset}'
+    sh -c 'bun --filter @racona/database db:init ${RESET:+-- --reset}'
   depends_on:
     postgres:
       condition: service_healthy

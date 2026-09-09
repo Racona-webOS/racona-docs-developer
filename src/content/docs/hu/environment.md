@@ -90,7 +90,7 @@ Ha új környezeti változót adsz hozzá, **3 helyen kell frissítened**:
 ## Fájlstruktúra
 
 ```
-elyos-core/
+racona-core/
 ├── .env.example                          # Példa konfiguráció
 ├── .env.local                            # Lokális fejlesztői változók (gitignore)
 ├── apps/web/

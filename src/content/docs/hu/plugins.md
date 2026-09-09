@@ -10,7 +10,7 @@ A Racona kétféle alkalmazást ismer:
 | Típus | Hol él | Ki fejleszti | Hozzáférés |
 |---|---|---|---|
 | **Beépített alkalmazás** | `apps/web/src/apps/[app-name]/` | Racona core csapat | Teljes belső API |
-| **Külső alkalmazás** | Önálló projekt, `.elyospkg` csomag | Külső fejlesztők | Csak a WebOS SDK-n keresztül |
+| **Külső alkalmazás** | Önálló projekt, `.raconapkg` csomag | Külső fejlesztők | Csak a WebOS SDK-n keresztül |
 
 A külső alkalmazások Web Component-ként töltődnek be a Racona-be. A rendszer dinamikusan importálja az IIFE bundle-t (IIFE = Immediately Invoked Function Expression — egy önmagát azonnal végrehajtó, izolált JavaScript csomag, amely nem szennyezi a globális névteret), inicializálja a WebOS SDK-t, majd megjeleníti a komponenst egy ablakban.
 
@@ -36,5 +36,5 @@ Ha **külső fejlesztőként** szeretnél alkalmazást készíteni, vagy az alka
 - [SDK API referencia](/hu/apps-sdk/) — összes elérhető service részletesen
 - [manifest.json referencia](/hu/apps-manifest/) — minden mező dokumentálva
 - [Szerver függvények](/hu/apps-server-functions/) — backend logika alkalmazásokhoz
-- [Build és csomagolás](/hu/apps-build/) — `.elyospkg` formátum, feltöltés
+- [Build és csomagolás](/hu/apps-build/) — `.raconapkg` formátum, feltöltés
 - [Biztonság és jogosultságok](/hu/apps-security/) — tiltott minták, fehérlista, permissions

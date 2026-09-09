@@ -33,7 +33,7 @@ packages/database/src/schemas/
 ## Importálás
 
 ```typescript
-import { db, schema } from '@elyos/database';
+import { db, schema } from '@racona/database';
 ```
 
 ## Drizzle ORM alapok
@@ -41,7 +41,7 @@ import { db, schema } from '@elyos/database';
 ### Lekérdezés
 
 ```typescript
-import { db, schema } from '@elyos/database';
+import { db, schema } from '@racona/database';
 import { eq, and, like, desc, asc } from 'drizzle-orm';
 
 // Összes rekord
@@ -132,7 +132,7 @@ Az adatbázis műveletek repository osztályokban vannak szervezve. Minden repos
 
 ```typescript
 // src/lib/server/database/repositories/user-repository.ts
-import { db, schema } from '@elyos/database';
+import { db, schema } from '@racona/database';
 import { eq, and, like, desc, count } from 'drizzle-orm';
 
 export class UserRepository {
@@ -533,7 +533,7 @@ A Docker Compose automatikusan futtatja a seed-eket a `db-init` konténerben:
 ```yaml
 db-init:
   command: >
-    sh -c 'bun --filter @elyos/database db:init ${RESET:+-- --reset}'
+    sh -c 'bun --filter @racona/database db:init ${RESET:+-- --reset}'
   depends_on:
     postgres:
       condition: service_healthy

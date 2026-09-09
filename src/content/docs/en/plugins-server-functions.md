@@ -38,8 +38,15 @@ interface Context {
   pluginId: string;
   userId: string;
   db: {
-    execute: (sql: string, params?: unknown[]) => Promise<{ rows: unknown[] }>;
+    query: (sql: string, params?: unknown[]) => Promise<{ rows: unknown[] }>;
+    connect: () => Promise<{
+      query: (sql: string, params?: unknown[]) => Promise<{ rows: unknown[] }>;
+      release: () => void;
+    }>;
   };
+  permissions: string[];
+  pluginPermissions: string[];
+  email?: { send: (params: unknown) => Promise<{ success: boolean; error?: string }> };
 }
 
 export async function getServerTime(
@@ -62,10 +69,15 @@ Every server function receives the `context` parameter:
 | Field | Type | Description |
 |---|---|---|
 | `pluginId` | `string` | The plugin identifier |
-| `userId` | `string` | The ID of the calling user |
-| `db` | `object` | Database connection (only with `database` permission) |
-| `permissions` | `string[]` | The plugin's granted permissions |
+| `userId` | `string` | The ID of the calling user (numeric string, e.g. `"12"`) |
+| `db` | `object` | pg Pool compatible connection: `query(sql, params)` and `connect()` for transactions |
+| `permissions` | `string[]` | The **calling user's** core permissions (e.g. `plugin.manual.install`). For system administrators it also contains `admin`. |
+| `pluginPermissions` | `string[]` | The permissions declared in the plugin's `manifest.json` (e.g. `database`, `remote_functions`) |
 | `email` | `object \| undefined` | Email service (only with `notifications` permission) — see [Email Service](/en/plugins-email/) |
+
+:::note
+`permissions` belongs to the user, not the plugin. To check whether the caller is a system administrator, use `context.permissions.includes('admin')`. The plugin's own permissions are in `pluginPermissions`.
+:::
 
 ```javascript
 export async function myFunction(params, context) {
@@ -78,14 +90,14 @@ export async function myFunction(params, context) {
 
 ## Database Access
 
-The `db` object provides access to the plugin's own schema (`plugin_{plugin_id}`). Required permission: `database`.
+The `db` object is the core PostgreSQL connection pool. The plugin's own tables live in the `app__{plugin_id}` schema (hyphens replaced with underscores, e.g. `my-app` → `app__my_app`). The schema is only created at install time when the plugin has the `database` permission.
 
 ```javascript
 export async function getItems(params, context) {
   const { db, pluginId } = context;
 
   // Query a table in the plugin's own schema
-  const result = await db.execute(`
+  const result = await db.query(`
     SELECT id, name, created_at
     FROM plugin_${pluginId}.items
     WHERE active = $1
@@ -101,8 +113,28 @@ export async function getItems(params, context) {
 ```
 
 :::caution
-Only tables in the plugin's own schema (`plugin_{plugin_id}`) are accessible. The `platform`, `auth`, and other plugin schemas are not accessible — this is a security constraint.
+The `db` handed to server functions is **not restricted to a schema** — unlike the client-side `sdk.data.query()`, where the core enforces the plugin's own schema. The policy: write only to your own `app__{plugin_id}` schema and never touch other plugins' schemas or `platform.*` tables. Reading `auth.users` (e.g. to display names and emails) is accepted practice.
 :::
+
+### Transactions
+
+For a transaction, acquire a dedicated client with `connect()` and always release it:
+
+```javascript
+export async function transferItems(params, context) {
+  const client = await context.db.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query(`UPDATE app__${context.pluginId.replace(/-/g, '_')}.items SET owner = $1 WHERE id = $2`, [params.to, params.id]);
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+```
 
 ## CRUD Example
 
@@ -117,7 +149,7 @@ export async function createItem(params, context) {
     throw new Error('Name is required');
   }
 
-  const result = await db.execute(`
+  const result = await db.query(`
     INSERT INTO plugin_${pluginId}.items (name, description, created_by)
     VALUES ($1, $2, $3)
     RETURNING id, name, created_at
@@ -130,7 +162,7 @@ export async function updateItem(params, context) {
   const { db, pluginId } = context;
   const { id, name, description } = params;
 
-  await db.execute(`
+  await db.query(`
     UPDATE plugin_${pluginId}.items
     SET name = $1, description = $2, updated_at = NOW()
     WHERE id = $3
@@ -142,7 +174,7 @@ export async function updateItem(params, context) {
 export async function deleteItem(params, context) {
   const { db, pluginId } = context;
 
-  await db.execute(`
+  await db.query(`
     DELETE FROM plugin_${pluginId}.items WHERE id = $1
   `, [params.id]);
 
@@ -202,7 +234,7 @@ export async function riskyOperation(params, context) {
   }
 
   try {
-    const result = await context.db.execute(
+    const result = await context.db.query(
       `SELECT * FROM plugin_${context.pluginId}.items WHERE id = $1`,
       [params.id]
     );

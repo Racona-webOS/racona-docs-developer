@@ -84,7 +84,7 @@ Ha a validáció sikertelen, a Varlock naplózza a konkrét hibát és leállít
 [Varlock] HIBA: Hiányzó bootstrap credential: INFISICAL_CLIENT_ID
 [Varlock] HIBA: Hiányzó kötelező secret: DATABASE_URL
 [Varlock] HIBA: Típusvalidáció sikertelen: SMTP_PORT — elvárt: number, kapott: "invalid"
-[Varlock] 42 secret sikeresen betöltve (production/elyos-core)
+[Varlock] 42 secret sikeresen betöltve (production/racona-core)
 ```
 
 ---

@@ -85,7 +85,7 @@ A generált projekt scriptkészlete a kiválasztott feature-öktől függ.
 bun dev            # Vite dev szerver (standalone, Mock SDK) — http://localhost:5174
 bun run build      # IIFE bundle elkészítése (dist/index.iife.js)
 bun run build:watch  # Build figyelő módban
-bun run package    # .elyospkg csomag elkészítése
+bun run package    # .raconapkg csomag elkészítése
 ```
 
 ### Ha `remote_functions` engedélyezve van
@@ -261,7 +261,7 @@ A folyamat lényege: **buildeld le az alkalmazást, indíts egy statikus HTTP sz
 
 ### 1. lépés — Racona core indítása
 
-Az `elyos-core` monorepo gyökerében:
+Az `racona-core` monorepo gyökerében:
 
 ```bash
 # .env.local fájlban engedélyezd a dev alkalmazás betöltést:
@@ -338,7 +338,7 @@ bun run build
 
 ```bash
 # Terminál 1 — Racona core
-cd elyos-core && bun app:dev
+cd racona-core && bun app:dev
 
 # Terminál 2 — Alkalmazás build + szerver
 cd my-app
@@ -352,7 +352,7 @@ bun run dev:server  # statikus szerver indítása (http://localhost:5175)
 
 ```bash
 # Terminál 1 — Racona core
-cd elyos-core && bun app:dev
+cd racona-core && bun app:dev
 
 # Terminál 2 — Alkalmazás (első alkalommal)
 cd my-app
@@ -368,7 +368,7 @@ bun run dev:server     # dev szerver + migrációk + remote endpoint (http://loc
 
 ---
 
-## Plugin telepítése (`.elyospkg`)
+## Plugin telepítése (`.raconapkg`)
 
 Ha az alkalmazás fejlesztése kész, csomagold be és telepítsd a Racona-be.
 
@@ -376,10 +376,10 @@ Ha az alkalmazás fejlesztése kész, csomagold be és telepítsd a Racona-be.
 
 ```bash
 bun run build    # IIFE bundle elkészítése
-bun run package  # .elyospkg fájl létrehozása
+bun run package  # .raconapkg fájl létrehozása
 ```
 
-Ez létrehozza a `{id}-{version}.elyospkg` fájlt (pl. `my-app-1.0.0.elyospkg`). A csomag egy ZIP archívum, amely tartalmazza:
+Ez létrehozza a `{id}-{version}.raconapkg` fájlt (pl. `my-app-1.0.0.raconapkg`). A csomag egy ZIP archívum, amely tartalmazza:
 
 - `manifest.json`
 - `dist/` — build output (IIFE bundle)
@@ -392,7 +392,7 @@ Ez létrehozza a `{id}-{version}.elyospkg` fájlt (pl. `my-app-1.0.0.elyospkg`).
 ### Feltöltés a Racona-be
 
 1. Start menü → Alkalmazás Manager → **Plugin Feltöltés**
-2. Húzd rá a `.elyospkg` fájlt, vagy kattints a böngészés gombra
+2. Húzd rá a `.raconapkg` fájlt, vagy kattints a böngészés gombra
 3. A Racona validálja a csomagot, majd megmutatja az előnézetet
 4. Kattints a **Telepítés** gombra
 
@@ -509,12 +509,8 @@ await sdk.data.delete('key');
 // SQL lekérdezés (csak a plugin saját sémájában!)
 const rows = await sdk.data.query('SELECT * FROM my_table WHERE id = $1', [123]);
 
-// Tranzakció
-await sdk.data.transaction(async (tx) => {
-  await tx.query('INSERT INTO ...');
-  await tx.query('UPDATE ...');
-  await tx.commit();
-});
+// Tranzakció: a kliens oldali transaction() nem atomi (a commit no-op) —
+// valódi tranzakcióhoz szerver függvényt és context.db.connect()-et használj
 ```
 
 ### I18n Service
@@ -665,7 +661,7 @@ CREATE TABLE items (
 A táblaneveket nem kell sémával prefixelni a migrációs fájlokban — a Racona telepítéskor automatikusan hozzáadja a `app__{plugin_id}` prefixet.
 :::
 
-A `migrations/dev/` mappában lévő fájlok csak fejlesztési célra szolgálnak (pl. seed adatok) — a `.elyospkg` csomagba nem kerülnek bele.
+A `migrations/dev/` mappában lévő fájlok csak fejlesztési célra szolgálnak (pl. seed adatok) — a `.raconapkg` csomagba nem kerülnek bele.
 
 ---
 
@@ -733,10 +729,11 @@ Ha a core stílusai felülírnak egy elemet, az `all: revert` visszaállítja a 
 A manifest `dependencies` mezőjében csak fehérlistán lévő package-ek szerepelhetnek:
 
 - `svelte` (^5.x.x)
-- `@lucide/svelte` / `lucide-svelte`
-- `phosphor-svelte`
-- `@elyos/*` és `@elyos-dev/*` (minden verzió) — deprecated, használd helyette `@racona/*`
+- `lucide-svelte` (^0.x.x)
+- `@lucide/svelte` (^0.x.x vagy ^1.x.x)
 - `@racona/*` (minden verzió)
+
+A `phosphor-svelte` és a régi `@elyos/*` csomagok **nincsenek** a fehérlistán — a feltöltés `INVALID_DEPENDENCY` hibával elutasítja őket. A `phosphor-svelte` ikonok a `sdk.libs.phosphor` megosztott könyvtáron át érhetők el, függőségként felvenni nem kell.
 
 ---
 

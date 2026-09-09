@@ -85,7 +85,7 @@ The available scripts depend on the selected features.
 bun dev              # Vite dev server (standalone, Mock SDK) — http://localhost:5174
 bun run build        # Build IIFE bundle (dist/index.iife.js)
 bun run build:watch  # Build in watch mode
-bun run package      # Create .elyospkg package
+bun run package      # Create .raconapkg package
 ```
 
 ### When `remote_functions` is enabled
@@ -261,7 +261,7 @@ The idea: **build the app, start a static HTTP server (`dev:server`), then load 
 
 ### Step 1 — Start Racona core
 
-In the `elyos-core` monorepo root:
+In the `racona-core` monorepo root:
 
 ```bash
 # Enable dev app loading in .env.local:
@@ -338,7 +338,7 @@ bun run build
 
 ```bash
 # Terminal 1 — Racona core
-cd elyos-core && bun app:dev
+cd racona-core && bun app:dev
 
 # Terminal 2 — App build + server
 cd my-app
@@ -352,7 +352,7 @@ bun run dev:server  # Start static server (http://localhost:5175)
 
 ```bash
 # Terminal 1 — Racona core
-cd elyos-core && bun app:dev
+cd racona-core && bun app:dev
 
 # Terminal 2 — App (first time)
 cd my-app
@@ -368,7 +368,7 @@ bun run dev:server     # Dev server + migrations + remote endpoint (http://local
 
 ---
 
-## Installing a plugin (`.elyospkg`)
+## Installing a plugin (`.raconapkg`)
 
 Once your app is ready, package it and install it into Racona.
 
@@ -376,10 +376,10 @@ Once your app is ready, package it and install it into Racona.
 
 ```bash
 bun run build    # Build IIFE bundle
-bun run package  # Create .elyospkg file
+bun run package  # Create .raconapkg file
 ```
 
-This creates a `{id}-{version}.elyospkg` file (e.g. `my-app-1.0.0.elyospkg`). The package is a ZIP archive containing:
+This creates a `{id}-{version}.raconapkg` file (e.g. `my-app-1.0.0.raconapkg`). The package is a ZIP archive containing:
 
 - `manifest.json`
 - `dist/` — build output (IIFE bundle)
@@ -392,7 +392,7 @@ This creates a `{id}-{version}.elyospkg` file (e.g. `my-app-1.0.0.elyospkg`). Th
 ### Uploading to Racona
 
 1. Start menu → App Manager → **Plugin Upload**
-2. Drag and drop the `.elyospkg` file, or click the browse button
+2. Drag and drop the `.raconapkg` file, or click the browse button
 3. Racona validates the package and shows a preview
 4. Click **Install**
 
@@ -509,12 +509,8 @@ await sdk.data.delete('key');
 // SQL query (plugin's own schema only!)
 const rows = await sdk.data.query('SELECT * FROM my_table WHERE id = $1', [123]);
 
-// Transaction
-await sdk.data.transaction(async (tx) => {
-  await tx.query('INSERT INTO ...');
-  await tx.query('UPDATE ...');
-  await tx.commit();
-});
+// Transaction: the client-side transaction() is not atomic (commit is a no-op) —
+// for a real transaction use a server function with context.db.connect()
 ```
 
 ### I18n Service
@@ -665,7 +661,7 @@ CREATE TABLE items (
 Table names do not need a schema prefix in migration files — Racona automatically adds the `app__{plugin_id}` prefix during installation.
 :::
 
-Files in `migrations/dev/` are for development only (e.g. seed data) and are excluded from the `.elyospkg` package.
+Files in `migrations/dev/` are for development only (e.g. seed data) and are excluded from the `.raconapkg` package.
 
 ---
 
@@ -733,10 +729,11 @@ If core styles override an element, `all: revert` restores the browser's native 
 Only whitelisted packages may appear in the manifest `dependencies` field:
 
 - `svelte` (^5.x.x)
-- `@lucide/svelte` / `lucide-svelte`
-- `phosphor-svelte`
-- `@elyos/*` and `@elyos-dev/*` (any version) — deprecated, use `@racona/*` instead
+- `lucide-svelte` (^0.x.x)
+- `@lucide/svelte` (^0.x.x or ^1.x.x)
 - `@racona/*` (any version)
+
+`phosphor-svelte` and the legacy `@elyos/*` packages are **not** whitelisted — the upload rejects them with `INVALID_DEPENDENCY`. Phosphor icons are available through the `sdk.libs.phosphor` shared library, so there is no need to declare them as a dependency.
 
 ---
 

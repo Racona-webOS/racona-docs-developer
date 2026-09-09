@@ -8,14 +8,14 @@ Racona is a **Bun workspaces** based monorepo. The root `package.json` contains 
 ## Monorepo Structure
 
 ```
-elyos-core/
+racona-core/
 ├── package.json              # Root scripts (using bun --filter)
 ├── apps/
 │   └── web/
-│       └── package.json      # @elyos/core scripts
+│       └── package.json      # @racona/core scripts
 └── packages/
     └── database/
-        └── package.json      # @elyos/database scripts
+        └── package.json      # @racona/database scripts
 ```
 
 **Important:** Root scripts can be run from anywhere in the monorepo. Scripts specific to `apps/web` must be run from the `apps/web` directory.

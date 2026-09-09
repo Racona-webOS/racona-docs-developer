@@ -1,6 +1,6 @@
 ---
 title: Build and Packaging
-description: App build process, .elyospkg format and upload
+description: App build process, .raconapkg format and upload
 ---
 
 ## Build Process
@@ -72,9 +72,9 @@ In `vite.config.js`, the `BUILD_MODE` env variable determines which entry point 
 
 ---
 
-## Packaging (.elyospkg)
+## Packaging (.raconapkg)
 
-After building, the app must be packaged into a single `.elyospkg` file:
+After building, the app must be packaged into a single `.raconapkg` file:
 
 ```bash
 bun run package
@@ -84,30 +84,26 @@ This runs the `build-package.js` script in the project root, which:
 1. Reads `manifest.json` for the `id` and `version` fields
 2. Collects the `dist/`, `locales/`, `assets/` folders and `manifest.json`
 3. Compresses them into a ZIP archive
-4. Saves it with the `.elyospkg` extension in the project root
+4. Saves it with the `.raconapkg` extension in the project root
 
 The package name is composed from the `id` and `version` fields in `manifest.json`:
 
 ```
-{app-id}-{version}.elyospkg
+{app-id}-{version}.raconapkg
 ```
 
-For example: `hello-world-1.0.0.elyospkg`
+For example: `hello-world-1.0.0.raconapkg`
 
 :::note
-Always run `bun run build` before `bun run package`. The script uses the `zip` system command (available by default on macOS and Linux).
+Always run `bun run build` before `bun run package`. The script compresses with the `adm-zip` package and does not depend on a system command.
 
-The generated file extension comes from the `APP_PACKAGE_EXTENSION` environment variable (default: `elyospkg`). If your Racona server is configured with a different extension, set the variable before packaging:
-
-```bash
-APP_PACKAGE_EXTENSION=wospkg bun run package
-```
+The extension is fixed to `.raconapkg` in `build-package.js`. The Racona server accepts the extension set in the `PLUGIN_PACKAGE_EXTENSION` environment variable (default: `raconapkg`) — if your server uses a different one, change the `outputName` extension in `build-package.js` to match.
 :::
 
 ### Package Contents
 
 ```
-hello-world-1.0.0.elyospkg  (ZIP archive)
+hello-world-1.0.0.raconapkg  (ZIP archive)
 ├── manifest.json
 ├── dist/
 │   └── index.iife.js
@@ -133,7 +129,7 @@ The `build-package.js` automatically only packages folders/files that actually e
 1. Open Racona in the browser
 2. Click Start menu → App Manager
 3. Click the "Upload App" button
-4. Select the `.elyospkg` file
+4. Select the `.raconapkg` file
 5. Confirm the installation
 
 :::note
@@ -142,14 +138,14 @@ The App Manager is only accessible with admin privileges.
 
 ### Via API
 
-The `/api/apps/upload` endpoint uses **session cookie-based authentication** (`better-auth`) — Bearer tokens are not supported. This means the API can only be called from a logged-in browser, or an HTTP client that includes the session cookie.
+The `/api/plugins/upload` endpoint uses **session cookie-based authentication** (`better-auth`) — Bearer tokens are not supported. This means the API can only be called from a logged-in browser, or an HTTP client that includes the session cookie.
 
 Upload with `curl` (using a session cookie copied from the browser):
 
 ```bash
-curl -X POST https://your-elyos-instance.com/api/apps/upload \
+curl -X POST https://your-racona-instance.com/api/plugins/upload \
   -H "Cookie: better-auth.session_token=<session_token>" \
-  -F "file=@hello-world-1.0.0.elyospkg"
+  -F "file=@hello-world-1.0.0.raconapkg"
 ```
 
 The session token can be copied from browser DevTools → Application → Cookies → `better-auth.session_token` (while logged in).
@@ -177,11 +173,11 @@ bun run dev:server  # Start static server (http://localhost:5174)
 
 # 3. Production packaging
 bun run build
-bun run package     # Create .elyospkg file
+bun run package     # Create .raconapkg file
 
 # 4. Upload (recommended via App Manager UI)
 # Or with curl, using session cookie:
-curl -X POST .../api/apps/upload \
+curl -X POST .../api/plugins/upload \
   -H "Cookie: better-auth.session_token=<token>" \
-  -F "file=@my-app-1.0.0.elyospkg"
+  -F "file=@my-app-1.0.0.raconapkg"
 ```

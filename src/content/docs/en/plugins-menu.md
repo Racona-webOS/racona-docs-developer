@@ -38,6 +38,41 @@ Without AppLayout mode (standalone), the application loads as a single Web Compo
 | `href` | `string` | Hash-based route (e.g. `#overview`) |
 | `icon` | `string` | Lucide icon name (PascalCase, e.g. `Home`, `Settings`, `Table`) |
 | `component` | `string` | Name of the Svelte component to load (filename without extension) |
+| `children` | `MenuItem[]` | Optional submenu. The parent then needs no `component`, and `href` may be `"#"`. |
+| `requiredPermission` | `string` | Core permission (e.g. `plugin.manual.install`) required to show the item. |
+| `requiredCapability` | `string` | Plugin-specific capability (e.g. `project.create`) required to show the item — see below. |
+
+### Submenus and Conditional Items
+
+```json
+[
+  {
+    "labelKey": "menu.projects",
+    "href": "#",
+    "icon": "FolderKanban",
+    "children": [
+      { "labelKey": "menu.projects.list", "href": "#projects", "icon": "List", "component": "ProjectList" },
+      { "labelKey": "menu.projects.create", "href": "#projects/new", "icon": "Plus", "component": "ProjectCreate", "requiredCapability": "project.create" }
+    ]
+  }
+]
+```
+
+`requiredCapability` builds on the plugin's own permission model: the plugin computes the current user's capabilities on the client (e.g. via a server function reading its own `roles` tables) and publishes them to the core:
+
+```typescript
+window.dispatchEvent(
+  new CustomEvent('plugin-capabilities-changed', {
+    detail: { pluginId: 'my-app', capabilities: ['project.create', 'employee.view'] }
+  })
+);
+```
+
+The core then hides menu items whose `requiredCapability` is not in the set. If all children of a parent are hidden, the parent disappears too. Re-dispatch the event whenever the set changes (e.g. on organization switch).
+
+### Layout in menu.json
+
+`menu.json` can be a plain array, or `{ "layout": { "sidebarWidth": 280, "maxWidthClass": "w-full" }, "items": [...] }`. See the [manifest reference](/en/plugins-manifest/#layout) for the `layout` field.
 
 ### Icon Names
 
@@ -177,7 +212,7 @@ The `sdk-demo` application is a good reference for AppLayout mode. It has four m
 ]
 ```
 
-Source: `elyos-core/examples/apps/sdk-demo/`
+Source: `racona-core/examples/apps/sdk-demo/`
 
 ---
 

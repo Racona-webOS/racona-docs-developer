@@ -84,7 +84,7 @@ If validation fails, Varlock logs the specific error and stops the application:
 [Varlock] ERROR: Missing bootstrap credential: INFISICAL_CLIENT_ID
 [Varlock] ERROR: Missing required secret: DATABASE_URL
 [Varlock] ERROR: Type validation failed: SMTP_PORT — expected: number, got: "invalid"
-[Varlock] 42 secrets loaded successfully (production/elyos-core)
+[Varlock] 42 secrets loaded successfully (production/racona-core)
 ```
 
 ---

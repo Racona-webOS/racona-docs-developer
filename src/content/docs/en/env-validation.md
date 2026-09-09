@@ -122,7 +122,7 @@ If validation fails, Varlock logs the specific error and stops the application:
 On successful startup:
 
 ```
-[Varlock] 42 secrets loaded successfully (production/elyos-core)
+[Varlock] 42 secrets loaded successfully (production/racona-core)
 [Varlock] Type generation complete: src/env.d.ts
 ```
 

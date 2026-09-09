@@ -11,11 +11,11 @@ next:
 A Racona Bun workspaces alapú monorepo:
 
 ```
-elyos-core/
+racona-core/
 ├── apps/
-│   └── web/                  # Fő SvelteKit alkalmazás (@elyos/core)
+│   └── web/                  # Fő SvelteKit alkalmazás (@racona/core)
 ├── packages/
-│   ├── database/             # Drizzle ORM sémák, migrációk, seed (@elyos/database)
+│   ├── database/             # Drizzle ORM sémák, migrációk, seed (@racona/database)
 │   ├── sdk/                  # Plugin SDK (@racona/sdk)
 │   └── @racona/cli/  # CLI eszköz plugin generáláshoz
 ├── examples/
@@ -126,10 +126,10 @@ packages/database/src/
 └── index.ts         # Fő export (db kliens, sémák, típusok)
 ```
 
-A `@elyos/database` csomag importálható az alkalmazásból:
+A `@racona/database` csomag importálható az alkalmazásból:
 
 ```typescript
-import { db, schema } from '@elyos/database';
+import { db, schema } from '@racona/database';
 ```
 
 ## Útvonal aliasok
@@ -138,7 +138,7 @@ import { db, schema } from '@elyos/database';
 | -------------- | --------------------------------- |
 | `$lib`         | `apps/web/src/lib`                |
 | `$app/server`  | SvelteKit szerver modul           |
-| `@elyos/database` | `packages/database/src`        |
+| `@racona/database` | `packages/database/src`        |
 
 ## Technológiai stack
 

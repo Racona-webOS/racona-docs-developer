@@ -163,10 +163,10 @@ Ebben a módban a Varlock közvetlenül a `.env` fájlból olvassa az összes v�
 ## Sikeres indítás
 
 ```
-[Varlock] 42 secret sikeresen betöltve (production/elyos-core)
+[Varlock] 42 secret sikeresen betöltve (production/racona-core)
 ```
 
-Ez azt jelenti, hogy 42 környezeti változó került lekérésre az Infisical `production` környezetéből az `elyos-core` projektből.
+Ez azt jelenti, hogy 42 környezeti változó került lekérésre az Infisical `production` környezetéből az `racona-core` projektből.
 
 ## Előnyök
 

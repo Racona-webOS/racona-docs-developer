@@ -241,7 +241,7 @@ export async function createEmployeeWithUser(params, context) {
   const { name, emailAddress, position, department } = params;
 
   // 1. Felhasználó és dolgozó létrehozása tranzakcióban
-  const employee = await db.execute(`
+  const employee = await db.query(`
     -- ... insert logika ...
   `);
 

@@ -101,10 +101,10 @@ Key-value storage and SQL queries within the plugin's own schema. Required permi
 If the `"database"` permission is listed in the plugin's `manifest.json`, the installer automatically creates a dedicated PostgreSQL schema for the plugin:
 
 ```
-plugin_{plugin_id}
+app__{plugin_id}
 ```
 
-For example, the schema for the `my-plugin` plugin is: `plugin_my_plugin` (hyphens are replaced with underscores).
+For example, the schema for the `my-plugin` plugin is: `app__my_plugin` (hyphens are replaced with underscores).
 
 The schema includes a `kv_store` table by default (for `set/get/delete` operations) and a `migrations` tracking table. If the plugin does not request `database` permission, no schema is created.
 
@@ -117,7 +117,7 @@ If the plugin needs its own table structure (e.g. `notes`, `items`, etc.), you c
 ```sql
 -- migrations/001_init.sql
 -- The installer automatically prefixes table names with the plugin schema
--- (e.g. notes → plugin_my_plugin.notes)
+-- (e.g. notes → app__my_plugin.notes)
 
 CREATE TABLE IF NOT EXISTS notes (
     id SERIAL PRIMARY KEY,
@@ -131,12 +131,12 @@ CREATE INDEX idx_notes_created_at ON notes (created_at);
 ```
 
 :::tip
-You don't need to write the schema prefix (`plugin_my_plugin.notes`) — the installer adds it automatically. If you do include it, the installer won't duplicate it.
+You don't need to write the schema prefix (`app__my_plugin.notes`) — the installer adds it automatically. If you do include it, the installer won't duplicate it.
 :::
 
 **Error handling:** If a migration SQL is syntactically invalid or fails at runtime, the entire plugin installation will fail and a rollback will occur. The error message includes the filename and the database error message.
 
-The `migrations/` folder is automatically packaged into the `.elyospkg` by `build-package.js` if it exists.
+The `migrations/` folder is automatically packaged into the `.raconapkg` by `build-package.js` if it exists.
 
 ### `set(key, value)`
 
@@ -160,7 +160,7 @@ await sdk.data.delete('settings');
 
 ### `query<T>(sql, params?)`
 
-SQL query within the plugin's own schema (`plugin_{plugin_id}`). Only tables in the plugin's own schema are accessible.
+SQL query within the plugin's own schema (`app__{plugin_id}`). Only tables in the plugin's own schema are accessible.
 
 ```typescript
 interface Item {
@@ -178,18 +178,21 @@ items.forEach(item => console.log(item.name));
 ```
 
 :::caution
-Only tables in the plugin's own schema (`plugin_{id}`) are accessible. The `platform`, `auth`, and other plugin schemas are not accessible.
+Only tables in the plugin's own schema (`app__{id}`) are accessible. The `platform`, `auth`, and other plugin schemas are not accessible.
 :::
 
 ### `transaction(callback)`
 
-Execute a transaction.
+:::caution
+The client-side `sdk.data.transaction()` is currently **not a real transaction**: each `tx.query()` runs as a separate request, and `commit()` / `rollback()` are no-ops. To run several statements atomically, use a server function with a client acquired via `context.db.connect()` (`BEGIN` / `COMMIT` / `ROLLBACK`) — see [Server Functions](/en/plugins-server-functions/#transactions).
+:::
 
 ```typescript
+// Sequential queries only, no atomicity
 await sdk.data.transaction(async (tx) => {
   await tx.query('INSERT INTO items (name) VALUES ($1)', ['New item']);
   await tx.query('UPDATE counters SET value = value + 1');
-  await tx.commit();
+  await tx.commit(); // no-op
 });
 ```
 

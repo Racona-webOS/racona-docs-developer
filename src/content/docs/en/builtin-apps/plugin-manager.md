@@ -10,7 +10,7 @@ The Plugin Manager application allows installing, managing, and removing third-p
 The Plugin Manager consists of four main parts:
 - **Plugin Store** — Plugin marketplace (under development)
 - **Installed plugins** — List and management of installed plugins
-- **Manual installation** — Upload `.elyospkg` files
+- **Manual installation** — Upload `.raconapkg` files
 - **Dev plugins** — Load developer plugins (dev mode only)
 
 ### Main features
@@ -143,12 +143,12 @@ Plugin upload via drag & drop or file browser.
 **Configuration:**
 
 ```typescript
-const PLUGIN_EXTENSION = '.elyospkg';
+const PLUGIN_EXTENSION = '.raconapkg';
 const MAX_SIZE_MB = 10;
 ```
 
 **Validations:**
-1. **File extension** — Only `.elyospkg` files
+1. **File extension** — Only `.raconapkg` files
 2. **File size** — Maximum 10 MB
 
 **Upload process:**
@@ -187,10 +187,10 @@ Display detailed plugin information.
 
 ### Plugin structure
 
-A plugin is an `.elyospkg` file, which is a ZIP archive with the following structure:
+A plugin is an `.raconapkg` file, which is a ZIP archive with the following structure:
 
 ```
-my-plugin.elyospkg
+my-plugin.raconapkg
 ├── manifest.json         # Plugin metadata
 ├── index.html           # Plugin entry point (Web Component)
 ├── icon.svg             # Plugin icon
@@ -281,7 +281,7 @@ The `/api/plugins/validate` endpoint validates the uploaded plugin:
 **Problem**: Plugin upload returns an error.
 
 **Solution**:
-1. Check the file extension (`.elyospkg`)
+1. Check the file extension (`.raconapkg`)
 2. Check the file size (max 10 MB)
 3. Check `manifest.json` — is it valid JSON?
 4. Check required fields (id, name, version, etc.)

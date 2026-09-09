@@ -8,14 +8,14 @@ A Racona egy **Bun workspaces** alapú monorepo. A root `package.json` tartalmaz
 ## Monorepo struktúra
 
 ```
-elyos-core/
+racona-core/
 ├── package.json              # Root scripts (bun --filter használattal)
 ├── apps/
 │   └── web/
-│       └── package.json      # @elyos/core scripts
+│       └── package.json      # @racona/core scripts
 └── packages/
     └── database/
-        └── package.json      # @elyos/database scripts
+        └── package.json      # @racona/database scripts
 ```
 
 **Fontos:** A root scripteket **bárhonnan** futtathatod a monorepo-ban. Az `apps/web` specifikus scriptjeit csak az `apps/web` könyvtárból.
@@ -396,7 +396,7 @@ Docker image mentése `.tar` fájlba.
 bun docker:save:amd64
 ```
 
-**Kimenet:** `docker/elyos-core.tar`
+**Kimenet:** `docker/racona-core.tar`
 
 **Mikor használd:** Offline telepítéshez, image megosztáshoz.
 

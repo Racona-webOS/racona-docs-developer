@@ -21,8 +21,8 @@ On macOS, consider using [OrbStack](https://orbstack.dev) instead of Docker Desk
 ### 1. Clone
 
 ```bash
-git clone https://github.com/Racona-webOS/elyos-core.git
-cd elyos-core
+git clone https://github.com/Racona-webOS/racona-core.git
+cd racona-core
 ```
 
 ### 2. Dependencies
@@ -171,7 +171,7 @@ bun format            # Automatic formatting
 Open the monorepo root in your IDE. The main development area is the `apps/web/src/` folder.
 
 ```
-elyos-core/
+racona-core/
 ├── apps/web/src/        ← where you'll work most
 ├── apps/web/.env.schema ← env variables schema (Varlock)
 ├── packages/database/   ← schema and migrations

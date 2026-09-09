@@ -52,8 +52,8 @@ Docker can be used without Bun, just run raw `docker compose` commands.
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/Racona-webOS/elyos-core
-cd elyos-core
+git clone https://github.com/Racona-webOS/racona-core
+cd racona-core
 ```
 
 ### 2. Configure Environment Variables
@@ -168,7 +168,7 @@ One-time initialization: runs Drizzle migrations and loads seed data.
 ```yaml
 db-init:
   command: >
-    sh -c 'bun --filter @elyos/database db:init ${RESET:+-- --reset}'
+    sh -c 'bun --filter @racona/database db:init ${RESET:+-- --reset}'
   depends_on:
     postgres:
       condition: service_healthy

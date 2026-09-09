@@ -156,4 +156,4 @@ Ez létrehozza a `dist/index.iife.js` fájlt (és a komponens bundle-öket, ha s
 
 - [Fejlesztői workflow](/hu/plugins-development/) — standalone dev mód és Mock SDK
 - [manifest.json referencia](/hu/plugins-manifest/) — minden mező részletesen
-- [Build és feltöltés](/hu/plugins-build/) — `.elyospkg` csomag és telepítés
+- [Build és feltöltés](/hu/plugins-build/) — `.raconapkg` csomag és telepítés

@@ -122,7 +122,7 @@ Ha a validáció sikertelen, a Varlock naplózza a konkrét hibát és leállít
 Sikeres indítás esetén:
 
 ```
-[Varlock] 42 secret sikeresen betöltve (production/elyos-core)
+[Varlock] 42 secret sikeresen betöltve (production/racona-core)
 [Varlock] Típusgenerálás kész: src/env.d.ts
 ```
 

@@ -596,7 +596,7 @@ System and error log viewer.
 Plugin installation, management, and removal.
 
 **Key features:**
-- Plugin upload (.elyospkg)
+- Plugin upload (.raconapkg)
 - Plugin validation
 - Installed plugins list
 - Plugin details

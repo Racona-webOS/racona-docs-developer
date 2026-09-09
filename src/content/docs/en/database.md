@@ -34,7 +34,7 @@ packages/database/src/schemas/
 ## Importing
 
 ```typescript
-import { db, schema } from '@elyos/database';
+import { db, schema } from '@racona/database';
 ```
 
 ## Drizzle ORM Basics
@@ -42,7 +42,7 @@ import { db, schema } from '@elyos/database';
 ### Querying
 
 ```typescript
-import { db, schema } from '@elyos/database';
+import { db, schema } from '@racona/database';
 import { eq, and, like, desc, asc } from 'drizzle-orm';
 
 // All records
@@ -133,7 +133,7 @@ Database operations are organized in repository classes. Each repository contain
 
 ```typescript
 // src/lib/server/database/repositories/user-repository.ts
-import { db, schema } from '@elyos/database';
+import { db, schema } from '@racona/database';
 import { eq, and, like, desc, count } from 'drizzle-orm';
 
 export class UserRepository {
@@ -533,7 +533,7 @@ Docker Compose automatically runs seeds in the `db-init` container:
 ```yaml
 db-init:
   command: >
-    sh -c 'bun --filter @elyos/database db:init ${RESET:+-- --reset}'
+    sh -c 'bun --filter @racona/database db:init ${RESET:+-- --reset}'
   depends_on:
     postgres:
       condition: service_healthy

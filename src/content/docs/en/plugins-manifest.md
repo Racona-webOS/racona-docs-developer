@@ -57,7 +57,7 @@ The unique identifier of the application. May only contain lowercase letters, nu
 The ID **cannot be changed** after installation — it identifies the application in the database and filesystem. Choose carefully.
 :::
 
-Valid format: `^[a-z][a-z0-9-]*`, minimum 2, maximum 50 characters.
+Valid format: `^[a-z0-9-]+$`, minimum 3, maximum 50 characters. The database schema name is derived from the ID: `app__<id>` with hyphens replaced by underscores (e.g. `my-app` → `app__my_app`).
 
 ### `name`
 
@@ -123,10 +123,10 @@ Available permissions: see [Security and Permissions](/en/plugins-security/).
 
 ### `iconStyle`
 
-**Type:** `"cover"` | `"contain"` | `"auto"`
-**Default:** `"auto"`
+**Type:** `"icon"` | `"cover"`
+**Default:** `"cover"`
 
-The display mode of the icon in the Start Menu and Taskbar.
+The display mode of the icon in the Start Menu and Taskbar. `"cover"`: the image fills the icon area (photo, logo); `"icon"`: smaller, icon-like rendering. Any other value fails validation.
 
 ### `category`
 
@@ -203,6 +203,31 @@ ISO codes of the languages supported by the application.
 ```json
 "locales": ["hu", "en"]
 ```
+
+### `sidebarComponent`
+
+**Type:** `string`
+
+Only for `menu.json` (AppLayout mode) applications. The name of a component in `src/components/` that Racona mounts at the bottom of the sidebar — for example an organization switcher. The component's custom element tag must be `<id>-<component name in lowercase>` (e.g. `my-app-organizationswitcher`).
+
+```json
+"sidebarComponent": "OrganizationSwitcher"
+```
+
+At install time it is stored in the `apps.sidebar_component` column, and the core reads it from there at runtime.
+
+### `layout`
+
+**Type:** `{ sidebarWidth?: number | "auto", maxWidthClass?: string }`
+**Default:** `{ "sidebarWidth": 230, "maxWidthClass": "max-w-4xl" }`
+
+AppLayout mode only. The sidebar width in pixels, and the maximum content width as a Tailwind class (e.g. `"w-full"` for full width).
+
+```json
+"layout": { "sidebarWidth": 280, "maxWidthClass": "w-full" }
+```
+
+`menu.json` may also provide a layout in the `{ "layout": {...}, "items": [...] }` form; values there override the manifest.
 
 ## Version Management
 

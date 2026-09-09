@@ -38,8 +38,15 @@ interface Context {
   pluginId: string;
   userId: string;
   db: {
-    execute: (sql: string, params?: unknown[]) => Promise<{ rows: unknown[] }>;
+    query: (sql: string, params?: unknown[]) => Promise<{ rows: unknown[] }>;
+    connect: () => Promise<{
+      query: (sql: string, params?: unknown[]) => Promise<{ rows: unknown[] }>;
+      release: () => void;
+    }>;
   };
+  permissions: string[];
+  pluginPermissions: string[];
+  email?: { send: (params: unknown) => Promise<{ success: boolean; error?: string }> };
 }
 
 export async function getServerTime(
@@ -62,10 +69,15 @@ Minden szerver függvény megkapja a `context` paramétert:
 | Mező | Típus | Leírás |
 |---|---|---|
 | `pluginId` | `string` | A plugin azonosítója |
-| `userId` | `string` | A hívó felhasználó ID-ja |
-| `db` | `object` | Adatbázis kapcsolat (csak `database` jogosultsággal) |
-| `permissions` | `string[]` | A plugin megadott jogosultságai |
+| `userId` | `string` | A hívó felhasználó ID-ja (numerikus string, pl. `"12"`) |
+| `db` | `object` | pg Pool kompatibilis kapcsolat: `query(sql, params)` és `connect()` tranzakciókhoz |
+| `permissions` | `string[]` | A **hívó felhasználó** core jogosultságai (pl. `plugin.manual.install`). Rendszergazda esetén tartalmazza az `admin` értéket is. |
+| `pluginPermissions` | `string[]` | A plugin `manifest.json`-ban megadott jogosultságai (pl. `database`, `remote_functions`) |
 | `email` | `object \| undefined` | Email szolgáltatás (csak `notifications` jogosultsággal) — lásd [Email szolgáltatás](/hu/plugins-email/) |
+
+:::note
+A `permissions` mező a felhasználóé, nem a pluginé. Ha azt akarod ellenőrizni, hogy a hívó rendszergazda-e, a `context.permissions.includes('admin')` a megfelelő. A plugin saját jogosultságait a `pluginPermissions` mezőben találod.
+:::
 
 ```javascript
 export async function myFunction(params, context) {
@@ -78,14 +90,14 @@ export async function myFunction(params, context) {
 
 ## Adatbázis hozzáférés
 
-A `db` objektum a plugin saját sémájához (`plugin_{plugin_id}`) biztosít hozzáférést. Szükséges jogosultság: `database`.
+A `db` objektum a core PostgreSQL kapcsolat-poolját adja. A plugin saját táblái az `app__{plugin_id}` sémában vannak (a kötőjelek aláhúzásra cserélve, pl. `my-app` → `app__my_app`). A séma csak `database` jogosultsággal jön létre telepítéskor.
 
 ```javascript
 export async function getItems(params, context) {
   const { db, pluginId } = context;
 
   // A plugin saját sémájában lévő tábla lekérdezése
-  const result = await db.execute(`
+  const result = await db.query(`
     SELECT id, name, created_at
     FROM plugin_${pluginId}.items
     WHERE active = $1
@@ -101,8 +113,28 @@ export async function getItems(params, context) {
 ```
 
 :::caution
-Csak a plugin saját sémájában (`plugin_{plugin_id}`) lévő táblák érhetők el. A `platform`, `auth` és más pluginok sémái nem elérhetők — ez biztonsági korlát.
+A szerver függvényekben kapott `db` **nincs sémára korlátozva** — ez a kliens oldali `sdk.data.query()`-től eltér, ahol a core kikényszeríti a saját sémát. A házirend: a plugin csak a saját `app__{plugin_id}` sémájába írjon, más plugin sémáját és a `platform.*` táblákat ne érintse. Az `auth.users` olvasása (pl. név, email megjelenítéséhez) elfogadott gyakorlat.
 :::
+
+### Tranzakciók
+
+Tranzakcióhoz a `connect()`-tel kérj dedikált klienst, és minden esetben engedd el:
+
+```javascript
+export async function transferItems(params, context) {
+  const client = await context.db.connect();
+  try {
+    await client.query('BEGIN');
+    await client.query(`UPDATE app__${context.pluginId.replace(/-/g, '_')}.items SET owner = $1 WHERE id = $2`, [params.to, params.id]);
+    await client.query('COMMIT');
+  } catch (err) {
+    await client.query('ROLLBACK');
+    throw err;
+  } finally {
+    client.release();
+  }
+}
+```
 
 ## CRUD példa
 
@@ -117,7 +149,7 @@ export async function createItem(params, context) {
     throw new Error('A név megadása kötelező');
   }
 
-  const result = await db.execute(`
+  const result = await db.query(`
     INSERT INTO plugin_${pluginId}.items (name, description, created_by)
     VALUES ($1, $2, $3)
     RETURNING id, name, created_at
@@ -130,7 +162,7 @@ export async function updateItem(params, context) {
   const { db, pluginId } = context;
   const { id, name, description } = params;
 
-  await db.execute(`
+  await db.query(`
     UPDATE plugin_${pluginId}.items
     SET name = $1, description = $2, updated_at = NOW()
     WHERE id = $3
@@ -142,7 +174,7 @@ export async function updateItem(params, context) {
 export async function deleteItem(params, context) {
   const { db, pluginId } = context;
 
-  await db.execute(`
+  await db.query(`
     DELETE FROM plugin_${pluginId}.items WHERE id = $1
   `, [params.id]);
 
@@ -202,7 +234,7 @@ export async function riskyOperation(params, context) {
   }
 
   try {
-    const result = await context.db.execute(
+    const result = await context.db.query(
       `SELECT * FROM plugin_${context.pluginId}.items WHERE id = $1`,
       [params.id]
     );

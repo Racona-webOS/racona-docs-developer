@@ -241,7 +241,7 @@ export async function createEmployeeWithUser(params, context) {
   const { name, emailAddress, position, department } = params;
 
   // 1. Create user and employee in a transaction
-  const employee = await db.execute(`
+  const employee = await db.query(`
     -- ... insert logic ...
   `);
 

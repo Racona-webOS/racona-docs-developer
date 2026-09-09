@@ -101,10 +101,10 @@ Kulcs-érték tárolás és SQL lekérdezések a plugin saját sémájában. Sz�
 Ha a plugin `manifest.json`-jában szerepel a `"database"` jogosultság, a telepítő automatikusan létrehoz egy dedikált PostgreSQL sémát a plugin számára:
 
 ```
-plugin_{plugin_id}
+app__{plugin_id}
 ```
 
-Például a `my-plugin` plugin sémája: `plugin_my_plugin` (a kötőjelek aláhúzásra cserélődnek).
+Például a `my-plugin` plugin sémája: `app__my_plugin` (a kötőjelek aláhúzásra cserélődnek).
 
 A séma alapból tartalmaz egy `kv_store` táblát (a `set/get/delete` műveletekhez) és egy `migrations` nyilvántartó táblát. Ha a plugin nem kér `database` jogosultságot, séma sem jön létre.
 
@@ -117,7 +117,7 @@ Ha a pluginnak saját táblastruktúrára van szüksége (pl. `notes`, `items`, 
 ```sql
 -- migrations/001_init.sql
 -- A táblaneveket a telepítő automatikusan prefixeli a plugin sémával
--- (pl. notes → plugin_my_plugin.notes)
+-- (pl. notes → app__my_plugin.notes)
 
 CREATE TABLE IF NOT EXISTS notes (
     id SERIAL PRIMARY KEY,
@@ -131,12 +131,12 @@ CREATE INDEX idx_notes_created_at ON notes (created_at);
 ```
 
 :::tip
-Nem kell kiírni a séma prefixet (`plugin_my_plugin.notes`) — a telepítő automatikusan hozzáfűzi. Ha mégis megadod, a telepítő nem duplikálja.
+Nem kell kiírni a séma prefixet (`app__my_plugin.notes`) — a telepítő automatikusan hozzáfűzi. Ha mégis megadod, a telepítő nem duplikálja.
 :::
 
 **Hibakezelés:** Ha egy migration SQL szintaktikailag hibás vagy futás közben meghiúsul, a teljes plugin telepítés sikertelen lesz és rollback indul. A hibaüzenet tartalmazza a fájl nevét és az adatbázis hibaüzenetét.
 
-A `migrations/` mappát a `build-package.js` automatikusan belecsomag a `.elyospkg`-ba, ha létezik.
+A `migrations/` mappát a `build-package.js` automatikusan belecsomag a `.raconapkg`-ba, ha létezik.
 
 ### `set(key, value)`
 
@@ -160,7 +160,7 @@ await sdk.data.delete('settings');
 
 ### `query<T>(sql, params?)`
 
-SQL lekérdezés a plugin saját sémájában (`plugin_{plugin_id}`). Csak a saját sémában lévő táblák érhetők el.
+SQL lekérdezés a plugin saját sémájában (`app__{plugin_id}`). Csak a saját sémában lévő táblák érhetők el.
 
 ```typescript
 interface Item {
@@ -178,18 +178,21 @@ items.forEach(item => console.log(item.name));
 ```
 
 :::caution
-Csak a plugin saját sémájában (`plugin_{id}`) lévő táblák érhetők el. A `platform`, `auth` és más pluginok sémái nem elérhetők.
+Csak a plugin saját sémájában (`app__{id}`) lévő táblák érhetők el. A `platform`, `auth` és más pluginok sémái nem elérhetők.
 :::
 
 ### `transaction(callback)`
 
-Tranzakció végrehajtása.
+:::caution
+A kliens oldali `sdk.data.transaction()` jelenleg **nem valódi tranzakció**: a `tx.query()` hívások különálló kérésekként futnak, a `commit()` és `rollback()` nem csinál semmit. Több lekérdezést atomi módon csak szerver függvényben, a `context.db.connect()`-tel kért kliensen (`BEGIN` / `COMMIT` / `ROLLBACK`) tudsz végrehajtani — lásd [Szerver függvények](/hu/plugins-server-functions/#tranzakciók).
+:::
 
 ```typescript
+// Csak egymás utáni lekérdezések, atomicitás nélkül
 await sdk.data.transaction(async (tx) => {
   await tx.query('INSERT INTO items (name) VALUES ($1)', ['Új elem']);
   await tx.query('UPDATE counters SET value = value + 1');
-  await tx.commit();
+  await tx.commit(); // no-op
 });
 ```
 

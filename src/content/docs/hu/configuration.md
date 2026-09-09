@@ -200,7 +200,7 @@ Soha ne engedélyezd a `DEV_MODE=true` értéket éles környezetben. Tetszőleg
 
 | Változó                    | Alapértelmezett      | Leírás                                       |
 | -------------------------- | -------------------- | -------------------------------------------- |
-| `PLUGIN_PACKAGE_EXTENSION` | `elyospkg`           | Plugin csomag fájlkiterjesztés               |
+| `PLUGIN_PACKAGE_EXTENSION` | `raconapkg`           | Plugin csomag fájlkiterjesztés               |
 | `PLUGIN_MAX_SIZE`          | `10485760`           | Maximális plugin méret bájtban (max: 100 MB) |
 | `PLUGIN_STORAGE_DIR`       | `/var/webos/plugins` | Telepített plugin fájlok könyvtára           |
 

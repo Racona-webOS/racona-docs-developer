@@ -38,6 +38,41 @@ AppLayout mód nélkül (standalone) az alkalmazás egyetlen Web Component-ként
 | `href` | `string` | Hash-alapú útvonal (pl. `#overview`) |
 | `icon` | `string` | Lucide ikon neve (PascalCase, pl. `Home`, `Settings`, `Table`) |
 | `component` | `string` | A betöltendő Svelte komponens neve (fájlnév kiterjesztés nélkül) |
+| `children` | `MenuItem[]` | Opcionális almenü. A szülőnek ilyenkor nem kell `component`, a `href` lehet `"#"`. |
+| `requiredPermission` | `string` | Core jogosultság (pl. `plugin.manual.install`), ami nélkül a menüpont rejtett. |
+| `requiredCapability` | `string` | Plugin-saját képesség (pl. `project.create`), ami nélkül a menüpont rejtett — lásd lent. |
+
+### Almenük és feltételes menüpontok
+
+```json
+[
+  {
+    "labelKey": "menu.projects",
+    "href": "#",
+    "icon": "FolderKanban",
+    "children": [
+      { "labelKey": "menu.projects.list", "href": "#projects", "icon": "List", "component": "ProjectList" },
+      { "labelKey": "menu.projects.create", "href": "#projects/new", "icon": "Plus", "component": "ProjectCreate", "requiredCapability": "project.create" }
+    ]
+  }
+]
+```
+
+A `requiredCapability` a plugin saját jogosultság-modelljére épül: a plugin a kliens oldalon kiszámolja az aktuális felhasználó képességeit (pl. szerver függvénnyel a saját `roles` tábláiból), majd közzéteszi őket a core felé:
+
+```typescript
+window.dispatchEvent(
+  new CustomEvent('plugin-capabilities-changed', {
+    detail: { pluginId: 'my-app', capabilities: ['project.create', 'employee.view'] }
+  })
+);
+```
+
+A core ezután elrejti azokat a menüpontokat, amelyek `requiredCapability`-je nincs a halmazban. Ha egy szülő minden gyereke rejtett, a szülő is eltűnik. Az eseményt minden változáskor (pl. szervezet-váltás) újra el kell küldeni.
+
+### Layout a menu.json-ban
+
+A `menu.json` lehet sima tömb, vagy `{ "layout": { "sidebarWidth": 280, "maxWidthClass": "w-full" }, "items": [...] }` alakú. A `layout` mezőt lásd a [manifest referenciában](/hu/plugins-manifest/#layout).
 
 ### Ikon nevek
 
@@ -177,7 +212,7 @@ Az `sdk-demo` alkalmazás egy jó referencia AppLayout módra. Négy menüpontja
 ]
 ```
 
-Forrás: `elyos-core/examples/apps/sdk-demo/`
+Forrás: `racona-core/examples/apps/sdk-demo/`
 
 ---
 

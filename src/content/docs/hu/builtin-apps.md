@@ -596,7 +596,7 @@ Rendszer és hibanaplók megjelenítése.
 Plugin telepítés, kezelés és eltávolítás.
 
 **Főbb funkciók:**
-- Plugin feltöltés (.elyospkg)
+- Plugin feltöltés (.raconapkg)
 - Plugin validáció
 - Telepített pluginek listája
 - Plugin részletek

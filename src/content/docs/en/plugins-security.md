@@ -61,15 +61,16 @@ Only whitelisted packages may be specified in the `dependencies` field of `manif
 |---|---|
 | `svelte` | `^5.x.x` |
 | `lucide-svelte` | `^0.x.x` |
-| `@elyos/*` | any version |
+| `@lucide/svelte` | `^0.x.x` or `^1.x.x` |
+| `@racona/*` | any version |
 
 ```json
 // manifest.json — allowed
 {
   "dependencies": {
     "svelte": "^5.0.0",
-    "lucide-svelte": "^0.263.1",
-    "@elyos/my-package": "^1.0.0"
+    "@lucide/svelte": "^1.0.0",
+    "@racona/my-package": "^1.0.0"
   }
 }
 
@@ -83,7 +84,7 @@ Only whitelisted packages may be specified in the `dependencies` field of `manif
 ```
 
 :::tip
-If you need a utility function (e.g. date formatting, deep clone), implement it yourself, or request that it be added to the `@elyos/*` scope.
+If you need a utility function (e.g. date formatting, deep clone), implement it yourself, or request that it be added to the `@racona/*` scope.
 :::
 
 ---
@@ -119,9 +120,9 @@ Only request permissions you actually need. Unnecessary permissions reduce the p
 
 ## Data Isolation
 
-Each plugin gets its own database schema: `plugin_{plugin_id}`. The schema is **only created** if the `"database"` permission is listed in the plugin's `manifest.json` — if the plugin doesn't use a database, no schema is created.
+Each plugin gets its own database schema: `app__{plugin_id}`. The schema is **only created** if the `"database"` permission is listed in the plugin's `manifest.json` — if the plugin doesn't use a database, no schema is created.
 
-The plugin can only perform database operations within this schema.
+For client-side `sdk.data.query()` calls the core enforces the plugin's own schema: table names are prefixed automatically, and queries referencing `platform.`, `auth.`, `public.` or other `app__*` schemas, as well as DDL statements (`CREATE`, `ALTER`, `DROP`, etc.), are rejected.
 
 ```typescript
 // ✅ Own schema — allowed
@@ -129,13 +130,17 @@ const rows = await window.webOS.data.query(
   'SELECT * FROM my_table WHERE user_id = $1',
   [userId]
 );
-// The system automatically runs this in the plugin_{id} schema
+// The system automatically runs this in the app__{id} schema
 
 // ❌ Other schema — FORBIDDEN, throws an error
 const rows = await window.webOS.data.query(
   'SELECT * FROM platform.users'
 );
 ```
+
+:::note
+The `context.db` available in [server functions](/en/plugins-server-functions/) is not restricted to a schema. There, staying within your own schema is a policy rather than a technical constraint — reading `auth.users` is accepted, writing to `platform.*` tables or other plugins' schemas is not.
+:::
 
 ### Custom Table Structure (migrations/)
 

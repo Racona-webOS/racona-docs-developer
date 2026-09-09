@@ -11,11 +11,11 @@ next:
 Racona is a Bun workspaces-based monorepo:
 
 ```
-elyos-core/
+racona-core/
 ├── apps/
-│   └── web/                  # Main SvelteKit application (@elyos/core)
+│   └── web/                  # Main SvelteKit application (@racona/core)
 ├── packages/
-│   ├── database/             # Drizzle ORM schemas, migrations, seeds (@elyos/database)
+│   ├── database/             # Drizzle ORM schemas, migrations, seeds (@racona/database)
 │   ├── sdk/                  # Plugin SDK (@racona/sdk)
 │   └── @racona/cli/  # CLI tool for plugin generation
 ├── examples/
@@ -126,10 +126,10 @@ packages/database/src/
 └── index.ts         # Main export (db client, schemas, types)
 ```
 
-The `@elyos/database` package can be imported from the application:
+The `@racona/database` package can be imported from the application:
 
 ```typescript
-import { db, schema } from '@elyos/database';
+import { db, schema } from '@racona/database';
 ```
 
 ## Path Aliases
@@ -138,7 +138,7 @@ import { db, schema } from '@elyos/database';
 | -------------- | --------------------------------- |
 | `$lib`         | `apps/web/src/lib`                |
 | `$app/server`  | SvelteKit server module           |
-| `@elyos/database` | `packages/database/src`        |
+| `@racona/database` | `packages/database/src`        |
 
 ## Technology Stack
 

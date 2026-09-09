@@ -61,15 +61,16 @@ A `manifest.json` `dependencies` mezőjében csak fehérlistán szereplő packag
 |---|---|
 | `svelte` | `^5.x.x` |
 | `lucide-svelte` | `^0.x.x` |
-| `@elyos/*` | bármely verzió |
+| `@lucide/svelte` | `^0.x.x` vagy `^1.x.x` |
+| `@racona/*` | bármely verzió |
 
 ```json
 // manifest.json — engedélyezett
 {
   "dependencies": {
     "svelte": "^5.0.0",
-    "lucide-svelte": "^0.263.1",
-    "@elyos/my-package": "^1.0.0"
+    "@lucide/svelte": "^1.0.0",
+    "@racona/my-package": "^1.0.0"
   }
 }
 
@@ -83,7 +84,7 @@ A `manifest.json` `dependencies` mezőjében csak fehérlistán szereplő packag
 ```
 
 :::tip
-Ha egy utility funkcióra van szükséged (pl. dátumformázás, deep clone), implementáld magad, vagy kérd, hogy az `@elyos/*` scope-ba kerüljön be.
+Ha egy utility funkcióra van szükséged (pl. dátumformázás, deep clone), implementáld magad, vagy kérd, hogy a `@racona/*` scope-ba kerüljön be.
 :::
 
 ---
@@ -119,9 +120,9 @@ Csak azokat a jogosultságokat kérd, amelyekre ténylegesen szükséged van. A 
 
 ## Adatizoláció
 
-Minden plugin saját adatbázis sémát kap: `plugin_{plugin_id}`. A séma **csak akkor jön létre**, ha a plugin `manifest.json`-jában szerepel a `"database"` jogosultság — ha a plugin nem használ adatbázist, séma sem keletkezik.
+Minden plugin saját adatbázis sémát kap: `app__{plugin_id}`. A séma **csak akkor jön létre**, ha a plugin `manifest.json`-jában szerepel a `"database"` jogosultság — ha a plugin nem használ adatbázist, séma sem keletkezik.
 
-A plugin csak ebben a sémában végezhet adatbázis műveleteket.
+A kliens oldali `sdk.data.query()` hívásoknál a core kikényszeríti a saját sémát: a táblaneveket automatikusan prefixeli, és elutasítja a `platform.`, `auth.`, `public.` és más `app__*` sémákra hivatkozó, valamint a DDL (`CREATE`, `ALTER`, `DROP` stb.) lekérdezéseket.
 
 ```typescript
 // ✅ Saját séma — engedélyezett
@@ -129,13 +130,17 @@ const rows = await window.webOS.data.query(
   'SELECT * FROM my_table WHERE user_id = $1',
   [userId]
 );
-// A rendszer automatikusan a plugin_{id} sémában futtatja
+// A rendszer automatikusan a app__{id} sémában futtatja
 
 // ❌ Más séma — TILTOTT, hiba dobódik
 const rows = await window.webOS.data.query(
   'SELECT * FROM platform.users'
 );
 ```
+
+:::note
+A [szerver függvényekben](/hu/plugins-server-functions/) kapott `context.db` nincs sémára korlátozva. Ott a saját sémára szorítkozás házirend, nem technikai korlát — az `auth.users` olvasása elfogadott, a `platform.*` táblák és más pluginok sémáinak írása nem.
+:::
 
 ### Saját táblastruktúra (migrations/)
 

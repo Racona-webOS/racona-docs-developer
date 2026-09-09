@@ -156,4 +156,4 @@ This creates `dist/index.iife.js` (and component bundles if sidebar is enabled) 
 
 - [Developer workflow](/en/plugins-development/) — standalone dev mode and Mock SDK
 - [manifest.json reference](/en/plugins-manifest/) — all fields in detail
-- [Build and upload](/en/plugins-build/) — `.elyospkg` package and installation
+- [Build and upload](/en/plugins-build/) — `.raconapkg` package and installation

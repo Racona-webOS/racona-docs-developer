@@ -21,8 +21,8 @@ macOS-en a Docker Desktop helyett érdemes [OrbStack](https://orbstack.dev)-et h
 ### 1. Klónozás
 
 ```bash
-git clone https://github.com/Racona-webOS/elyos-core.git
-cd elyos-core
+git clone https://github.com/Racona-webOS/racona-core.git
+cd racona-core
 ```
 
 ### 2. Függőségek
@@ -171,7 +171,7 @@ bun format            # Automatikus formázás
 A monorepo gyökerét nyisd meg az IDE-ben. A fő fejlesztési terület az `apps/web/src/` mappa.
 
 ```
-elyos-core/
+racona-core/
 ├── apps/web/src/        ← itt dolgozol leggyakrabban
 ├── apps/web/.env.schema ← env változók sémája (Varlock)
 ├── packages/database/   ← séma és migrációk

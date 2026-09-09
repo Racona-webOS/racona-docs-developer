@@ -57,7 +57,7 @@ Az alkalmazás egyedi azonosítója. Csak kisbetűket, számokat és kötőjelet
 Az ID-t telepítés után **nem lehet megváltoztatni** — ez azonosítja az alkalmazást az adatbázisban és a fájlrendszerben. Válassz gondosan.
 :::
 
-Érvényes formátum: `^[a-z][a-z0-9-]*$`, minimum 2, maximum 50 karakter.
+Érvényes formátum: `^[a-z0-9-]+$`, minimum 3, maximum 50 karakter. Az ID-ból képződik az adatbázis séma neve is: `app__<id>`, a kötőjelek aláhúzásra cserélve (pl. `my-app` → `app__my_app`).
 
 ### `name`
 
@@ -123,10 +123,10 @@ Elérhető jogosultságok: lásd [Biztonság és jogosultságok](/hu/apps-securi
 
 ### `iconStyle`
 
-**Típus:** `"cover"` | `"contain"` | `"auto"`
-**Alapértelmezett:** `"auto"`
+**Típus:** `"icon"` | `"cover"`
+**Alapértelmezett:** `"cover"`
 
-Az ikon megjelenítési módja a Start Menüben és a Taskbarban.
+Az ikon megjelenítési módja a Start Menüben és a Taskbarban. `"cover"`: a kép kitölti az ikon területét (fotó, logó); `"icon"`: kisebb, ikonszerű megjelenítés. Más érték a validáción elbukik.
 
 ### `category`
 
@@ -203,6 +203,31 @@ Az alkalmazás által támogatott nyelvek ISO kódjai.
 ```json
 "locales": ["hu", "en"]
 ```
+
+### `sidebarComponent`
+
+**Típus:** `string`
+
+Csak `menu.json`-os (AppLayout módú) alkalmazásoknál. A `src/components/` mappában lévő komponens neve, amelyet a Racona az oldalsáv aljára tölt be — például egy szervezet-váltó. A komponens custom element tagneve `<id>-<komponensnév kisbetűvel>` kell legyen (pl. `my-app-organizationswitcher`).
+
+```json
+"sidebarComponent": "OrganizationSwitcher"
+```
+
+Telepítéskor az `apps.sidebar_component` oszlopba kerül, futásidőben onnan olvassa a core.
+
+### `layout`
+
+**Típus:** `{ sidebarWidth?: number | "auto", maxWidthClass?: string }`
+**Alapértelmezett:** `{ "sidebarWidth": 230, "maxWidthClass": "max-w-4xl" }`
+
+Csak AppLayout módban. Az oldalsáv szélessége pixelben, és a tartalom maximális szélessége Tailwind osztályként (pl. `"w-full"` a teljes szélességhez).
+
+```json
+"layout": { "sidebarWidth": 280, "maxWidthClass": "w-full" }
+```
+
+A `menu.json` `{ "layout": {...}, "items": [...] }` alakban szintén megadhat layoutot; az ott lévő értékek felülírják a manifestét.
 
 ## Verziókezelés
 
