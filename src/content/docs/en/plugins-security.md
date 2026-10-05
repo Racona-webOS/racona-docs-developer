@@ -98,6 +98,7 @@ A plugin can only access the SDK functions for which it has requested permission
 | `database` | Read/write to the plugin's own schema | `data.set()`, `data.get()`, `data.delete()`, `data.query()`, `data.transaction()` |
 | `notifications` | Send notifications to users | `notifications.send()` |
 | `remote_functions` | Call server-side functions | `remote.call()` |
+| `scheduler` | Jobs that run on a schedule, without user interaction | `scheduledJobs` in the manifest, `server/jobs.ts` — see [Scheduled Jobs](/en/plugins-scheduler/) |
 | `file_access` | File upload/download | (planned) |
 | `user_data` | Read user profile data | (planned) |
 

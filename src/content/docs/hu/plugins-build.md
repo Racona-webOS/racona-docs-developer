@@ -82,7 +82,7 @@ bun run package
 
 Ez a projekt gyökerében lévő `build-package.js` scriptet futtatja, amely:
 1. Beolvassa a `manifest.json`-t az `id` és `version` mezők alapján
-2. Összegyűjti a `dist/`, `locales/`, `assets/` mappákat és a `manifest.json`-t
+2. Összegyűjti a `manifest.json`-t, a `dist/` mappát, valamint — ha léteznek — a `locales/`, `assets/`, `server/`, `migrations/` és `email-templates/` mappákat és a `menu.json`-t
 3. Egy ZIP archívumba tömöríti őket
 4. `.raconapkg` kiterjesztéssel menti el a projekt gyökerébe
 
@@ -114,11 +114,18 @@ hello-world-1.0.0.raconapkg  (ZIP archívum)
 │   └── icon.svg
 ├── migrations/          # opcionális — csak ha van migrations/ mappa
 │   └── 001_init.sql
+├── email-templates/     # opcionális — csak ha van email-templates/ mappa
+│   └── welcome.json
 └── server/              # opcionális — csak ha van server/ mappa
-    └── functions.js
+    ├── functions.ts
+    └── jobs.ts          # ütemezett feladatok (ha vannak)
 ```
 
-A `build-package.js` automatikusan csak azokat a mappákat/fájlokat csomagolja be, amelyek ténylegesen léteznek — a `migrations/` és `server/` mappák hiánya nem okoz hibát.
+A `build-package.js` automatikusan csak azokat a mappákat/fájlokat csomagolja be, amelyek ténylegesen léteznek — a `migrations/` és `server/` mappák hiánya nem okoz hibát. A `migrations/dev/` almappa (fejlesztői seed) nem kerül a csomagba.
+
+:::note[A `server/` mappát nem kell fordítani]
+A core a plugin gyökerében lévő `server/functions.{js,ts}` és `server/jobs.{js,ts}` modult tölti be (ha mindkettő létezik, a `.js`-t), és a Bun natívan futtatja a TypeScriptet. A csomagba ezért a forrás kerül, `dist/server`-be fordított kódot a core nem tölt be.
+:::
 
 ---
 

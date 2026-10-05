@@ -117,7 +117,7 @@ Az alkalmazás által igényelt jogosultságok listája. Csak a valóban szüks�
 "permissions": ["database", "remote_functions"]
 ```
 
-Elérhető jogosultságok: lásd [Biztonság és jogosultságok](/hu/apps-security/).
+Elérhető jogosultságok: lásd [Biztonság és jogosultságok](/hu/plugins-security/).
 
 ## Opcionális mezők
 
@@ -179,7 +179,7 @@ A Start Menüben való rendezési sorrend. Kisebb szám = előrébb jelenik meg.
 
 **Típus:** `Record<string, string>`
 
-Az alkalmazás által használt külső függőségek. Csak a [fehérlistán](/hu/apps-security/#engedélyezett-függőségek) lévő csomagok engedélyezettek.
+Az alkalmazás által használt külső függőségek. Csak a [fehérlistán](/hu/plugins-security/#engedélyezett-függőségek) lévő csomagok engedélyezettek.
 
 ```json
 "dependencies": {
@@ -228,6 +228,18 @@ Csak AppLayout módban. Az oldalsáv szélessége pixelben, és a tartalom maxim
 ```
 
 A `menu.json` `{ "layout": {...}, "items": [...] }` alakban szintén megadhat layoutot; az ott lévő értékek felülírják a manifestét.
+
+### `scheduledJobs`
+
+**Típus:** `object[]`
+
+Időzítetten futó feladatok (`scheduler` jogosultság kell hozzá). A handlerek a `server/jobs.ts`-ben vannak. A mezők, a szabályok és a korlátok leírása: [Ütemezett feladatok](/hu/plugins-scheduler/).
+
+```json
+"scheduledJobs": [
+  { "id": "daily-check", "handler": "runDailyCheck", "schedule": "0 7 * * *", "timezone": "Europe/Budapest" }
+]
+```
 
 ## Verziókezelés
 

@@ -36,5 +36,6 @@ If you're an **external developer** or want to distribute the application to oth
 - [SDK API Reference](/en/plugins-sdk/) — all available services in detail
 - [manifest.json Reference](/en/plugins-manifest/) — every field documented
 - [Server Functions](/en/plugins-server-functions/) — backend logic for applications
+- [Scheduled Jobs](/en/plugins-scheduler/) — jobs that run on a schedule, without a user
 - [Build and Packaging](/en/plugins-build/) — `.raconapkg` format, upload
 - [Security and Permissions](/en/plugins-security/) — forbidden patterns, whitelist, permissions

@@ -229,6 +229,18 @@ AppLayout mode only. The sidebar width in pixels, and the maximum content width 
 
 `menu.json` may also provide a layout in the `{ "layout": {...}, "items": [...] }` form; values there override the manifest.
 
+### `scheduledJobs`
+
+**Type:** `object[]`
+
+Jobs that run on a schedule (requires the `scheduler` permission). The handlers live in `server/jobs.ts`. Fields, rules and limits: [Scheduled Jobs](/en/plugins-scheduler/).
+
+```json
+"scheduledJobs": [
+  { "id": "daily-check", "handler": "runDailyCheck", "schedule": "0 7 * * *", "timezone": "Europe/Budapest" }
+]
+```
+
 ## Version Management
 
 The `version` field follows semantic versioning:

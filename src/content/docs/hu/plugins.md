@@ -31,10 +31,11 @@ Ha **külső fejlesztőként** szeretnél alkalmazást készíteni, vagy az alka
 
 ## Következő lépések
 
-- [Első alkalmazás létrehozása](/hu/apps-getting-started/) — CLI tool, projekt struktúra, első build
-- [Fejlesztői workflow](/hu/apps-development/) — standalone dev mód, Mock SDK, hot reload
-- [SDK API referencia](/hu/apps-sdk/) — összes elérhető service részletesen
-- [manifest.json referencia](/hu/apps-manifest/) — minden mező dokumentálva
-- [Szerver függvények](/hu/apps-server-functions/) — backend logika alkalmazásokhoz
-- [Build és csomagolás](/hu/apps-build/) — `.raconapkg` formátum, feltöltés
-- [Biztonság és jogosultságok](/hu/apps-security/) — tiltott minták, fehérlista, permissions
+- [Első alkalmazás létrehozása](/hu/plugins-getting-started/) — CLI tool, projekt struktúra, első build
+- [Fejlesztői workflow](/hu/plugins-development/) — standalone dev mód, Mock SDK, hot reload
+- [SDK API referencia](/hu/plugins-sdk/) — összes elérhető service részletesen
+- [manifest.json referencia](/hu/plugins-manifest/) — minden mező dokumentálva
+- [Szerver függvények](/hu/plugins-server-functions/) — backend logika alkalmazásokhoz
+- [Ütemezett feladatok](/hu/plugins-scheduler/) — időzítetten, felhasználó nélkül futó feladatok
+- [Build és csomagolás](/hu/plugins-build/) — `.raconapkg` formátum, feltöltés
+- [Biztonság és jogosultságok](/hu/plugins-security/) — tiltott minták, fehérlista, permissions

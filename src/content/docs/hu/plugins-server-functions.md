@@ -9,6 +9,10 @@ Az alkalmazás szerver oldali logikája a `server/functions.js` (vagy `.ts`) fá
 
 Szükséges jogosultság: `remote_functions` a `manifest.json`-ban.
 
+:::tip
+Időzítetten, felhasználó nélkül futó kódhoz (napi emlékeztető, lezárások) lásd: [Ütemezett feladatok](/hu/plugins-scheduler/). Ezek a `server/jobs.ts`-ben vannak, nem itt.
+:::
+
 ## Alapstruktúra
 
 ```javascript

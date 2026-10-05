@@ -206,6 +206,23 @@ Never enable `DEV_MODE=true` in production. It allows arbitrary code execution f
 
 ---
 
+## Scheduler
+
+Plugins can declare scheduled jobs in their manifest (`scheduledJobs`, `scheduler` permission, see [Scheduled Jobs](/en/plugins-scheduler/)); the core also runs its own maintenance jobs this way. The scheduler runs inside the app process and keeps its state in the database, so no system cron is needed. Jobs are locked in the database: with several app instances a job still runs only once.
+
+| Variable                         | Default           | Description                                                       |
+| -------------------------------- | ----------------- | ----------------------------------------------------------------- |
+| `SCHEDULER_ENABLED`              | `true`            | Run scheduled jobs on this instance                               |
+| `SCHEDULER_TICK_SECONDS`         | `30`              | How often due jobs are checked (5–3600 s)                         |
+| `SCHEDULER_START_DELAY_SECONDS`  | `15`              | Delay of the first check after start-up (s)                       |
+| `SCHEDULER_MAX_CONCURRENT`       | `2`               | Jobs running at the same time per instance (1–20)                 |
+| `SCHEDULER_JOB_TIMEOUT_SECONDS`  | `600`             | Default job timeout when the job does not set its own (10–3600 s) |
+| `SCHEDULER_MISSED_GRACE_SECONDS` | `300`             | Jobs with `catchUp: "skip"` are skipped when later than this (s)  |
+| `SCHEDULER_DEFAULT_TIMEZONE`     | `Europe/Budapest` | Default IANA timezone of cron expressions                         |
+| `SCHEDULER_RUN_RETENTION_DAYS`   | `30`              | Days to keep the run history                                      |
+
+---
+
 ## Docker Configuration
 
 ```bash

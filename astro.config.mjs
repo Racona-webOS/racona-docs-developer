@@ -354,6 +354,11 @@ export default defineConfig({
 							slug: 'plugins-email'
 						},
 						{
+							label: 'Ütemezett feladatok',
+							translations: { en: 'Scheduled Jobs' },
+							slug: 'plugins-scheduler'
+						},
+						{
 							label: 'menu.json és AppLayout',
 							translations: { en: 'menu.json & AppLayout' },
 							slug: 'plugins-menu'

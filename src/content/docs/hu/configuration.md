@@ -206,6 +206,23 @@ Soha ne engedélyezd a `DEV_MODE=true` értéket éles környezetben. Tetszőleg
 
 ---
 
+## Ütemező
+
+A pluginok a manifestjükben ütemezett feladatokat deklarálhatnak (`scheduledJobs`, `scheduler` jogosultság, lásd [Ütemezett feladatok](/hu/plugins-scheduler/)); a core a saját karbantartó feladatait is így futtatja. Az ütemező az alkalmazás folyamatán belül fut, az állapotát az adatbázisban tartja, így nem kell hozzá rendszer-cron. A feladatok az adatbázisban zárolódnak: több alkalmazáspéldánynál is csak egyszer futnak.
+
+| Változó                          | Alapértelmezett   | Leírás                                                                  |
+| -------------------------------- | ----------------- | ----------------------------------------------------------------------- |
+| `SCHEDULER_ENABLED`              | `true`            | Ütemezett feladatok futtatása ezen a példányon                          |
+| `SCHEDULER_TICK_SECONDS`         | `30`              | Az esedékes feladatok ellenőrzésének gyakorisága (5–3600 mp)            |
+| `SCHEDULER_START_DELAY_SECONDS`  | `15`              | Az első ellenőrzés késleltetése induláskor (mp)                         |
+| `SCHEDULER_MAX_CONCURRENT`       | `2`               | Egyszerre futó feladatok példányonként (1–20)                           |
+| `SCHEDULER_JOB_TIMEOUT_SECONDS`  | `600`             | Alapértelmezett időkorlát, ha a feladat nem ad meg sajátot (10–3600 mp) |
+| `SCHEDULER_MISSED_GRACE_SECONDS` | `300`             | A `catchUp: "skip"` feladatok ennél későbbi futása kimarad (mp)         |
+| `SCHEDULER_DEFAULT_TIMEZONE`     | `Europe/Budapest` | A cron kifejezések alapértelmezett IANA időzónája                       |
+| `SCHEDULER_RUN_RETENTION_DAYS`   | `30`              | A futásnapló megőrzése (nap)                                            |
+
+---
+
 ## Docker konfiguráció
 
 ```bash

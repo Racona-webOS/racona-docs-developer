@@ -82,7 +82,7 @@ bun run package
 
 This runs the `build-package.js` script in the project root, which:
 1. Reads `manifest.json` for the `id` and `version` fields
-2. Collects the `dist/`, `locales/`, `assets/` folders and `manifest.json`
+2. Collects `manifest.json`, the `dist/` folder and — when they exist — the `locales/`, `assets/`, `server/`, `migrations/` and `email-templates/` folders and `menu.json`
 3. Compresses them into a ZIP archive
 4. Saves it with the `.raconapkg` extension in the project root
 
@@ -114,11 +114,18 @@ hello-world-1.0.0.raconapkg  (ZIP archive)
 │   └── icon.svg
 ├── migrations/          # optional — only if migrations/ folder exists
 │   └── 001_init.sql
+├── email-templates/     # optional — only if email-templates/ folder exists
+│   └── welcome.json
 └── server/              # optional — only if server/ folder exists
-    └── functions.js
+    ├── functions.ts
+    └── jobs.ts          # scheduled jobs (if any)
 ```
 
-The `build-package.js` automatically only packages folders/files that actually exist — missing `migrations/` or `server/` folders don't cause errors.
+The `build-package.js` automatically only packages folders/files that actually exist — missing `migrations/` or `server/` folders don't cause errors. The `migrations/dev/` subfolder (development seeds) is left out of the package.
+
+:::note[No need to compile `server/`]
+The core loads `server/functions.{js,ts}` and `server/jobs.{js,ts}` from the plugin root (the `.js` file if both exist), and Bun runs TypeScript natively. So the package ships the sources; the core does not load code compiled into `dist/server`.
+:::
 
 ---
 

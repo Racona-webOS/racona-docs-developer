@@ -24,11 +24,12 @@ After entering the app metadata, the CLI asks which features to include:
 | `database` | SQL migrations (`migrations/001_init.sql`), `sdk.data.query()` support |
 | `remote_functions` | Server-side functions (`server/functions.ts`), `sdk.remote.call()` support |
 | `notifications` | `sdk.notifications.send()` support, `notifications` permission |
+| `scheduler` | Example scheduled job (`server/jobs.ts`, `scheduledJobs` in the manifest, `scheduler` permission), `POST /api/jobs/:jobId/run` on the dev server — see [Scheduled Jobs](/en/plugins-scheduler/) |
 | `i18n` | Translation files (`locales/hu.json`, `locales/en.json`), `sdk.i18n.t()` support |
 | `datatable` | DataTable component with insert form, row actions (duplicate/delete), full i18n |
 
 :::note
-`database` requires `remote_functions` — if you select `database`, `remote_functions` is automatically included.
+`database` and `scheduler` require `remote_functions` (the `server/` folder) — if you select either, `remote_functions` is automatically included.
 :::
 
 ## Generated project
@@ -53,7 +54,8 @@ my-app/
 │       ├── Notifications.svelte # (if notifications)
 │       └── Remote.svelte      # (if remote_functions)
 ├── server/                # (if remote_functions)
-│   └── functions.ts
+│   ├── functions.ts
+│   └── jobs.ts            # (if scheduler)
 ├── migrations/            # (if database)
 │   ├── 001_init.sql
 │   └── dev/

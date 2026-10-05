@@ -98,6 +98,7 @@ A plugin csak azokat az SDK funkciókat érheti el, amelyekhez a `manifest.json`
 | `database` | Adatbázis olvasás/írás a plugin sémájában | `data.set()`, `data.get()`, `data.delete()`, `data.query()`, `data.transaction()` |
 | `notifications` | Értesítések küldése felhasználóknak | `notifications.send()` |
 | `remote_functions` | Szerver oldali függvények hívása | `remote.call()` |
+| `scheduler` | Időzítetten, felhasználói interakció nélkül futó feladatok | `scheduledJobs` a manifestben, `server/jobs.ts` — lásd [Ütemezett feladatok](/hu/plugins-scheduler/) |
 | `file_access` | Fájl feltöltés/letöltés | (tervezett) |
 | `user_data` | Felhasználói profil adatok olvasása | (tervezett) |
 

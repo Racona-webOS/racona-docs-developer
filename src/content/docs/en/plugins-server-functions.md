@@ -9,6 +9,10 @@ The application's server-side logic lives in the `server/functions.js` (or `.ts`
 
 Required permission: `remote_functions` in `manifest.json`.
 
+:::tip
+For code that runs on a schedule, without a user (daily reminders, closing items), see [Scheduled Jobs](/en/plugins-scheduler/). It lives in `server/jobs.ts`, not here.
+:::
+
 ## Basic Structure
 
 ```javascript

@@ -24,11 +24,12 @@ Az alkalmazás metaadatainak megadása után a CLI megkérdezi, mely funkciókat
 | `database` | SQL migrációk (`migrations/001_init.sql`), `sdk.data.query()` támogatás |
 | `remote_functions` | Szerver oldali függvények (`server/functions.ts`), `sdk.remote.call()` támogatás |
 | `notifications` | `sdk.notifications.send()` támogatás, `notifications` jogosultság |
+| `scheduler` | Minta ütemezett feladat (`server/jobs.ts`, `scheduledJobs` a manifestben, `scheduler` jogosultság), `POST /api/jobs/:jobId/run` a dev szerveren — lásd [Ütemezett feladatok](/hu/plugins-scheduler/) |
 | `i18n` | Fordítási fájlok (`locales/hu.json`, `locales/en.json`), `sdk.i18n.t()` támogatás |
 | `datatable` | DataTable komponens insert formmal, sor akciókkal (duplikálás/törlés), teljes i18n |
 
 :::note
-A `database` megköveteli a `remote_functions` funkciót — ha `database`-t választasz, a `remote_functions` automatikusan bekapcsol.
+A `database` és a `scheduler` megköveteli a `remote_functions` funkciót (a `server/` mappát) — ha bármelyiket választod, a `remote_functions` automatikusan bekapcsol.
 :::
 
 ## Generált projekt
@@ -53,7 +54,8 @@ my-app/
 │       ├── Notifications.svelte # (ha notifications)
 │       └── Remote.svelte        # (ha remote_functions)
 ├── server/                # (ha remote_functions)
-│   └── functions.ts
+│   ├── functions.ts
+│   └── jobs.ts            # (ha scheduler)
 ├── migrations/            # (ha database)
 │   ├── 001_init.sql
 │   └── dev/
