@@ -87,6 +87,7 @@ Sends a templated email through the core `EmailManager`.
 | `template` | `string` | Yes | Template name (without app ID prefix) |
 | `data` | `Record<string, unknown>` | Yes | Template variables |
 | `locale` | `string` | No | Locale code (default: `'hu'`) |
+| `replyTo` | `string` | No | Reply-To address. A single plain email address (the `name <address>` form is not accepted); an invalid address makes the send return an error. When omitted, the system-wide `SMTP_REPLY_TO` applies. |
 
 **Returns:** `Promise<{ success: boolean; messageId?: string; error?: string }>`
 

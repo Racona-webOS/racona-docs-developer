@@ -87,6 +87,7 @@ Template-es emailt küld a core `EmailManager`-en keresztül.
 | `template` | `string` | Igen | Template név (app ID prefix nélkül) |
 | `data` | `Record<string, unknown>` | Igen | Template változók |
 | `locale` | `string` | Nem | Locale kód (alapértelmezett: `'hu'`) |
+| `replyTo` | `string` | Nem | Válaszcím (Reply-To). Egyetlen, sima email cím (`név <cím>` forma nem megengedett); érvénytelen címnél a küldés hibát ad vissza. Ha nincs megadva, a rendszerszintű `SMTP_REPLY_TO` érvényes. |
 
 **Visszatérési érték:** `Promise<{ success: boolean; messageId?: string; error?: string }>`
 
