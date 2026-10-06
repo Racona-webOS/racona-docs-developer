@@ -13,8 +13,8 @@ A fájlok tartalma a lemezre, az `uploads/` mappába kerül, a metaadatok a `pla
 
 | Hely | Tartalom |
 |---|---|
-| `src/lib/storage/` | A böngészőből hívható remote functionök: `saveFile`, `listFiles`, `deleteFile`, `deleteBackground` |
-| `src/lib/server/storage/` | Csak szerveren futó kód: `filesystem.ts`, `file-repository.ts`, `types.ts`, `schemas.ts`, valamint a remote functionök szerveroldali másolatai és a `getFileMetadata` |
+| `src/lib/storage/` | A böngészőből hívható remote functionök: `saveFile`, `listFiles`, `deleteFile`, `getFileMetadata`, `deleteBackground`; továbbá a `schemas.ts` (bemeneti sémák, `RESERVED_CATEGORIES`), a `types.ts` és a `limits.ts` (feltöltési mérethatár, a böngészőben is használható) |
+| `src/lib/server/storage/` | Csak szerveren futó kód: `filesystem.ts` (lemezműveletek), `file-repository.ts` (adatbázis), `file-service.ts` (fájl törlése a bélyegképével és a rekordjával, árva fájlok takarítása), `policy.ts` (jogosultsági szabályok), `limits.ts` (szerveroldali mérethatár), `content-type.ts` (válaszfejlécek), `stored-file.ts` (rekord → `StoredFile`, URL-ek), `types.ts` (`STORAGE_CONFIG`, `StorageError`) |
 
 Minden remote function bejelentkezett felhasználót igényel. Ha nincs, `{ success: false, error: 'User not authenticated' }` a válasz. A hibák az eredményben jönnek vissza, nem kivételként.
 
@@ -22,8 +22,12 @@ Minden remote function bejelentkezett felhasználót igényel. Ha nincs, `{ succ
 
 Minden fájlnak van **kategóriája** és **scope-ja**.
 
-- **Kategória**: kisbetűs név, amely illeszkedik a `^[a-z0-9-]+$` mintára (legfeljebb 100 karakter), pl. `avatars` vagy `backgrounds`. A `STORAGE_CONFIG.allowedCategories` a core által használt kategóriákat sorolja fel: `backgrounds`, `documents`, `avatars`, `images`. Ezt a listát csak az `/api/files/list` ellenőrzi; a `saveFile` minden mintának megfelelő nevet elfogad.
-- **Scope**: `'shared'` vagy `'user'`. A megosztott (shared) fájlokat minden bejelentkezett felhasználó olvashatja. A user fájlok a feltöltőhöz tartoznak, és egy `user-{userId}` mappába kerülnek.
+- **Kategória**: kisbetűs név, amely illeszkedik a `^[a-z0-9-]+$` mintára (legfeljebb 100 karakter), pl. `avatars` vagy `backgrounds`. A `plugins` és a `plugin-files` fenntartott név (`RESERVED_CATEGORIES` a `src/lib/storage/schemas.ts`-ben), ezeket a `saveFile` elutasítja. A `STORAGE_CONFIG.allowedCategories` a core által használt kategóriákat sorolja fel: `backgrounds`, `documents`, `avatars`, `images`. Ezt a listát csak az `/api/files/list` ellenőrzi; a `saveFile` minden más, a mintának megfelelő nevet elfogad.
+- **Scope**: `'shared'` vagy `'user'`. A megosztott (shared) fájlokat minden bejelentkezett felhasználó olvashatja; feltölteni és törölni őket a `files.shared.manage` jogosultsággal lehet (lásd lent). A user fájlok a feltöltőhöz tartoznak, és egy `user-{userId}` mappába kerülnek.
+
+### A `files.shared.manage` jogosultság
+
+A jogosultság a `files` erőforráshoz tartozik. A seed a Rendszergazda (minden jogosultsággal rendelkező) és az Adminisztrátor szerepkörnek adja meg. A `0010_files_shared_manage` migráció a meglévő adatbázisokhoz is hozzáadja, és minden olyan szerepkörnek és csoportnak megadja, amelynek van `settings.update` jogosultsága.
 
 ## Tárolási struktúra
 
@@ -40,12 +44,13 @@ uploads/
 │   │   ├── image/
 │   │   └── video/
 │   └── user-42/
-└── plugin-files/        # plugin tárhely, az /api/files soha nem szolgálja ki
+├── plugins/             # telepített pluginok, fenntartott
+└── plugin-files/        # plugin tárhely, fenntartott, az /api/files soha nem szolgálja ki
 ```
 
-A `saveFile` mindig az `uploads/{category}/{shared | user-{userId}}/{filename}` útvonalra ír. Mélyebb mappákat nem hoz létre; az olyan almappák, mint a `backgrounds/shared/image/`, csak akkor léteznek, ha más módon kerültek oda fájlok.
+A `saveFile` mindig az `uploads/{category}/{shared | user-{userId}}/{filename}` útvonalra ír. Mélyebb mappákat nem hoz létre; az olyan almappák, mint a `backgrounds/shared/image/`, csak akkor léteznek, ha más módon kerültek oda fájlok. A tárolási útvonalakban mindig `/` az elválasztó, Windows alatt is.
 
-Mentés előtt a fájlnév tisztításra kerül: a név részben csak `a-z A-Z 0-9 - _` marad, a kiterjesztésben csak betű és szám, a teljes hossz legfeljebb 255 karakter. Ha már létezik ilyen nevű fájl, egy 8 karakteres véletlen utótagot kap (`photo-1a2b3c4d.jpg`).
+Mentés előtt a fájlnév tisztításra kerül: a név részben csak `a-z A-Z 0-9 - _` marad, a kiterjesztésben csak betű és szám, a teljes hossz legfeljebb 255 karakter. A név elejéről a `thumb-` előtag lekerül, így feltöltött fájl soha nem látszik bélyegképnek. Ha már létezik ilyen nevű fájl, egy 8 karakteres véletlen utótagot kap (`photo-1a2b3c4d.jpg`).
 
 ## Remote functionök
 
@@ -53,9 +58,10 @@ Mentés előtt a fájlnév tisztításra kerül: a név részben csak `a-z A-Z 0
 import { saveFile } from '$lib/storage/save-file.remote.js';
 import { listFiles } from '$lib/storage/list-files.remote.js';
 import { deleteFile } from '$lib/storage/delete-file.remote.js';
+import { getFileMetadata } from '$lib/storage/get-file-metadata.remote.js';
 ```
 
-Siker esetén `StoredFile` objektumot (vagy ezek listáját) adják vissza:
+Mindegyiket a `$lib/storage` is exportálja. Siker esetén `StoredFile` objektumot (vagy ezek listáját) adják vissza:
 
 ```typescript
 interface StoredFile {
@@ -101,16 +107,20 @@ Visszatérési érték: `{ success: boolean; file?: StoredFile; error?: string }
 
 A szerver lépései:
 
-1. Dekódolja a base64 adatot, és a tartalom alapján ellenőrzi a MIME típust (lásd lent).
-2. Képeknél a `sharp` segítségével arányosan átméretez a `maxImageWidth` / `maxImageHeight` értékre (ha meg vannak adva). Ha a `generateThumbnail` értéke `true`, bélyegképet is ment (legfeljebb 200×200 px) `thumb-{fileName}` néven ugyanabba a mappába.
-3. Kiírja a fájlt a lemezre, és beszúr egy sort a `platform.files` táblába, új UUID-val `publicId`-ként. `scope: 'user'` esetén a `userId` az aktuális felhasználó, `'shared'` esetén `null`.
+1. `scope: 'shared'` esetén ellenőrzi a `files.shared.manage` jogosultságot. Ha nincs, a hiba: `Permission denied: shared files require the files.shared.manage permission`.
+2. Összeveti a méretet a szerver mérethatárával (lásd [Méretkorlátok](#méretkorlátok)); a nagyobb fájl `File is too large (max 7 MB)` hibát ad.
+3. Dekódolja a base64 adatot, és a tartalom alapján ellenőrzi a MIME típust (lásd lent).
+4. Képeknél a `sharp` segítségével arányosan átméretez a `maxImageWidth` / `maxImageHeight` értékre (ha meg vannak adva). Ha a `generateThumbnail` értéke `true`, bélyegképet is készít (legfeljebb 200×200 px).
+5. Kiírja a fájlt a lemezre, majd a bélyegképet `thumb-{tárolt fájlnév}` néven ugyanabba a mappába, és beszúr egy sort a `platform.files` táblába, új UUID-val `publicId`-ként. `scope: 'user'` esetén a `userId` az aktuális felhasználó, `'shared'` esetén `null`. Ha valamelyik lépés hibára fut, a már kiírt fájlokat törli.
 
 ### MIME felismerés
 
 A szerver nem bízik a megadott `mimeType` értékben. A `file-type` csomaggal a fájl tartalmából állapítja meg a típust, és csak ezeket fogadja el (a szerver mindig ezt a listát használja, a feltöltő `fileType` propjától függetlenül):
 
-- Képek: `image/jpeg`, `image/png`, `image/gif`, `image/webp`, `image/svg+xml`, `image/bmp`
+- Képek: `image/jpeg`, `image/png`, `image/gif`, `image/webp`
 - Dokumentumok: PDF, Word (`.doc`, `.docx`), Excel (`.xls`, `.xlsx`), ODT, `text/plain`, `text/csv`
+
+SVG és BMP nem tölthető fel: az SVG a tartalom alapján nem ismerhető fel, és szkriptet futtathatna, a BMP-t pedig a `sharp` nem tudja beolvasni.
 
 A sima szöveg és a CSV tartalom alapján nem ismerhető fel, ezért ezeknél a megadott `mimeType` elfogadható, ha `text/plain` vagy `text/csv`. Minden más fel nem ismerhető fájl `Unable to detect file type` hibával elutasításra kerül. Az adatbázisba a felismert típus kerül.
 
@@ -130,15 +140,23 @@ const result = await deleteFile({ fileId: file.id });
 // { success: boolean; error?: string }
 ```
 
-Törli a fájlt és a bélyegképét a lemezről, majd az adatbázis sort. Ha a fájl már nincs a lemezen, a sort akkor is törli. A felhasználó csak azokat a fájlokat törölheti, amelyek `userId` értéke az övé. A megosztott fájlok `userId: null` értékkel mentődnek, ezért a jelenlegi kódban a `deleteFile` ezek törlését elutasítja.
+Törli a fájlt és a bélyegképét a lemezről, majd az adatbázis sort. Ha a fájl már nincs a lemezen, a sort akkor is törli. Ki törölhet:
+
+- user fájlt: csak a tulajdonosa (a `userId` az aktuális felhasználó);
+- megosztott fájlt: a `files.shared.manage` jogosultsággal rendelkező felhasználó.
 
 ### deleteBackground
 
-A `$lib/storage/delete-background.remote.js` fájlban lévő `deleteBackground({ filename })` törli a `backgrounds/user-{userId}/{filename}` fájlt és a hozzá tartozó `thumb-` fájlt a lemezről. Az adatbázishoz nem nyúl.
+A `$lib/storage/delete-background.remote.js` fájlban lévő `deleteBackground({ filename })` az aktuális felhasználó saját hátterét törli: `backgrounds/user-{userId}/{filename}`. A `filename` csak fájlnév lehet (`/` és `\` nélkül). Ha a háttérnek van `platform.files` rekordja, a fájl, a bélyegkép és a rekord is törlődik. A rekord nélküli, régebbi hátterek csak a lemezről törlődnek, a `thumb-` fájljukkal együtt.
 
 ### getFileMetadata
 
-A `getFileMetadata({ fileId })` csak a `$lib/server/storage/` alatt létezik (az ottani `index.ts` exportálja). Visszatérési érték: `{ success, file?, error? }`. A megosztott fájlokat minden bejelentkezett felhasználó láthatja, a user fájlokat csak a tulajdonosuk.
+```typescript
+const result = await getFileMetadata({ fileId });
+// { success: boolean; file?: StoredFile; error?: string }
+```
+
+A megosztott fájlokat minden bejelentkezett felhasználó láthatja, a user fájlokat csak a tulajdonosuk.
 
 ## Fájlok kiszolgálása: `GET /api/files/...`
 
@@ -161,8 +179,10 @@ A megosztott fájlokat bármely bejelentkezett felhasználó olvashatja. A scope
 
 Sikeres válasz esetén:
 
-- a `Content-Type` a fájl kiterjesztéséből adódik (nem az adatbázis rekordból), ismeretlen kiterjesztésnél `application/octet-stream`
-- `Cache-Control: public, max-age=3600`
+- a `Content-Type` a `platform.files` táblában tárolt MIME típus (feltöltéskor a tartalomból felismerve; a bélyegkép a fájlja rekordját használja). A rekord nélküli fájlok (pl. a telepítéskor bemásolt hátterek) típusa egy rögzített kiterjesztéslistából adódik, ismeretlen kiterjesztésnél `application/octet-stream`.
+- HTML, JavaScript, SVG és XML mindig `application/octet-stream` típussal és `Content-Disposition: attachment` fejléccel megy ki.
+- `Content-Disposition: inline` képeknél, hangnál, videónál, PDF-nél és sima szövegnél (`text/plain`, `text/csv`), minden másnál `attachment`.
+- `Cache-Control: private, max-age=3600` és `Vary: Cookie`, így a proxyk és CDN-ek nem tárolják a bejelentkezéshez kötött fájlokat
 - `X-Content-Type-Options: nosniff`
 
 A hibák JSON formában jönnek vissza: `{ "error": "..." }`.
@@ -177,19 +197,21 @@ GET /api/files/list?category=backgrounds&scope=shared&type=image
 |---|---|---|
 | `category` | Igen | Az `allowedCategories` egyike kell legyen (`backgrounds`, `documents`, `avatars`, `images`), különben `400 Invalid category` |
 | `scope` | Igen | `shared` vagy `user`, különben `400 Invalid scope` |
-| `type` | Nem | Almappa neve (`^[a-z0-9-]+$`), csak `scope=shared` esetén számít |
+| `type` | Nem | Almappa neve, illeszkednie kell a `^[a-z0-9-]+$` mintára (különben `400 Invalid type`); csak `scope=shared` esetén számít |
 
 A beolvasott mappa:
 
 - `scope=shared`: `uploads/{category}/shared/` vagy `uploads/{category}/shared/{type}/`
 - `scope=user`: `uploads/{category}/user-{aktuális user id}/` (a `type` figyelmen kívül marad)
 
-A végpont közvetlenül a mappát olvassa, nem az adatbázist. A válasz `{ "files": [{ "filename": "..." }] }`, benne a mappa összes fájljával, a `thumb-` fájlokat is beleértve. Nem létező mappa esetén üres listát ad. Érvényes session szükséges (különben `401`).
+A végpont közvetlenül a mappát olvassa, nem az adatbázist. A válasz `{ "files": [{ "filename": "..." }] }`, benne a mappa fájljaival; az almappák és a `thumb-` fájlok kimaradnak. Nem létező mappa esetén üres listát ad. Érvényes session szükséges (különben `401`).
 
 ## Méretkorlátok
 
-- A **`BODY_SIZE_LIMIT`** (alapértelmezés `10485760`, 10 MB) a Node adapter kérésméret-korlátja, minden kérésre vonatkozik. A `saveFile` a fájlt base64 formában küldi a kérésben, ami a fájlméret kb. 4/3-a, így az alapértelmezett korláttal a kb. 7,5 MB-nál nagyobb fájlok elutasításra kerülnek.
-- A `saveFile` maga nem ellenőriz méretet. A `FileUploader` `maxFileSize` propját csak a böngésző ellenőrzi.
+A `saveFile` a fájlt base64 kódolva, egyetlen kérésben küldi, ami a fájlméret kb. 4/3-a. A kérésnek bele kell férnie a **`BODY_SIZE_LIMIT`**-be (a Node adapter kérésméret-korlátja, alapértelmezés `10485760`, 10 MB), így ennek kb. háromnegyede használható a fájlra.
+
+- **Szerver**: a `saveFile` elutasítja a `getMaxUploadBytes()` (`src/lib/server/storage/limits.ts`) értéknél nagyobb fájlokat. Az értéket a `maxUploadBytesForBodyLimit()` (`src/lib/storage/limits.ts`) számolja a `BODY_SIZE_LIMIT`-ből: 64 KB marad a kérés többi részének, a maradék háromnegyede a korlát, 1 MB felett egész MB-ra lefelé kerekítve. Az alapértelmezett korláttal ez 7 MB (`DEFAULT_MAX_UPLOAD_BYTES`).
+- **FileUploader**: a `maxFileSize` alapértéke szintén 7 MB. Ez az alapértelmezett `BODY_SIZE_LIMIT`-hez igazodik; nagyobb érték csak akkor működik, ha a `BODY_SIZE_LIMIT` is nagyobb. Ha a szerver a kérést a mérete miatt elutasítja, a feltöltő érthető hibaüzenetet mutat.
 - A fájlnév legfeljebb 255 karakter lehet.
 
 ## FileUploader komponens
@@ -230,9 +252,9 @@ A `src/lib/components/file-uploader/` mappában egy drag-and-drop feltöltő tal
 | Prop | Típus | Alapértelmezés | Leírás |
 |---|---|---|---|
 | `category` | `string` | – (kötelező) | Továbbadódik a `saveFile`-nak |
-| `scope` | `'shared' \| 'user'` | – (kötelező) | Továbbadódik a `saveFile`-nak |
+| `scope` | `'shared' \| 'user'` | – (kötelező) | Továbbadódik a `saveFile`-nak; a `shared`-hez `files.shared.manage` jogosultság kell |
 | `mode` | `'standard' \| 'instant'` | `'standard'` | Lásd lent |
-| `maxFileSize` | `number` | `10485760` (10 MB) | Maximális méret bájtban, a böngésző ellenőrzi |
+| `maxFileSize` | `number` | `DEFAULT_MAX_UPLOAD_BYTES` (7 MB) | Maximális méret bájtban, a böngésző ellenőrzi; lásd [Méretkorlátok](#méretkorlátok) |
 | `maxFiles` | `number` | `1` | Maximális fájlszám; 1 felett a fájlválasztóban több fájl is kijelölhető (csak standard módban) |
 | `fileType` | `'image' \| 'document' \| 'mixed'` | `'mixed'` | A böngészőben engedélyezett kiterjesztéseket határozza meg |
 | `allowedExtensions` | `string[]` | `[]` | Felülírja a `fileType` alapján adódó kiterjesztéseket |
@@ -246,7 +268,7 @@ A `src/lib/components/file-uploader/` mappában egy drag-and-drop feltöltő tal
 
 A böngészőben engedélyezett kiterjesztések `fileType` szerint:
 
-- `image`: `jpg`, `jpeg`, `png`, `gif`, `webp`, `svg`, `bmp`
+- `image`: `jpg`, `jpeg`, `png`, `gif`, `webp`
 - `document`: `pdf`, `doc`, `docx`, `xls`, `xlsx`, `txt`, `csv`, `odt`
 - `mixed`: bármilyen kiterjesztés
 
@@ -268,6 +290,7 @@ interface UploadResult {
     mimeType: string;
     size: number;
     url: string;
+    filename?: string;     // a tárolt név (eltérhet az originalName-től)
     thumbnailUrl?: string;
   };
   error?: string;
@@ -280,12 +303,16 @@ interface UploadError {
 }
 ```
 
+## Törölt felhasználók fájljainak takarítása
+
+Felhasználó törlésekor a `platform.files.user_id` értéke `null` lesz, így a saját fájljai senki számára nem érhetők el. A `core.orphan-files-cleanup` core feladat naponta (04:30-kor) törli ezeket a fájlokat, a bélyegképeiket és a rekordjaikat (`cleanupOrphanedUserFiles` a `file-service.ts`-ben).
+
 ## Fájl repository
 
-Szerveroldali kódban a közvetlen adatbázis-hozzáféréshez a `fileRepository` használható (a `FileRepository` osztály egyetlen példánya). A modul `index.ts`-e nem exportálja, a saját fájljából kell importálni:
+Szerveroldali kódban a közvetlen adatbázis-hozzáféréshez a `fileRepository` használható (a `FileRepository` osztály egyetlen példánya):
 
 ```typescript
-import { fileRepository } from '$lib/server/storage/file-repository';
+import { fileRepository } from '$lib/server/storage';
 
 const file = await fileRepository.findByPublicId(fileId);
 const avatars = await fileRepository.findByCategory('avatars', 'user', userId);
@@ -299,5 +326,7 @@ const avatars = await fileRepository.findByCategory('avatars', 'user', userId);
 | `findByUserId(userId)` | `Promise<StoredFile[]>` | Az adott `userId`-hoz tartozó összes fájl |
 | `delete(publicId)` | `Promise<boolean>` | Törli a sort; `false`, ha nem létezett |
 | `findRawByPublicId(publicId)` | `Promise<FileSelectModel \| undefined>` | A nyers adatbázis sor, a `thumbnailPath` mezővel együtt |
+| `findRawByPath(storagePath)` | `Promise<FileSelectModel \| undefined>` | Az a nyers sor, amelynek a fájlja vagy a bélyegképe ezen az útvonalon van (az `uploads/`-hoz képest) |
+| `findOrphanedUserFiles(limit)` | `Promise<FileSelectModel[]>` | A `null` `userId`-jú (törölt felhasználóhoz tartozó) user fájlok |
 
-A repository csak az adatbázist kezeli. A fájlokhoz magukhoz a `filesystem.ts` segédfüggvényei valók: `saveToFileSystem`, `readFromFileSystem`, `deleteFromFileSystem` (mindegyik az `uploads/`-hoz relatív útvonalat vár, és `StorageError`-t dob), `validatePath`, `sanitizeFilename`, `generateUniqueFilename` és `generateStoragePath`.
+A repository csak az adatbázist kezeli. Ha egy fájlt a bélyegképével és a rekordjával együtt kell törölni, a `file-service.ts` `removeStoredFile(record)` függvénye való erre (a jogosultságot a hívó ellenőrzi). A fájlokhoz magukhoz a `filesystem.ts` segédfüggvényei valók: `saveToFileSystem`, `readFromFileSystem`, `deleteFromFileSystem` (mindegyik az `uploads/`-hoz relatív útvonalat vár, és `StorageError`-t dob), `validatePath`, `sanitizeFilename`, `generateUniqueFilename` és `generateStoragePath`.
