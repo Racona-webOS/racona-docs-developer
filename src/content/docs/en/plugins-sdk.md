@@ -374,6 +374,24 @@ Usage in a Svelte template:
 
 ---
 
+## File Service — `sdk.files`
+
+Upload a file to the core file storage (`file_access` permission). The upload link comes from your remote function (`context.files.createUploadUrl()`); the whole flow is described in [File Storage](/en/plugins-files/).
+
+### `upload(uploadUrl, file, options?)`
+
+```typescript
+const { uploadUrl } = await sdk.remote.call<{ uploadUrl: string }>('prepareUpload', { id });
+const { fileId } = await sdk.files.upload(uploadUrl, file, {
+  onProgress: ({ loaded, total }) => console.log(Math.round((loaded / total) * 100), '%')
+});
+await sdk.remote.call('attachFile', { id, fileId });
+```
+
+On rejection the error has `code` (`FILE_TOO_LARGE`, `INVALID_MIME`, `INVALID_TOKEN`, …) and `status`.
+
+---
+
 ## Error Handling
 
 Remote calls and database operations can throw errors. Always use try-catch:

@@ -114,6 +114,7 @@ A remote végpont (`sdk.remote.call()`) csak a `server/functions.ts`-t tölti be
 | `pluginPermissions` | `string[]` | A plugin manifest jogosultságai |
 | `email` | `object \| undefined` | [Email szolgáltatás](/hu/plugins-email/), csak `notifications` jogosultsággal |
 | `notifications` | `object \| undefined` | Értesítés küldése megnevezett felhasználóknak (`userId` / `userIds`), csak `notifications` jogosultsággal |
+| `files` | `object \| undefined` | Fájltárolás, csak `file_access` jogosultsággal; fel- és letöltési link itt nem kérhető — lásd [Fájltárolás](/hu/plugins-files/) |
 | `logger` | `{ info, warn, error }` | A sorok a futásnaplóba kerülnek |
 | `signal` | `AbortSignal` | Időtúllépéskor abortál |
 

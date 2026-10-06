@@ -99,7 +99,7 @@ A plugin can only access the SDK functions for which it has requested permission
 | `notifications` | Send notifications to users | `notifications.send()` |
 | `remote_functions` | Call server-side functions | `remote.call()` |
 | `scheduler` | Jobs that run on a schedule, without user interaction | `scheduledJobs` in the manifest, `server/jobs.ts` — see [Scheduled Jobs](/en/plugins-scheduler/) |
-| `file_access` | File upload/download | (planned) |
+| `file_access` | Store files on the server (upload, download) | `context.files`, `sdk.files.upload()` — see [File Storage](/en/plugins-files/) |
 | `user_data` | Read user profile data | (planned) |
 
 ```json

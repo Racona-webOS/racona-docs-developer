@@ -78,6 +78,7 @@ Every server function receives the `context` parameter:
 | `permissions` | `string[]` | The **calling user's** core permissions (e.g. `plugin.manual.install`). For system administrators it also contains `admin`. |
 | `pluginPermissions` | `string[]` | The permissions declared in the plugin's `manifest.json` (e.g. `database`, `remote_functions`) |
 | `email` | `object \| undefined` | Email service (only with `notifications` permission) — see [Email Service](/en/plugins-email/) |
+| `files` | `object \| undefined` | File storage (only with `file_access` permission) — see [File Storage](/en/plugins-files/) |
 
 :::note
 `permissions` belongs to the user, not the plugin. To check whether the caller is a system administrator, use `context.permissions.includes('admin')`. The plugin's own permissions are in `pluginPermissions`.

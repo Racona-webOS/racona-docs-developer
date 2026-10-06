@@ -78,6 +78,7 @@ Minden szerver függvény megkapja a `context` paramétert:
 | `permissions` | `string[]` | A **hívó felhasználó** core jogosultságai (pl. `plugin.manual.install`). Rendszergazda esetén tartalmazza az `admin` értéket is. |
 | `pluginPermissions` | `string[]` | A plugin `manifest.json`-ban megadott jogosultságai (pl. `database`, `remote_functions`) |
 | `email` | `object \| undefined` | Email szolgáltatás (csak `notifications` jogosultsággal) — lásd [Email szolgáltatás](/hu/plugins-email/) |
+| `files` | `object \| undefined` | Fájltárolás (csak `file_access` jogosultsággal) — lásd [Fájltárolás](/hu/plugins-files/) |
 
 :::note
 A `permissions` mező a felhasználóé, nem a pluginé. Ha azt akarod ellenőrizni, hogy a hívó rendszergazda-e, a `context.permissions.includes('admin')` a megfelelő. A plugin saját jogosultságait a `pluginPermissions` mezőben találod.

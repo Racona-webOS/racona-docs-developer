@@ -359,6 +359,11 @@ export default defineConfig({
 							slug: 'plugins-scheduler'
 						},
 						{
+							label: 'Fájltárolás',
+							translations: { en: 'File Storage' },
+							slug: 'plugins-files'
+						},
+						{
 							label: 'menu.json és AppLayout',
 							translations: { en: 'menu.json & AppLayout' },
 							slug: 'plugins-menu'

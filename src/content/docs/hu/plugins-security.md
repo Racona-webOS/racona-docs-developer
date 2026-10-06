@@ -99,7 +99,7 @@ A plugin csak azokat az SDK funkciókat érheti el, amelyekhez a `manifest.json`
 | `notifications` | Értesítések küldése felhasználóknak | `notifications.send()` |
 | `remote_functions` | Szerver oldali függvények hívása | `remote.call()` |
 | `scheduler` | Időzítetten, felhasználói interakció nélkül futó feladatok | `scheduledJobs` a manifestben, `server/jobs.ts` — lásd [Ütemezett feladatok](/hu/plugins-scheduler/) |
-| `file_access` | Fájl feltöltés/letöltés | (tervezett) |
+| `file_access` | Fájlok tárolása a szerveren (feltöltés, letöltés) | `context.files`, `sdk.files.upload()` — lásd [Fájltárolás](/hu/plugins-files/) |
 | `user_data` | Felhasználói profil adatok olvasása | (tervezett) |
 
 ```json

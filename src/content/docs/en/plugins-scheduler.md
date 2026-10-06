@@ -114,6 +114,7 @@ The remote endpoint (`sdk.remote.call()`) only loads `server/functions.ts`, not 
 | `pluginPermissions` | `string[]` | The permissions in the plugin manifest |
 | `email` | `object \| undefined` | [Email service](/en/plugins-email/), only with the `notifications` permission |
 | `notifications` | `object \| undefined` | Sends notifications to named users (`userId` / `userIds`), only with the `notifications` permission |
+| `files` | `object \| undefined` | File storage, only with the `file_access` permission; upload and download links are not available here — see [File Storage](/en/plugins-files/) |
 | `logger` | `{ info, warn, error }` | Lines go to the run history |
 | `signal` | `AbortSignal` | Aborted when the job times out |
 

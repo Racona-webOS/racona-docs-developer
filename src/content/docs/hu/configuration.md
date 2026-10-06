@@ -203,6 +203,9 @@ Soha ne engedélyezd a `DEV_MODE=true` értéket éles környezetben. Tetszőleg
 | `PLUGIN_PACKAGE_EXTENSION` | `raconapkg`           | Plugin csomag fájlkiterjesztés               |
 | `PLUGIN_MAX_SIZE`          | `10485760`           | Maximális plugin méret bájtban (max: 100 MB) |
 | `PLUGIN_STORAGE_DIR`       | `/var/webos/plugins` | Telepített plugin fájlok könyvtára           |
+| `PLUGIN_FILE_MAX_BYTES`    | `10485760`           | A pluginok által tárolt fájlok (`file_access`) mérethatára bájtban. Nem lehet nagyobb a `BODY_SIZE_LIMIT`-nél |
+
+A `file_access` jogú pluginok fájljai az `uploads/plugin-files/` mappába kerülnek (lásd [Fájltárolás](/hu/plugins-files/)). A mentésbe a teljes `uploads` mappát vedd fel: ebben vannak ezek a fájlok, a hátterek, az avatarok és a telepített pluginok.
 
 ---
 

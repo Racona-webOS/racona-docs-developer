@@ -374,6 +374,24 @@ Használat Svelte template-ben:
 
 ---
 
+## File Service — `sdk.files`
+
+Fájl feltöltése a core fájltárolójába (`file_access` jogosultság). A feltöltési linket a remote függvényed adja (`context.files.createUploadUrl()`); a teljes folyamat a [Fájltárolás](/hu/plugins-files/) oldalon.
+
+### `upload(uploadUrl, file, options?)`
+
+```typescript
+const { uploadUrl } = await sdk.remote.call<{ uploadUrl: string }>('prepareUpload', { id });
+const { fileId } = await sdk.files.upload(uploadUrl, file, {
+  onProgress: ({ loaded, total }) => console.log(Math.round((loaded / total) * 100), '%')
+});
+await sdk.remote.call('attachFile', { id, fileId });
+```
+
+Elutasításkor a hibának van `code` (`FILE_TOO_LARGE`, `INVALID_MIME`, `INVALID_TOKEN`, …) és `status` mezője.
+
+---
+
 ## Hibakezelés
 
 A remote hívások és az adatbázis műveletek dobhatnak hibát. Mindig használj try-catch-et:

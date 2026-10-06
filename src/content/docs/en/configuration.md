@@ -203,6 +203,9 @@ Never enable `DEV_MODE=true` in production. It allows arbitrary code execution f
 | `PLUGIN_PACKAGE_EXTENSION`  | `raconapkg`           | Plugin package file extension                  |
 | `PLUGIN_MAX_SIZE`           | `10485760`           | Maximum plugin size in bytes (max: 100 MB)     |
 | `PLUGIN_STORAGE_DIR`        | `/var/webos/plugins` | Installed plugin files directory               |
+| `PLUGIN_FILE_MAX_BYTES`     | `10485760`           | Size limit of a file stored by a plugin (`file_access`), in bytes. Must not exceed `BODY_SIZE_LIMIT` |
+
+Plugins with the `file_access` permission store files under `uploads/plugin-files/` (see [File Storage](/en/plugins-files/)). Back up the whole `uploads` folder: it holds these files, backgrounds, avatars and the installed plugins.
 
 ---
 
