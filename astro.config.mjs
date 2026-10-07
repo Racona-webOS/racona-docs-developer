@@ -364,6 +364,11 @@ export default defineConfig({
 							slug: 'plugins-files'
 						},
 						{
+							label: 'AI asszisztens tudásbázis',
+							translations: { en: 'AI Assistant Knowledge Base' },
+							slug: 'plugins-knowledge-base'
+						},
+						{
 							label: 'menu.json és AppLayout',
 							translations: { en: 'menu.json & AppLayout' },
 							slug: 'plugins-menu'

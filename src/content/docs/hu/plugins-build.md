@@ -82,7 +82,7 @@ bun run package
 
 Ez a projekt gyökerében lévő `build-package.js` scriptet futtatja, amely:
 1. Beolvassa a `manifest.json`-t az `id` és `version` mezők alapján
-2. Összegyűjti a `manifest.json`-t, a `dist/` mappát, valamint — ha léteznek — a `locales/`, `assets/`, `server/`, `migrations/` és `email-templates/` mappákat és a `menu.json`-t
+2. Összegyűjti a `manifest.json`-t, a `dist/` mappát, valamint — ha léteznek — a `locales/`, `assets/`, `server/`, `migrations/`, `email-templates/` és `knowledge-base/` mappákat és a `menu.json`-t
 3. Egy ZIP archívumba tömöríti őket
 4. `.raconapkg` kiterjesztéssel menti el a projekt gyökerébe
 
@@ -116,6 +116,8 @@ hello-world-1.0.0.raconapkg  (ZIP archívum)
 │   └── 001_init.sql
 ├── email-templates/     # opcionális — csak ha van email-templates/ mappa
 │   └── welcome.json
+├── knowledge-base/      # opcionális — az AI asszisztens dokumentációja
+│   └── hu/_overview.md
 └── server/              # opcionális — csak ha van server/ mappa
     ├── functions.ts
     └── jobs.ts          # ütemezett feladatok (ha vannak)
