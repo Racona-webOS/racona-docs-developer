@@ -82,7 +82,7 @@ bun run package
 
 This runs the `build-package.js` script in the project root, which:
 1. Reads `manifest.json` for the `id` and `version` fields
-2. Collects `manifest.json`, the `dist/` folder and — when they exist — the `locales/`, `assets/`, `server/`, `migrations/`, `email-templates/` and `knowledge-base/` folders and `menu.json`
+2. Collects `manifest.json`, the `dist/` folder and — when they exist — the `locales/`, `assets/`, `server/`, `migrations/`, `email-templates/`, `knowledge-base/` and `help/` folders and `menu.json`
 3. Compresses them into a ZIP archive
 4. Saves it with the `.raconapkg` extension in the project root
 
@@ -117,6 +117,7 @@ hello-world-1.0.0.raconapkg  (ZIP archive)
 ├── email-templates/     # optional — only if email-templates/ folder exists
 │   └── welcome.json
 ├── knowledge-base/      # optional — documentation for the AI assistant
+├── help/                # optional — user guide shown in the Help app
 │   └── hu/_overview.md
 └── server/              # optional — only if server/ folder exists
     ├── functions.ts

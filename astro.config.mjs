@@ -369,6 +369,11 @@ export default defineConfig({
 							slug: 'plugins-knowledge-base'
 						},
 						{
+							label: 'Plugin súgó',
+							translations: { en: 'Plugin Help' },
+							slug: 'plugins-help'
+						},
+						{
 							label: 'menu.json és AppLayout',
 							translations: { en: 'menu.json & AppLayout' },
 							slug: 'plugins-menu'
