@@ -32,7 +32,7 @@ NODE_ENV=development
 DATABASE_URL=
 
 # @type=port
-ELYOS_PORT=3000
+RACONA_PORT=3000
 
 # @sensitive @required
 BETTER_AUTH_SECRET=
@@ -105,7 +105,7 @@ import { env } from '$lib/env';
 
 // Typesafe, already validated by Varlock at startup
 const dbUrl = env.DATABASE_URL;
-const port = env.ELYOS_PORT;
+const port = env.RACONA_PORT;
 ```
 
 ## Error Messages

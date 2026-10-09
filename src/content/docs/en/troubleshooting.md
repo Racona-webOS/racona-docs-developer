@@ -16,7 +16,7 @@ This guide covers the most common problems encountered when installing and opera
 **Solution:** Ensure `.env` file contains at least:
 
 ```bash
-DATABASE_URL=postgresql://elyos:elyos123@localhost:5432/elyos
+DATABASE_URL=postgresql://racona:racona123@localhost:5432/racona
 BETTER_AUTH_SECRET=<generate: openssl rand -base64 32>
 BETTER_AUTH_URL=http://localhost:3000
 ```
@@ -32,7 +32,7 @@ BETTER_AUTH_URL=http://localhost:3000
 **Solution:** Stop the conflicting process or change the port:
 
 ```bash
-ELYOS_PORT=3001
+RACONA_PORT=3001
 ```
 
 ---
@@ -64,7 +64,7 @@ ELYOS_PORT=3001
 **Solution (local):**
 
 ```bash
-DATABASE_URL=postgresql://elyos:elyos123@localhost:5432/elyos
+DATABASE_URL=postgresql://racona:racona123@localhost:5432/racona
 ```
 
 **Solution (Docker Compose):** Don't set `DATABASE_URL` in `.env` — Docker Compose automatically builds it from `POSTGRES_*` variables using internal `postgres` hostname.
@@ -73,7 +73,7 @@ DATABASE_URL=postgresql://elyos:elyos123@localhost:5432/elyos
 
 ### Authentication Error
 
-**Symptom:** `password authentication failed for user "elyos"`
+**Symptom:** `password authentication failed for user "racona"`
 
 **Cause:** `POSTGRES_USER` / `POSTGRES_PASSWORD` in `.env` don't match database initialization values.
 
@@ -95,7 +95,7 @@ docker compose -f docker/docker-compose.yml up -d
 **Solution (Docker):** `db-init` service runs automatically on first startup. If it failed, check logs:
 
 ```bash
-docker logs elyos-db-init
+docker logs racona-db-init
 ```
 
 **Solution (local):**
@@ -135,8 +135,8 @@ If you change this secret after users have logged in, all existing sessions beco
 **Solution:** Both values must be identical:
 
 ```bash
-APP_URL=https://elyos.example.com
-BETTER_AUTH_URL=https://elyos.example.com
+APP_URL=https://racona.example.com
+BETTER_AUTH_URL=https://racona.example.com
 ```
 
 ---
@@ -232,7 +232,7 @@ Translation loader makes server calls on startup. If `ORIGIN` not set correctly,
 **Solution:** Set `ORIGIN` to exact public URL:
 
 ```bash
-ORIGIN=https://elyos.example.com
+ORIGIN=https://racona.example.com
 ```
 
 Check browser Network tab — if translation requests return `403`, this is the cause.
@@ -277,7 +277,7 @@ If result is `0`, seed didn't run.
 **Solution:** Set `ORIGIN` to exact public URL:
 
 ```bash
-ORIGIN=https://elyos.example.com
+ORIGIN=https://racona.example.com
 ```
 
 Must match URL in browser address bar — including protocol and port if non-standard.
@@ -288,14 +288,14 @@ Must match URL in browser address bar — including protocol and port if non-sta
 
 ### Container Keeps Restarting
 
-**Symptom:** `docker logs elyos-app` shows repeated startup errors.
+**Symptom:** `docker logs racona-app` shows repeated startup errors.
 
 **Cause:** Usually missing environment variable, failed database connection, or `db-init` service didn't complete.
 
 **Solution:**
 
-1. Check `db-init` logs: `docker logs elyos-db-init`
-2. Check app logs: `docker logs elyos-app`
+1. Check `db-init` logs: `docker logs racona-db-init`
+2. Check app logs: `docker logs racona-app`
 3. Ensure all required variables set in `.env`
 
 ---
@@ -387,7 +387,7 @@ mkdir -p ./logs
 Or set custom path:
 
 ```bash
-LOG_DIR=/var/log/elyos
+LOG_DIR=/var/log/racona
 ```
 
 ---

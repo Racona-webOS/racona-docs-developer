@@ -26,7 +26,7 @@ NODE_ENV=development
 BODY_SIZE_LIMIT=10485760
 
 # @type=port
-ELYOS_PORT=3000
+RACONA_PORT=3000
 
 # @required @type=url
 ORIGIN=
@@ -66,7 +66,7 @@ At the top of the file, before the `# ---` line:
 | `@type=string` | String value (default) | `APP_NAME=Racona` |
 | `@type=number` | Numeric value | `BODY_SIZE_LIMIT=10485760` |
 | `@type=number(min=1,max=100)` | Numeric value with range | `DEMO_RESET_HOUR=3` |
-| `@type=port` | Port number (1–65535) | `ELYOS_PORT=3000` |
+| `@type=port` | Port number (1–65535) | `RACONA_PORT=3000` |
 | `@type=url` | URL format | `ORIGIN=http://localhost:3000` |
 | `@type=email(normalize=true)` | Email address with normalization | `SMTP_FROM_EMAIL=noreply@racona.hu` |
 | `@type=enum(a,b,c)` | Enumeration type | `NODE_ENV=development` |
@@ -109,7 +109,7 @@ DATABASE_URL=
 
 ```dotenv
 # @type=port @default=3000
-ELYOS_PORT=3000
+RACONA_PORT=3000
 ```
 
 ## Functions
@@ -157,7 +157,7 @@ The `@generateTypes` annotation causes Varlock to automatically generate a TypeS
 export type CoercedEnvSchema = {
   NODE_ENV: "development" | "production" | "test";
   BODY_SIZE_LIMIT: number;
-  ELYOS_PORT: number;
+  RACONA_PORT: number;
   ORIGIN: string;
   APP_URL?: string;
   DATABASE_URL: string;
@@ -175,7 +175,7 @@ This enables type-safe access:
 
 ```typescript
 // ✅ Type-safe
-const port = process.env.ELYOS_PORT;
+const port = process.env.RACONA_PORT;
 
 // ❌ TypeScript error
 const invalid = process.env.INVALID_VAR;

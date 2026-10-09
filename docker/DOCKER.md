@@ -1,6 +1,6 @@
 # Docker – Dokumentációs oldal
 
-Ez a dokumentáció a dokumentációs oldal (`docs.elyos.hu`) Docker image buildelését és deployolását írja le.
+Ez a dokumentáció a dokumentációs oldal (`docs-dev.racona.hu`) Docker image buildelését és deployolását írja le.
 
 ---
 
@@ -67,16 +67,16 @@ bun run docker:save
 ### 2. Felmásolás és betöltés VPS-en
 
 ```bash
-scp docker/elyos-docs.tar user@vps:/opt/docker/_images/
+scp docker/racona-docs-developer.tar user@vps:/opt/docker/_images/
 
 ssh user@vps
-docker load -i /opt/docker/_images/elyos-docs.tar
+docker load -i /opt/docker/_images/racona-docs-developer.tar
 ```
 
 ### 3. Indítás
 
 ```bash
-cd /opt/docker/elyos-docs
+cd /opt/docker/racona-docs-developer
 docker compose up -d
 ```
 
@@ -84,9 +84,9 @@ docker compose up -d
 
 ## Traefik routing
 
-A mellékelt `docker-compose.yml` az ElyOS saját VPS-környezetéhez van konfigurálva, ahol Traefik reverse proxy fut:
+A mellékelt `docker-compose.yml` az Racona saját VPS-környezetéhez van konfigurálva, ahol Traefik reverse proxy fut:
 
-- **Domain**: `docs.elyos.hu`
+- **Domain**: `docs-dev.racona.hu`
 - **Port**: `3001` (host) → `80` (nginx konténer)
 - **Healthcheck**: `GET /` – 30 másodpercenként
 

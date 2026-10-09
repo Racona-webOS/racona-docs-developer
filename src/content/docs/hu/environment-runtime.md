@@ -122,7 +122,7 @@ for (const key of urlFields) {
 ### Port validáció
 
 ```typescript
-const portFields = ['ELYOS_PORT', 'SMTP_PORT', 'POSTGRES_PORT'] as const;
+const portFields = ['RACONA_PORT', 'SMTP_PORT', 'POSTGRES_PORT'] as const;
 for (const key of portFields) {
   const value = env[key];
   if (value && !isValidPort(value)) {

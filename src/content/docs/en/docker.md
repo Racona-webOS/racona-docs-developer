@@ -146,9 +146,9 @@ postgres:
   ports:
     - '${POSTGRES_PORT:-5432}:5432'
   volumes:
-    - elyos-data:/var/lib/postgresql
+    - racona-data:/var/lib/postgresql
   healthcheck:
-    test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-elyos} -d ${POSTGRES_DB:-elyos}']
+    test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-racona} -d ${POSTGRES_DB:-racona}']
     interval: 10s
     timeout: 5s
     retries: 5
@@ -157,7 +157,7 @@ postgres:
 **Features:**
 
 - Port: `5432` (configurable: `POSTGRES_PORT`)
-- Persistent storage: `elyos-data` volume
+- Persistent storage: `racona-data` volume
 - Health check: checks database availability every 10 seconds
 - Auto-restart: `unless-stopped`
 
@@ -182,14 +182,14 @@ db-init:
 - One-time execution: `restart: no`
 - Supports `RESET=1` environment variable for complete database reset
 
-### 3. elyos
+### 3. racona
 
 Racona web application (SvelteKit + Express + Socket.IO).
 
 ```yaml
-elyos:
+racona:
   ports:
-    - '${ELYOS_PORT:-3000}:3000'
+    - '${RACONA_PORT:-3000}:3000'
   depends_on:
     db-init:
       condition: service_completed_successfully
@@ -200,7 +200,7 @@ elyos:
 
 **Features:**
 
-- Port: `3000` (configurable: `ELYOS_PORT`)
+- Port: `3000` (configurable: `RACONA_PORT`)
 - Only starts when `db-init` completes successfully
 - Persistent file storage: `uploads` folder
 - Auto-restart: `unless-stopped`
@@ -219,7 +219,7 @@ Services start in sequence, ensuring proper dependencies:
    ↓
 4. db-init (completed successfully)
    ↓
-5. elyos (starts)
+5. racona (starts)
 ```
 
 ## Database Initialization and Reset
@@ -255,7 +255,7 @@ RESET=1 docker compose -f docker/docker-compose.yml up -d
 Docker-based development supports hot reload via volume mount. Modify `docker-compose.yml`:
 
 ```yaml
-elyos:
+racona:
   volumes:
     - ../apps/web:/app/apps/web
     - ../packages:/app/packages
@@ -318,19 +318,19 @@ docker ps
 docker ps -a
 
 # View container logs
-docker logs elyos-app
-docker logs elyos-postgres
-docker logs elyos-db-init
+docker logs racona-app
+docker logs racona-postgres
+docker logs racona-db-init
 ```
 
 ### Entering Containers
 
 ```bash
 # Enter Racona container
-docker exec -it elyos-app sh
+docker exec -it racona-app sh
 
 # Enter PostgreSQL container
-docker exec -it elyos-postgres psql -U elyos -d elyos
+docker exec -it racona-postgres psql -U racona -d racona
 ```
 
 ### Cleaning Up
@@ -343,7 +343,7 @@ docker compose -f docker/docker-compose.yml down
 docker compose -f docker/docker-compose.yml down -v
 
 # Remove images
-docker rmi elyos-elyos elyos-postgres
+docker rmi racona-racona racona-postgres
 ```
 
 ## Multi-Stage Build
@@ -390,11 +390,11 @@ RUN bun run app:build
 FROM oven/bun:1-alpine AS runner
 WORKDIR /app
 RUN addgroup -g 1001 -S nodejs && \
-    adduser -S elyos -u 1001 -G nodejs
-COPY --from=builder --chown=elyos:nodejs /app/apps/web/build ./apps/web/build
+    adduser -S racona -u 1001 -G nodejs
+COPY --from=builder --chown=racona:nodejs /app/apps/web/build ./apps/web/build
 RUN bun install --production --frozen-lockfile
 RUN bun add -g varlock
-USER elyos
+USER racona
 CMD ["varlock", "run", "--", "bun", "run", "apps/web/server.js"]
 ```
 
@@ -440,11 +440,11 @@ Docker Compose automatically loads the root `.env` file. The following variables
 
 | Variable                    | Default | Description                                   |
 | --------------------------- | ------- | --------------------------------------------- |
-| `ELYOS_PORT`                | `3000`  | Racona application port                        |
+| `RACONA_PORT`                | `3000`  | Racona application port                        |
 | `POSTGRES_PORT`             | `5432`  | PostgreSQL port                               |
-| `POSTGRES_USER`             | `elyos` | PostgreSQL username                           |
-| `POSTGRES_PASSWORD`         | `elyos123` | PostgreSQL password                        |
-| `POSTGRES_DB`               | `elyos` | PostgreSQL database name                      |
+| `POSTGRES_USER`             | `racona` | PostgreSQL username                           |
+| `POSTGRES_PASSWORD`         | `racona123` | PostgreSQL password                        |
+| `POSTGRES_DB`               | `racona` | PostgreSQL database name                      |
 | `INFISICAL_CLIENT_ID`       | -       | Infisical Machine Identity Client ID          |
 | `INFISICAL_CLIENT_SECRET`   | -       | Infisical Machine Identity Client Secret      |
 | `VARLOCK_FALLBACK`          | -       | Varlock fallback mode (`local`)               |
@@ -464,17 +464,17 @@ For all available environment variables, see [Variables Reference](/en/configura
 
 1. Check logs:
    ```bash
-   docker logs elyos-app
+   docker logs racona-app
    ```
 
 2. Check environment variables:
    ```bash
-   docker exec elyos-app env
+   docker exec racona-app env
    ```
 
 3. Check health check:
    ```bash
-   docker inspect elyos-app | grep -A 10 Health
+   docker inspect racona-app | grep -A 10 Health
    ```
 
 ### Database Connection Error
@@ -491,7 +491,7 @@ For all available environment variables, see [Variables Reference](/en/configura
 2. Check `DATABASE_URL` environment variable:
    ```bash
    # Correct format:
-   postgresql://elyos:elyos123@postgres:5432/elyos
+   postgresql://racona:racona123@postgres:5432/racona
    ```
 
 3. Wait for `postgres` container to be healthy:
@@ -507,7 +507,7 @@ For all available environment variables, see [Variables Reference](/en/configura
 
 1. Change port in `.env` file:
    ```bash
-   ELYOS_PORT=3001
+   RACONA_PORT=3001
    ```
 
 2. Or stop the other service:

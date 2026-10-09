@@ -57,7 +57,7 @@ Ha nincs Infisical hozzáférésed vagy offline dolgozol, állítsd be a `VARLOC
 ```dotenv
 VARLOCK_FALLBACK=local
 NODE_ENV=development
-DATABASE_URL=postgresql://elyos:elyos123@localhost:5432/elyos
+DATABASE_URL=postgresql://racona:racona123@localhost:5432/racona
 BETTER_AUTH_SECRET=generalt-veletlen-titok
 BETTER_AUTH_URL=http://localhost:3000
 ORIGIN=http://localhost:5173

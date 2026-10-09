@@ -36,7 +36,7 @@ Offline fejlesztéshez vagy Infisical nélküli használathoz:
 ```dotenv
 VARLOCK_FALLBACK=local
 NODE_ENV=development
-DATABASE_URL=postgresql://elyos:elyos123@localhost:5432/elyos
+DATABASE_URL=postgresql://racona:racona123@localhost:5432/racona
 BETTER_AUTH_SECRET=lokalis-titok
 BETTER_AUTH_URL=http://localhost:3000
 ORIGIN=http://localhost:5173
@@ -63,7 +63,7 @@ INFISICAL_CLIENT_SECRET=machine-identity-client-secret
 ```dotenv
 VARLOCK_FALLBACK=local
 NODE_ENV=development
-DATABASE_URL=postgresql://elyos:elyos123@localhost:5432/elyos
+DATABASE_URL=postgresql://racona:racona123@localhost:5432/racona
 BETTER_AUTH_SECRET=generalt-veletlen-titok
 BETTER_AUTH_URL=http://localhost:3000
 ORIGIN=http://localhost:5173
@@ -77,8 +77,8 @@ ORIGIN=http://localhost:5173
 | ----------------- | -------- | --------------- | -------------------------------------------------------- |
 | `NODE_ENV`        | Igen     | —               | `development`, `production` vagy `test`                  |
 | `BODY_SIZE_LIMIT` | Nem      | `10485760`      | Maximális kérés méret bájtban (10 MB)                    |
-| `ELYOS_PORT`      | Nem      | `3000`          | Alkalmazás port (Docker host port leképezés)             |
-| `APP_URL`         | Éles     | —               | Alap URL (pl. `https://elyos.example.com`)               |
+| `RACONA_PORT`      | Nem      | `3000`          | Alkalmazás port (Docker host port leképezés)             |
+| `APP_URL`         | Éles     | —               | Alap URL (pl. `https://racona.example.com`)               |
 | `ORIGIN`          | Igen     | —               | CSRF védelem — meg kell egyeznie az alkalmazás URL-jével |
 
 ## Adatbázis
@@ -244,7 +244,7 @@ bun docker:logs
 
 ### Adatmegőrzés
 
-A PostgreSQL adatok `elyos-data` nevű Docker kötetben tárolódnak. Teljes visszaállításhoz:
+A PostgreSQL adatok `racona-data` nevű Docker kötetben tárolódnak. Teljes visszaállításhoz:
 
 ```bash
 docker compose -f docker/docker-compose.yml down -v

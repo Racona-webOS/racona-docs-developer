@@ -26,7 +26,7 @@ NODE_ENV=development
 BODY_SIZE_LIMIT=10485760
 
 # @type=port
-ELYOS_PORT=3000
+RACONA_PORT=3000
 
 # @required @type=url
 ORIGIN=
@@ -66,7 +66,7 @@ A fájl elején, a `# ---` sor előtt:
 | `@type=string` | Szöveges érték (alapértelmezett) | `APP_NAME=Racona` |
 | `@type=number` | Numerikus érték | `BODY_SIZE_LIMIT=10485760` |
 | `@type=number(min=1,max=100)` | Numerikus érték tartománnyal | `DEMO_RESET_HOUR=3` |
-| `@type=port` | Port szám (1–65535) | `ELYOS_PORT=3000` |
+| `@type=port` | Port szám (1–65535) | `RACONA_PORT=3000` |
 | `@type=url` | URL formátum | `ORIGIN=http://localhost:3000` |
 | `@type=email(normalize=true)` | Email cím normalizálással | `SMTP_FROM_EMAIL=noreply@racona.hu` |
 | `@type=enum(a,b,c)` | Felsorolás típus | `NODE_ENV=development` |
@@ -109,7 +109,7 @@ DATABASE_URL=
 
 ```dotenv
 # @type=port @default=3000
-ELYOS_PORT=3000
+RACONA_PORT=3000
 ```
 
 ## Függvények
@@ -157,7 +157,7 @@ A `@generateTypes` annotáció hatására a Varlock automatikusan generál egy T
 export type CoercedEnvSchema = {
   NODE_ENV: "development" | "production" | "test";
   BODY_SIZE_LIMIT: number;
-  ELYOS_PORT: number;
+  RACONA_PORT: number;
   ORIGIN: string;
   APP_URL?: string;
   DATABASE_URL: string;
@@ -175,7 +175,7 @@ Ez lehetővé teszi a típusbiztos hozzáférést:
 
 ```typescript
 // ✅ Típusbiztos
-const port = process.env.ELYOS_PORT;
+const port = process.env.RACONA_PORT;
 
 // ❌ TypeScript hiba
 const invalid = process.env.INVALID_VAR;

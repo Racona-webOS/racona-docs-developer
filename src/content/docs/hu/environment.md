@@ -44,7 +44,7 @@ A **típusbiztos hozzáférési pont** az alkalmazáskódból.
 ```typescript
 import { env } from '$lib/env';
 
-const port = env.ELYOS_PORT;        // number
+const port = env.RACONA_PORT;        // number
 const devMode = env.DEV_MODE;       // boolean
 const dbUrl = env.DATABASE_URL;     // string
 ```

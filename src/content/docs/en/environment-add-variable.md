@@ -194,7 +194,7 @@ REDIS_PORT=6379
 
 ```typescript
 // schema.ts - validateSchema
-const portFields = ['ELYOS_PORT', 'SMTP_PORT', 'REDIS_PORT'] as const;
+const portFields = ['RACONA_PORT', 'SMTP_PORT', 'REDIS_PORT'] as const;
 
 // schema.ts - validEnvArbitrary
 REDIS_PORT: fc.option(

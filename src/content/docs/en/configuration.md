@@ -36,7 +36,7 @@ For offline development or without Infisical:
 ```dotenv
 VARLOCK_FALLBACK=local
 NODE_ENV=development
-DATABASE_URL=postgresql://elyos:elyos123@localhost:5432/elyos
+DATABASE_URL=postgresql://racona:racona123@localhost:5432/racona
 BETTER_AUTH_SECRET=local-secret
 BETTER_AUTH_URL=http://localhost:3000
 ORIGIN=http://localhost:5173
@@ -63,7 +63,7 @@ INFISICAL_CLIENT_SECRET=machine-identity-client-secret
 ```dotenv
 VARLOCK_FALLBACK=local
 NODE_ENV=development
-DATABASE_URL=postgresql://elyos:elyos123@localhost:5432/elyos
+DATABASE_URL=postgresql://racona:racona123@localhost:5432/racona
 BETTER_AUTH_SECRET=generated-random-secret
 BETTER_AUTH_URL=http://localhost:3000
 ORIGIN=http://localhost:5173
@@ -77,8 +77,8 @@ ORIGIN=http://localhost:5173
 | ----------------- | -------- | ------- | -------------------------------------------------------- |
 | `NODE_ENV`        | Yes      | —       | `development`, `production`, or `test`                   |
 | `BODY_SIZE_LIMIT` | No       | `10485760` | Maximum request size in bytes (10 MB)                  |
-| `ELYOS_PORT`      | No       | `3000`  | Application port (Docker host port mapping)              |
-| `APP_URL`         | Prod     | —       | Base URL (e.g., `https://elyos.example.com`)             |
+| `RACONA_PORT`      | No       | `3000`  | Application port (Docker host port mapping)              |
+| `APP_URL`         | Prod     | —       | Base URL (e.g., `https://racona.example.com`)             |
 | `ORIGIN`          | Yes      | —       | CSRF protection — must match application URL             |
 
 ## Database
@@ -244,7 +244,7 @@ bun docker:logs
 
 ### Data Persistence
 
-PostgreSQL data is stored in the `elyos-data` Docker volume. For complete reset:
+PostgreSQL data is stored in the `racona-data` Docker volume. For complete reset:
 
 ```bash
 docker compose -f docker/docker-compose.yml down -v

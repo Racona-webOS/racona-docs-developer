@@ -146,9 +146,9 @@ postgres:
   ports:
     - '${POSTGRES_PORT:-5432}:5432'
   volumes:
-    - elyos-data:/var/lib/postgresql
+    - racona-data:/var/lib/postgresql
   healthcheck:
-    test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-elyos} -d ${POSTGRES_DB:-elyos}']
+    test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-racona} -d ${POSTGRES_DB:-racona}']
     interval: 10s
     timeout: 5s
     retries: 5
@@ -157,7 +157,7 @@ postgres:
 **Jellemzők:**
 
 - Port: `5432` (konfigurálható: `POSTGRES_PORT`)
-- Perzisztens adattárolás: `elyos-data` volume
+- Perzisztens adattárolás: `racona-data` volume
 - Health check: 10 másodpercenként ellenőrzi az adatbázis elérhetőségét
 - Automatikus újraindítás: `unless-stopped`
 
@@ -182,14 +182,14 @@ db-init:
 - Egyszeri futás: `restart: no`
 - Támogatja a `RESET=1` környezeti változót az adatbázis teljes visszaállításához
 
-### 3. elyos
+### 3. racona
 
 A Racona webalkalmazás (SvelteKit + Express + Socket.IO).
 
 ```yaml
-elyos:
+racona:
   ports:
-    - '${ELYOS_PORT:-3000}:3000'
+    - '${RACONA_PORT:-3000}:3000'
   depends_on:
     db-init:
       condition: service_completed_successfully
@@ -200,7 +200,7 @@ elyos:
 
 **Jellemzők:**
 
-- Port: `3000` (konfigurálható: `ELYOS_PORT`)
+- Port: `3000` (konfigurálható: `RACONA_PORT`)
 - Csak akkor indul, ha a `db-init` sikeresen lefutott
 - Perzisztens fájltárolás: `uploads` mappa
 - Automatikus újraindítás: `unless-stopped`
@@ -219,7 +219,7 @@ A szolgáltatások sorban indulnak, biztosítva a megfelelő függőségeket:
    ↓
 4. db-init (completed successfully)
    ↓
-5. elyos (indul)
+5. racona (indul)
 ```
 
 ## Adatbázis inicializálás és reset
@@ -255,7 +255,7 @@ RESET=1 docker compose -f docker/docker-compose.yml up -d
 A Docker-alapú fejlesztés támogatja a hot reload-ot volume mount segítségével. Ehhez módosítsd a `docker-compose.yml` fájlt:
 
 ```yaml
-elyos:
+racona:
   volumes:
     - ../apps/web:/app/apps/web
     - ../packages:/app/packages
@@ -318,19 +318,19 @@ docker ps
 docker ps -a
 
 # Konténer naplók megtekintése
-docker logs elyos-app
-docker logs elyos-postgres
-docker logs elyos-db-init
+docker logs racona-app
+docker logs racona-postgres
+docker logs racona-db-init
 ```
 
 ### Konténerbe belépés
 
 ```bash
 # Racona konténerbe belépés
-docker exec -it elyos-app sh
+docker exec -it racona-app sh
 
 # PostgreSQL konténerbe belépés
-docker exec -it elyos-postgres psql -U elyos -d elyos
+docker exec -it racona-postgres psql -U racona -d racona
 ```
 
 ### Adatok törlése
@@ -343,7 +343,7 @@ docker compose -f docker/docker-compose.yml down
 docker compose -f docker/docker-compose.yml down -v
 
 # Image-ek törlése
-docker rmi elyos-elyos elyos-postgres
+docker rmi racona-racona racona-postgres
 ```
 
 ## Multi-stage build
@@ -392,11 +392,11 @@ RUN bun run app:build
 FROM oven/bun:1-alpine AS runner
 WORKDIR /app
 RUN addgroup -g 1001 -S nodejs && \
-    adduser -S elyos -u 1001 -G nodejs
-COPY --from=builder --chown=elyos:nodejs /app/apps/web/build ./apps/web/build
+    adduser -S racona -u 1001 -G nodejs
+COPY --from=builder --chown=racona:nodejs /app/apps/web/build ./apps/web/build
 RUN bun install --production --frozen-lockfile
 RUN bun add -g varlock
-USER elyos
+USER racona
 CMD ["varlock", "run", "--", "bun", "run", "apps/web/server.js"]
 ```
 
@@ -442,11 +442,11 @@ A Docker Compose automatikusan betölti a gyökér `.env` fájlt. Az alábbi vá
 
 | Változó                     | Alapértelmezett | Leírás                                    |
 | --------------------------- | --------------- | ----------------------------------------- |
-| `ELYOS_PORT`                | `3000`          | Racona alkalmazás portja                   |
+| `RACONA_PORT`                | `3000`          | Racona alkalmazás portja                   |
 | `POSTGRES_PORT`             | `5432`          | PostgreSQL portja                         |
-| `POSTGRES_USER`             | `elyos`         | PostgreSQL felhasználónév                 |
-| `POSTGRES_PASSWORD`         | `elyos123`      | PostgreSQL jelszó                         |
-| `POSTGRES_DB`               | `elyos`         | PostgreSQL adatbázis neve                 |
+| `POSTGRES_USER`             | `racona`         | PostgreSQL felhasználónév                 |
+| `POSTGRES_PASSWORD`         | `racona123`      | PostgreSQL jelszó                         |
+| `POSTGRES_DB`               | `racona`         | PostgreSQL adatbázis neve                 |
 | `INFISICAL_CLIENT_ID`       | -               | Infisical Machine Identity Client ID      |
 | `INFISICAL_CLIENT_SECRET`   | -               | Infisical Machine Identity Client Secret  |
 | `VARLOCK_FALLBACK`          | -               | Varlock fallback mód (`local`)            |
@@ -466,17 +466,17 @@ Az összes elérhető környezeti változó listájáért lásd a [Változók re
 
 1. Ellenőrizd a naplókat:
    ```bash
-   docker logs elyos-app
+   docker logs racona-app
    ```
 
 2. Ellenőrizd a környezeti változókat:
    ```bash
-   docker exec elyos-app env
+   docker exec racona-app env
    ```
 
 3. Ellenőrizd a health check-et:
    ```bash
-   docker inspect elyos-app | grep -A 10 Health
+   docker inspect racona-app | grep -A 10 Health
    ```
 
 ### Adatbázis kapcsolat hiba
@@ -493,7 +493,7 @@ Az összes elérhető környezeti változó listájáért lásd a [Változók re
 2. Ellenőrizd a `DATABASE_URL` környezeti változót:
    ```bash
    # Helyes formátum:
-   postgresql://elyos:elyos123@postgres:5432/elyos
+   postgresql://racona:racona123@postgres:5432/racona
    ```
 
 3. Várj, amíg a `postgres` konténer egészséges lesz:
@@ -509,7 +509,7 @@ Az összes elérhető környezeti változó listájáért lásd a [Változók re
 
 1. Változtasd meg a portot a `.env` fájlban:
    ```bash
-   ELYOS_PORT=3001
+   RACONA_PORT=3001
    ```
 
 2. Vagy állítsd le a másik szolgáltatást:
