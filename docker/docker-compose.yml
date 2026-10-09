@@ -1,23 +1,52 @@
+name: racona-docs-developer
+
 services:
-  docs:
-    image: elyos-docs-developer:latest
+  docs-developer:
+    image: racona-docs-developer:latest
+    container_name: racona-docs-developer
     restart: always
-    #ports:
-    #  - '3001:4321'
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.http.routers.docs.rule=Host(`docs-dev.elyos.hu`)'
-      - 'traefik.http.routers.docs.entrypoints=web'
-      - 'traefik.http.services.docs.loadbalancer.server.port=80'
+      - "traefik.enable=true"
+      - "traefik.http.routers.docs-developer.rule=Host(`docs-dev.racona.hu`)"
+      - "traefik.http.routers.docs-developer.entrypoints=web"
+      - "traefik.http.services.docs-developer.loadbalancer.server.port=80"
+      # Biztonsági fejlécek, a proxy szintjén – így a HTML-re és a statikus fájlokra
+      # egyformán rákerülnek. (Az nginx.conf saját `add_header` sorai a külön
+      # `location` blokkokban nem öröklődnek, ezért nem ott vannak.)
+      #
+      # Ami SZÁNDÉKOSAN nem szerepel itt:
+      #  - `frameDeny`: a beágyazhatóságot az nginx.conf X-Frame-Options sora
+      #    szabályozza (SAMEORIGIN), azt ez a middleware nem írja felül.
+      #  - Content-Security-Policy: a Starlight inline scripteket használ (téma,
+      #    kereső), statikus oldalon pedig nincs kérésenkénti nonce.
+      #  - `stsIncludeSubdomains`: a racona.hu aldomainjei nincsenek egyenként
+      #    ellenőrizve.
+      #
+      # A vesszőt tartalmazó értékeket kerüljük: a Traefik címke-értelmezője a
+      # vesszőnél listára bontja őket.
+      - "traefik.http.middlewares.racona-docs-developer-security-headers.headers.contentTypeNosniff=true"
+      - "traefik.http.middlewares.racona-docs-developer-security-headers.headers.referrerPolicy=strict-origin-when-cross-origin"
+      - "traefik.http.middlewares.racona-docs-developer-security-headers.headers.stsSeconds=31536000"
+      - "traefik.http.middlewares.racona-docs-developer-security-headers.headers.customResponseHeaders.Cross-Origin-Opener-Policy=same-origin"
+      - "traefik.http.middlewares.racona-docs-developer-security-headers.headers.customResponseHeaders.X-Permitted-Cross-Domain-Policies=none"
+      - "traefik.http.routers.docs-developer.middlewares=racona-docs-developer-security-headers"
     networks:
-      - elyos_shared
+      - proxy
     healthcheck:
-      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://127.0.0.1/']
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://127.0.0.1/",
+        ]
       interval: 30s
       timeout: 3s
       start_period: 5s
       retries: 3
 
 networks:
-  elyos_shared:
+  proxy:
     external: true

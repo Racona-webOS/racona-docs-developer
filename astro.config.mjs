@@ -22,7 +22,9 @@ export default defineConfig({
 					tag: 'script',
 					attrs: {
 						defer: true,
-						src: 'https://racona.hu/umami/script.js',
+						// Saját domainről: a VPS-en a Traefik a /umami/script.js és a
+						// /umami/api/send útvonalat minden hoszton az Umamihoz irányítja.
+						src: '/umami/script.js',
 						'data-website-id': process.env.UMAMI_WEBSITE_ID_DOCS ?? ''
 					}
 				}

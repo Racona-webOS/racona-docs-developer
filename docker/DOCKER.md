@@ -45,12 +45,12 @@ cd docker
 docker compose up -d
 ```
 
-A konténer a `3001`-es porton fut (nginx a `80`-as porton belül), és az `elyos_shared` Docker hálózaton keresztül érhető el a Traefik proxy számára.
+A konténer a `3001`-es porton fut (nginx a `80`-as porton belül), és a `proxy` Docker hálózaton keresztül érhető el a Traefik proxy számára.
 
-> Az `elyos_shared` hálózatnak léteznie kell a konténer indítása előtt. Ha saját hálózatot használsz, a `docker-compose.yml`-ben cseréld le a hálózat nevét, vagy hozd létre manuálisan:
+> A `proxy` hálózatnak léteznie kell a konténer indítása előtt. Ha saját hálózatot használsz, a `docker-compose.yml`-ben cseréld le a hálózat nevét, vagy hozd létre manuálisan:
 >
 > ```bash
-> docker network create elyos_shared
+> docker network create proxy
 > ```
 
 ---
