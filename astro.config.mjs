@@ -476,7 +476,7 @@ export default defineConfig({
 					translations: {
 						en: 'User Documentation'
 					},
-					link: 'https://docs-user.racona.hu/'
+					link: 'https://docs.racona.hu/'
 				}
 			]
 		})
