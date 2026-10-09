@@ -21,7 +21,7 @@ macOS-en a Docker Desktop helyett érdemes [OrbStack](https://orbstack.dev)-et h
 ### 1. Klónozás
 
 ```bash
-git clone https://github.com/Racona-webOS/racona-core.git
+git clone https://github.com/szigetidev/racona-core.git
 cd racona-core
 ```
 

@@ -52,7 +52,7 @@ Docker can be used without Bun, just run raw `docker compose` commands.
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/Racona-webOS/racona-core
+git clone https://github.com/szigetidev/racona-core
 cd racona-core
 ```
 

@@ -4,7 +4,7 @@
 
 ## 🇬🇧 English
 
-Official documentation site for the [Racona](https://github.com/Racona-webOS) webOS platform.
+Official documentation site for the [Racona](https://github.com/szigetidev/racona-core) webOS platform.
 
 Racona is an innovative webOS platform that enables you to create a full-featured desktop experience using web technologies. The system’s modular architecture and modern design provide a flexible and extensible solution.
 
@@ -29,7 +29,7 @@ The docs are available in English and Hungarian, organized into the following se
 
 ## 🇭🇺 Magyar
 
-Az [Racona](https://github.com/Racona-webOS) webOS platform hivatalos dokumentációs oldala.
+Az [Racona](https://github.com/szigetidev/racona-core) webOS platform hivatalos dokumentációs oldala.
 
 A Racona egy innovatív webOS platform, amely lehetővé teszi, hogy webes technológiákkal teljes értékű asztali élményt hozz létre. A rendszer moduláris felépítése és modern architektúrája révén rugalmas és bővíthető megoldást kínál. Ez a dokumentációs oldal mindent tartalmaz, amit a felhasználóknak tudniuk kell a rendszerről.
 

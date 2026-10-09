@@ -21,7 +21,7 @@ On macOS, consider using [OrbStack](https://orbstack.dev) instead of Docker Desk
 ### 1. Clone
 
 ```bash
-git clone https://github.com/Racona-webOS/racona-core.git
+git clone https://github.com/szigetidev/racona-core.git
 cd racona-core
 ```
 
