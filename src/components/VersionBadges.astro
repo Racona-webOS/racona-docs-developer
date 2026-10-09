@@ -1,17 +1,40 @@
 ---
 /**
  * VersionBadges — verzió panel a sidebar tetején.
- * A verziók manuálisan frissítendők, ha új release kerül ki.
+ * A verziókat build közben kérdezi le (npm registry, GitHub); ha ez nem sikerül,
+ * a FALLBACK_VERSIONS értékei jelennek meg.
  */
 
-const VERSIONS = {
-	core: '0.3.0',
-	sdk: '0.3.0',
-	cli: '0.3.0'
+const FALLBACK_VERSIONS = {
+	core: '0.7.7',
+	sdk: '0.8.1',
+	cli: '0.5.4'
 };
 
+const CORE_PACKAGE_JSON =
+	'https://raw.githubusercontent.com/szigetidev/racona-core/main/package.json';
+
+async function fetchVersion(url: string, pick: (data: any) => unknown, fallback: string) {
+	try {
+		const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+		if (!res.ok) return fallback;
+		const version = pick(await res.json());
+		return typeof version === 'string' && version ? version : fallback;
+	} catch {
+		return fallback;
+	}
+}
+
+const [core, sdk, cli] = await Promise.all([
+	fetchVersion(CORE_PACKAGE_JSON, (d) => d.version, FALLBACK_VERSIONS.core),
+	fetchVersion('https://registry.npmjs.org/@racona/sdk/latest', (d) => d.version, FALLBACK_VERSIONS.sdk),
+	fetchVersion('https://registry.npmjs.org/@racona/cli/latest', (d) => d.version, FALLBACK_VERSIONS.cli)
+]);
+
+const VERSIONS = { core, sdk, cli };
+
 const LINKS = {
-	core: import.meta.env.GITHUB_URL ?? 'https://github.com/racona/racona-core',
+	core: import.meta.env.GITHUB_URL ?? 'https://github.com/szigetidev/racona-core',
 	sdk: import.meta.env.SDK_URL ?? 'https://www.npmjs.com/package/@racona/sdk',
 	cli: import.meta.env.CLI_URL ?? 'https://www.npmjs.com/package/@racona/cli'
 };

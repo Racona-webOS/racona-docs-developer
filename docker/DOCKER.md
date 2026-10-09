@@ -33,7 +33,7 @@ A `docker-compose.yml` mellé hozz létre egy `.env` fájlt:
 UMAMI_WEBSITE_ID_DOCS=<uuid>
 
 # GitHub repository URL (opcionális)
-GITHUB_URL=https://github.com/ElyOS-webOS/elyos-core
+GITHUB_URL=https://github.com/szigetidev/racona-core
 ```
 
 ---
